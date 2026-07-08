@@ -6,9 +6,10 @@
 
 <meta charset="UTF-8">
 
-<title>Ranking</title>
+<title>Žebříčky</title>
 
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
 
 </head>
 
@@ -16,7 +17,7 @@
 
 <header>
 
-<h1>STISstat</h1>
+<h1>statiSTIS</h1>
 
 <nav>
 
@@ -31,7 +32,7 @@
 
 <main>
 
-<h2>Current Ranking</h2>
+<h2>Žebříček pro sezónu 2025/26</h2>
 
 <input
 type="text"
@@ -39,16 +40,12 @@ id="search"
 placeholder="Search player..."
 >
 
-<table id="ranking">
-
-<thead></thead>
-
-<tbody></tbody>
-
-</table>
+<table id="ranking" class="display" style="width:100%"></table>
 
 </main>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="js/ranking.js"></script>
 

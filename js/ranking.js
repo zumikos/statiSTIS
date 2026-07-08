@@ -4,39 +4,45 @@ Papa.parse("csv/ranking_2026.csv", {
 
     header: true,
 
+    dynamicTyping: true,
+
     complete: function(results) {
 
-        const table = document.getElementById("ranking");
-        const thead = table.querySelector("thead");
-        const tbody = table.querySelector("tbody");
+        results.data = results.data.filter(
+            row => row["ID"] !== undefined
+        );
 
-        // Header
-        const headerRow = document.createElement("tr");
+        let columns = [];
 
-        Object.keys(results.data[0]).forEach(col => {
+        Object.keys(results.data[0]).forEach(name => {
 
-            const th = document.createElement("th");
-            th.textContent = col;
-            headerRow.appendChild(th);
+            columns.push({
 
-        });
+                title: name,
 
-        thead.appendChild(headerRow);
-
-        // Rows
-        results.data.forEach(player => {
-
-            const tr = document.createElement("tr");
-
-            Object.values(player).forEach(value => {
-
-                const td = document.createElement("td");
-                td.textContent = value;
-                tr.appendChild(td);
+                data: name
 
             });
 
-            tbody.appendChild(tr);
+        });
+
+        new DataTable("#ranking", {
+
+            data: results.data,
+
+            columns: columns,
+
+            pageLength: 25,
+
+            order: [[0, "asc"]],
+
+            searching: true,
+
+            info: true,
+
+            paging: true,
+
+            scrollX: true
 
         });
 
