@@ -1,5 +1,5 @@
 __pycache__/
 .venv/
-website/csv
-website/images
+csv/
+images/
 source/
