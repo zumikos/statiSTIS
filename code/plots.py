@@ -11,8 +11,7 @@ def plot_histogram(master, output_dir):
 
     fig = px.histogram(
         x=ratings,
-        nbins=40,
-        title=f"Rozložení STR ({season})"
+        nbins=40
     )
 
     fig.update_layout(
@@ -23,7 +22,6 @@ def plot_histogram(master, output_dir):
     fig.write_html(output_dir / f"histogram_STR_{season}.html")
     
     print("✓ Uložen histogram STR.")
-    
     
     
 def plot_player_count(master, output_dir):
@@ -39,8 +37,7 @@ def plot_player_count(master, output_dir):
         counts,
         x="Sezóna",
         y="Počet hráčů",
-        markers=True,
-        title="Vývoj počtu aktivních hráčů"
+        markers=True
     )
 
     fig.update_layout(
