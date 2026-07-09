@@ -69,3 +69,15 @@ tr:nth-child(even){
     background:#fafafa;
 
 }
+
+.dt-length {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.dt-length select {
+    text-align: right;
+    text-align-last: right;
+}
