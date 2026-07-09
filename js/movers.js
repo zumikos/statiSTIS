@@ -4,6 +4,8 @@ const selectedSeason = params.get("season") || DEFAULT_SEASON.toString();
 const seasonSelect = document.getElementById("season");
 
 SEASONS.slice().reverse().forEach(year => {
+    if (year === SEASONS[0]) return;
+
     const option = document.createElement("option");
     option.value = year;
     option.textContent = `${year - 1}/${String(year).slice(2)}`;
@@ -13,25 +15,41 @@ SEASONS.slice().reverse().forEach(year => {
 seasonSelect.value = selectedSeason;
 
 seasonSelect.addEventListener("change", function () {
-    location.href = "zebricky.html?season=" + this.value;
+    location.href = "skokani.html?season=" + this.value;
 });
 
-Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
+const previousSeason = Number(selectedSeason) - 1;
+const csvFile = `csv/movers_${previousSeason}_${selectedSeason}_STR800.csv`;
+
+Papa.parse(csvFile, {
     download: true,
     header: true,
     dynamicTyping: true,
     skipEmptyLines: true,
 
     complete: function (results) {
-        results.data = results.data.filter(row => row["ID"] !== undefined);
+        let data = results.data.filter(row => row["ID"] !== undefined);
 
-        const columns = Object.keys(results.data[0]).map(name => ({
+        data = data.map(row => ({
+            "Pořadí": row["Pořadí"],
+            "ID": row["ID"],
+            "Hráč": row["Hráč"],
+            "Rok": row["Rok"],
+            "Po-hlaví": row["Po-hlaví"],
+            "Oddíl": row["Oddíl"],
+            "Kraj": row["Kraj"],
+            "STR loňské": row["PreviousSTR"],
+            "STR letošní": row["CurrentSTR"],
+            "STR změna": row["STR_změna"]
+        }));
+
+        const columns = Object.keys(data[0]).map(name => ({
             title: name,
             data: name
         }));
 
-        new DataTable("#ranking", {
-            data: results.data,
+        new DataTable("#movers", {
+            data: data,
             columns: columns,
 
             pageLength: 50,
@@ -52,9 +70,10 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
             },
 
             columnDefs: [
-                { targets: "_all", className: "dt-head-center" }, // zarovná na střed hlavičky všech sloupců
-                { targets: [3, 4, 6], className: "dt-body-center" }, // zarovná na střed obsah sloupců "Rok" a "Pohlaví"
-                { targets: [2, 5, 6], className: "wrap-column" }
+                { targets: "_all", className: "dt-head-center" },
+                { targets: [3, 4, 6], className: "dt-body-center" },
+                { targets: [2, 5, 6], className: "wrap-column" },
+                { targets: 9, className: "dt-body-right strong-column" }
             ],
 
             language: {
@@ -65,7 +84,7 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
                 infoEmpty: "Žádné záznamy",
                 infoFiltered: "(filtrováno z celkem _MAX_ záznamů)",
                 zeroRecords: "Nenalezeny žádné záznamy",
-                emptyTable: "Tabulka neobsahuje žádná data",
+                emptyTable: "Tabulka neobsahuje žádná data"
             }
         });
     }

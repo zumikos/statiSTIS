@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 
 <head>
 
@@ -9,6 +10,7 @@
 <title>statiSTIS</title>
 
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
 
 </head>
 
@@ -31,13 +33,25 @@
 
 <main>
 
-<h2>Skokani sezóny</h2>
+<h2>
+    Skokani sezóny
+    <select id="season"></select>
+</h2>
 
 <p>
-Hráči s největším progresem v sezóně
+Hráči s největším progresem v sezóně, minimální počáteční STR (STR loňské) musí být 800, kde posun již dává smysl.
 </p>
 
+<table id="movers" class="display" style="width:100%"></table>
+
 </main>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<script src="js/config.js"></script>
+<script src="js/movers.js"></script>
 
 </body>
 </html>
