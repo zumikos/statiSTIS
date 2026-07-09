@@ -5,13 +5,14 @@ from export_movers import export_movers
 from export_players import export_players
 from plots import plot_histogram, plot_player_count
 
-DATA_DIR = Path("source") # data jsou ve složce /source
-CSV_DIR = Path("../csv") # csv soubory budou ve složce /csv
+BASE_DIR = Path(__file__).resolve().parent.parent # složka projektu
+DATA_DIR = BASE_DIR / "source" # zdroje dat jsou ve složce /source
+CSV_DIR = BASE_DIR / "csv"     # csv soubory budou ve složce /csv
+IMG_DIR = BASE_DIR / "images"  # obrázky a grafy budou ve složce /images
+
 CSV_DIR.mkdir(exist_ok=True)
-IMG_DIR = Path("../images") # obrázky a grafy budou ve složce /images
 IMG_DIR.mkdir(exist_ok=True)
-SEASON_RANKING = 2026
-SEASON_MOVERS = 2026
+
 MOVERS_STR_MIN = 800
 
 def load_all_seasons():
@@ -28,7 +29,7 @@ def load_all_seasons():
         df = pd.read_excel(file)
 
         df["Pořadí"] = df["Pořadí"].astype("Int64")  
-        df["Rok"] = df["Rok"].astype("Int64")
+        df["Rok narození"] = df["Rok narození"].astype("Int64")
         df["STR"] = df["STR"].astype("Int64")
         df["Sezóna"] = year
 
@@ -36,8 +37,8 @@ def load_all_seasons():
             [
                 "ID",
                 "Hráč",
-                "Rok",
-                "Po-hlaví",
+                "Rok narození",
+                "Pohlaví",
                 "Oddíl",
                 "Kraj",
                 "Region",
@@ -53,9 +54,9 @@ master = load_all_seasons()
 
 print(f"Načteno {len(master)} záznamů.\n")
 
-export_ranking(master, CSV_DIR, SEASON_RANKING)
-export_movers(master, CSV_DIR, SEASON_MOVERS, MOVERS_STR_MIN)
-export_players(master, CSV_DIR)
+export_ranking(master, CSV_DIR, None)  # export všech sezón
+export_movers(master, CSV_DIR, None, MOVERS_STR_MIN) # export všech sezón
+export_players(master, CSV_DIR) # export jednotlivých hráčů
 
 plot_histogram(master, IMG_DIR)
 plot_player_count(master, IMG_DIR)

@@ -28,8 +28,8 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
             "Pořadí": row["Pořadí"],
             "ID": row["ID"],
             "Hráč": row["Hráč"],
-            "Rok": row["Rok"],
-            "Po-hlaví": row["Po-hlaví"],
+            "Rok narození": row["Rok narození"],
+            "Pohlaví": row["Pohlaví"],
             "Oddíl": row["Oddíl"],
             "Kraj": row["Kraj"],
             "STR": row["STR"]
