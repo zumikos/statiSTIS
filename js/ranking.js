@@ -76,6 +76,12 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
                 infoFiltered: "(filtrováno z celkem _MAX_ záznamů)",
                 zeroRecords: "Nenalezeny žádné záznamy",
                 emptyTable: "Tabulka neobsahuje žádná data",
+            },
+
+            initComplete: function () {
+                document
+                    .querySelector(".dt-length select")
+                    .classList.add("entries-dropdown");
             }
         });
     }

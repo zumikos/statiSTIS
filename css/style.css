@@ -1,92 +1,78 @@
 body{
-
     margin:0;
     font-family:Arial,sans-serif;
     background:#f6f6f6;
-
 }
 
 header{
-
     background:#0d47a1;
     color:white;
     padding:20px;
-
 }
 
 header h1{
-
     margin:0;
-
 }
 
 nav{
-
     margin-top:15px;
-
 }
 
 nav a{
-
     color:white;
     text-decoration:none;
     margin-right:20px;
     font-weight:bold;
-
 }
 
 main{
-
     max-width:1200px;
     margin:auto;
     padding:30px;
-
 }
 
 table{
-
     width:100%;
     border-collapse:collapse;
-
 }
 
 th{
-
     background:#1976d2;
     color:white;
-
 }
 
 th,td{
-
     padding:8px;
     border:1px solid #ddd;
-
 }
 
 tr:nth-child(even){
-
     background:#fafafa;
-
 }
 
 .dt-search input {
+    font-size: 1rem;
+    padding: 4px 8px;
     border: 1px solid #aaa;
     border-radius: 6px;
-    padding: 4px 8px;
-    font-size: 1rem;
+    background-color: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.dt-length select {
-    width: 5.5em;
-    font-family: "IBM Plex Mono", monospace;
-    text-align: right;
-    text-align-last: right;
+#season {
+    font-size: 1rem;
+    padding: 4px 4px;
     border: 1px solid #aaa;
     border-radius: 6px;
-    padding: 4px 8px;
     background-color: white;
-    font-size: 1rem;
+}
+
+#season:focus,
+.dt-length select:focus,
+.dt-search input:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 4px rgba(25,118,210,0.3);
 }
 
 /* DataTables row height and wrapping */
@@ -111,10 +97,78 @@ table.dataTable tbody td {
     overflow-wrap: anywhere;
 }
 
-#season {
-    font-size: 1rem;
-    padding: 4px 4px;
+.entries-dropdown {
+    min-width: 5.5em;
+    padding: 4px 8px;
     border: 1px solid #aaa;
     border-radius: 6px;
     background-color: white;
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.hero {
+    margin-bottom: 2rem;
+}
+
+.grid.two-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.compact-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.compact-table th,
+.compact-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 6px 8px;
+}
+
+.compact-table th {
+    text-align: left;
+    background: #1976d2;
+    color: white;
+}
+
+.button {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #1976d2;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.button:hover {
+    background: #0d47a1;
+}
+
+.graph-frame {
+    width: 100%;
+    height: 420px;
+    border: none;
+}
+
+@media (max-width: 800px) {
+    .grid.two-columns {
+        grid-template-columns: 1fr;
+    }
 }

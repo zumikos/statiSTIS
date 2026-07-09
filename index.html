@@ -1,44 +1,67 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="cs">
 
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>statiSTIS</title>
-
-<link rel="stylesheet" href="css/style.css">
-
+    <meta charset="UTF-8">
+    <title>statiSTIS</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
 <header>
+    <h1>statiSTIS</h1>
 
-<h1>statiSTIS</h1>
-
-<nav>
-
-<a href="index.html">Domů</a>
-<a href="skokani.html">Skokani sezóny</a>
-<a href="zebricky.html">Žebříčky</a>
-<a href="hraci.html">Hráči</a>
-
-</nav>
-
+    <nav>
+        <a href="index.html">Domů</a>
+        <a href="skokani.html">Skokani sezóny</a>
+        <a href="zebricky.html">Žebříčky</a>
+        <a href="hraci.html">Hráči</a>
+    </nav>
 </header>
 
 <main>
 
-<h2>Statistiky ze STISu</h2>
+    <section class="hero">
+        <h2>Statistiky ze STISu</h2>
+        <p>Statistiky založené na veřejně dostupných žebříčcích ze systému STIS</p>
 
-<p>
-Statistiky založené na veřejně dostupných žebříčcích STIS
-</p>
+    </section>
+
+    <section class="grid two-columns">
+
+        <article class="card">
+            <h3>Top 10 žebříček 2025/26</h3>
+            <table id="home-ranking" class="compact-table"></table>
+            <a class="button" href="zebricky.html">Celý žebříček</a>
+        </article>
+
+        <article class="card">
+            <h3>Top 10 skokani 2025/26</h3>
+            <table id="home-movers" class="compact-table"></table>
+            <a class="button" href="skokani.html">Všichni skokani</a>
+        </article>
+
+    </section>
+
+    <section class="grid two-columns">
+
+        <article class="card">
+            <h3>Vývoj počtu hráčů</h3>
+            <iframe src="images/player_count.html" class="graph-frame"></iframe>
+        </article>
+
+        <article class="card">
+            <h3>Rozložení STR 2025/26</h3>
+            <iframe src="images/histogram_STR_2026.html" class="graph-frame"></iframe>
+        </article>
+
+    </section>
 
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="js/home.js"></script>
 
 </body>
 </html>
