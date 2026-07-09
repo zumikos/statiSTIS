@@ -6,9 +6,9 @@ from export_players import export_players
 from plots import plot_histogram, plot_player_count
 
 DATA_DIR = Path("source") # data jsou ve složce /source
-CSV_DIR = Path("../website/csv") # csv soubory budou ve složce /website/csv
+CSV_DIR = Path("../csv") # csv soubory budou ve složce /csv
 CSV_DIR.mkdir(exist_ok=True)
-IMG_DIR = Path("../website/img") # obrázky a grafy budou ve složce /website/img
+IMG_DIR = Path("../images") # obrázky a grafy budou ve složce /images
 IMG_DIR.mkdir(exist_ok=True)
 SEASON_RANKING = 2026
 SEASON_MOVERS = 2026
