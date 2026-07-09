@@ -70,10 +70,23 @@ tr:nth-child(even){
 
 }
 
+.dt-search input {
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 1rem;
+}
+
 .dt-length select {
-    width: 60px;
+    width: 5.5em;
+    font-family: "IBM Plex Mono", monospace;
     text-align: right;
     text-align-last: right;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    padding: 4px 8px;
+    background-color: white;
+    font-size: 1rem;
 }
 
 /* DataTables row height and wrapping */
@@ -96,4 +109,12 @@ table.dataTable tbody td {
 .wrap-column {
     white-space: normal !important;
     overflow-wrap: anywhere;
+}
+
+#season {
+    font-size: 1rem;
+    padding: 4px 4px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    background-color: white;
 }

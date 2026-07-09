@@ -29,7 +29,6 @@ Papa.parse(csvFile, {
 
     complete: function (results) {
         let data = results.data.filter(row => row["ID"] !== undefined);
-
         data = data.map(row => ({
             "Pořadí": row["Pořadí"],
             "ID": row["ID"],
@@ -73,7 +72,7 @@ Papa.parse(csvFile, {
                 { targets: "_all", className: "dt-head-center" },
                 { targets: [3, 4, 6], className: "dt-body-center" },
                 { targets: [2, 5, 6], className: "wrap-column" },
-                { targets: 9, className: "dt-body-right strong-column" }
+                { targets: 8, className: "dt-body-right strong-column" }
             ],
 
             language: {

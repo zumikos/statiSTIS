@@ -23,15 +23,25 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
     skipEmptyLines: true,
 
     complete: function (results) {
-        results.data = results.data.filter(row => row["ID"] !== undefined);
+        let data = results.data.filter(row => row["ID"] !== undefined);
+        data = data.map(row => ({
+            "Pořadí": row["Pořadí"],
+            "ID": row["ID"],
+            "Hráč": row["Hráč"],
+            "Rok": row["Rok"],
+            "Po-hlaví": row["Po-hlaví"],
+            "Oddíl": row["Oddíl"],
+            "Kraj": row["Kraj"],
+            "STR": row["STR"]
+        }));
 
-        const columns = Object.keys(results.data[0]).map(name => ({
+        const columns = Object.keys(data[0]).map(name => ({
             title: name,
             data: name
         }));
 
         new DataTable("#ranking", {
-            data: results.data,
+            data: data,
             columns: columns,
 
             pageLength: 50,
