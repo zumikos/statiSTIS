@@ -48,13 +48,13 @@ def plot_player_count(master, output_dir):
         .reset_index(name="Počet hráčů")
     )
 
-    counts["Popisek"] = counts["Sezóna"].apply(
+    counts["Sezóna"] = counts["Sezóna"].apply(
         lambda y: f"{y-1}/{str(y)[2:]}"
     )
 
     fig = px.line(
         counts,
-        x="Popisek",
+        x="Sezóna",
         y="Počet hráčů",
         markers=True
     )
