@@ -1,3 +1,10 @@
+:root{
+    --blue:#1976d2;
+    --blue-dark:#0d47a1;
+    --border:#ddd;
+    --border-dark:#aaa;
+}
+
 body{
     margin:0;
     font-family:Arial,sans-serif;
@@ -5,7 +12,7 @@ body{
 }
 
 header{
-    background:#0d47a1;
+    background:var(--blue-dark);
     color:white;
     padding:20px;
 }
@@ -37,13 +44,13 @@ table{
 }
 
 th{
-    background:#1976d2;
+    background:var(--blue);
     color:white;
 }
 
 th,td{
     padding:8px;
-    border:1px solid #ddd;
+    border:1px solid var(--border);
 }
 
 tr:nth-child(even){
@@ -53,7 +60,7 @@ tr:nth-child(even){
 .dt-search input {
     font-size: 1rem;
     padding: 4px 8px;
-    border: 1px solid #aaa;
+    border: 1px solid var(--border-dark);
     border-radius: 6px;
     background-color: white;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -62,7 +69,7 @@ tr:nth-child(even){
 #season {
     font-size: 1rem;
     padding: 4px 4px;
-    border: 1px solid #aaa;
+    border: 1px solid var(--border-dark);
     border-radius: 6px;
     background-color: white;
 }
@@ -71,36 +78,28 @@ tr:nth-child(even){
 .dt-length select:focus,
 .dt-search input:focus {
     outline: none;
-    border-color: #1976d2;
+    border-color: var(--blue);
     box-shadow: 0 0 4px rgba(25,118,210,0.3);
 }
 
 /* DataTables row height and wrapping */
 table.dataTable tbody td {
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding: 6px 8px;
     line-height: 1.25;
-    vertical-align: middle;
-    white-space: normal;
-}
-
-table.dataTable tbody td {
-    padding-top: 6px;
-    padding-bottom: 6px;
-    line-height: 1.25;
+    min-height: 2.8em;
     vertical-align: middle;
     white-space: nowrap;
 }
 
 .wrap-column {
     white-space: normal !important;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
 }
 
 .entries-dropdown {
     min-width: 5.5em;
     padding: 4px 8px;
-    border: 1px solid #aaa;
+    border: 1px solid var(--border-dark);
     border-radius: 6px;
     background-color: white;
     font-size: 1rem;
@@ -120,7 +119,7 @@ table.dataTable tbody td {
 
 .card {
     background: white;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border);
     border-radius: 10px;
     padding: 1rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
@@ -138,27 +137,27 @@ table.dataTable tbody td {
 
 .compact-table th,
 .compact-table td {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border);
     padding: 6px 8px;
 }
 
 .compact-table th {
     text-align: left;
-    background: #1976d2;
+    background: var(--blue);
     color: white;
 }
 
 .button {
     display: inline-block;
     padding: 6px 12px;
-    background: #1976d2;
+    background: var(--blue);
     color: white;
     border-radius: 6px;
     text-decoration: none;
 }
 
 .button:hover {
-    background: #0d47a1;
+    background: var(--blue-dark);
 }
 
 .graph-frame {

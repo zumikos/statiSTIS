@@ -15,8 +15,23 @@ def plot_histogram(master, output_dir):
     )
 
     fig.update_layout(
-        xaxis_title="STR",
-        yaxis_title="Počet hráčů"
+        xaxis=dict(
+            tickmode="linear",
+            dtick=1,
+            tickangle=-45,
+            title="STR"
+        ),
+        yaxis_title="Počet hráčů",
+        separators=", ",
+    )
+
+    fig.update_xaxes(
+        dtick=200
+    )
+
+    fig.update_yaxes(
+        tickformat=",d" ,
+        separatethousands=True
     )
 
     fig.write_html(output_dir / f"histogram_STR_{season}.html")
@@ -33,17 +48,33 @@ def plot_player_count(master, output_dir):
         .reset_index(name="Počet hráčů")
     )
 
+    counts["Popisek"] = counts["Sezóna"].apply(
+        lambda y: f"{y-1}/{str(y)[2:]}"
+    )
+
     fig = px.line(
         counts,
-        x="Sezóna",
+        x="Popisek",
         y="Počet hráčů",
         markers=True
     )
 
     fig.update_layout(
         hovermode="x unified",
-        xaxis_title="Sezóna",
-        yaxis_title="Počet hráčů"
+        xaxis=dict(
+            tickmode="linear",
+            dtick=1,
+            tickangle=-45,
+        ),
+        yaxis=dict(
+            tickformat=","
+        ),
+        separators=", ",
+    )  
+
+    fig.update_yaxes(
+        tickformat=",d",
+        separatethousands=True
     )
 
     fig.write_html(
