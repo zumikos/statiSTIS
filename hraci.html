@@ -34,12 +34,17 @@
 
 <section id="player-search-view">
     <h2>Hráči</h2>
-    <p>Vyhledejte hráče podle jména nebo STIS ID.</p>
+    <p>Zobrazte si individuální statistiky hráčů a jejich vývoj</p>
 
     <form id="player-search-form" class="player-search" role="search">
-        <label class="visually-hidden" for="player-search-input">Jméno nebo STIS ID</label>
-        <input id="player-search-input" type="search" placeholder="Jméno nebo STIS ID" autocomplete="off">
-        <button type="submit" aria-label="Vyhledat" title="Vyhledat">&#128269;</button>
+        <label class="visually-hidden" for="player-search-input">Jméno nebo ID</label>
+        <input id="player-search-input" type="search" placeholder="Zadejte jméno nebo ID hráče" autocomplete="off">
+        <button type="submit" aria-label="Vyhledat" title="Vyhledat">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                <path d="M15.5 15.5 21 21"></path>
+            </svg>
+        </button>
     </form>
 
     <p id="player-search-status" class="status-message" aria-live="polite"></p>
@@ -56,7 +61,6 @@
     <section class="player-chart-section">
         <h3>Vývoj STR</h3>
         <div id="player-str-chart" class="player-str-chart"></div>
-        <p class="chart-note">Přerušení čáry znamená, že pro danou sezónu nejsou dostupná data.</p>
     </section>
 </section>
 

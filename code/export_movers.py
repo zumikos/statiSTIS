@@ -1,4 +1,4 @@
-def export_movers(master, output_dir, season=None, STRmin=800):
+def export_movers(master, output_dir, season=None, str_min=800):
     """Vytvoří žebříčky skokanů STR pro všechny dostupné sezóny nebo pro zadanou sezónu."""
 
     years = sorted(master["Sezóna"].unique())
@@ -21,7 +21,7 @@ def export_movers(master, output_dir, season=None, STRmin=800):
 
         prev = (
             master[master["Sezóna"] == previous][["ID", "STR"]]
-            .rename(columns={"STR": "PreviousSTR"})
+            .rename(columns={"STR": "STR loňské"})
         )
 
         curr = (
@@ -38,29 +38,29 @@ def export_movers(master, output_dir, season=None, STRmin=800):
                     "STR",
                 ]
             ]
-            .rename(columns={"STR": "CurrentSTR"})
+            .rename(columns={"STR": "STR letošní"})
         )
 
         movers = curr.merge(prev, on="ID", how="inner")
-        movers = movers[movers["PreviousSTR"] >= STRmin]
+        movers = movers[movers["STR loňské"] >= str_min]
 
-        movers["STR_změna"] = (
-            movers["CurrentSTR"] - movers["PreviousSTR"]
+        movers["STR změna"] = (
+            movers["STR letošní"] - movers["STR loňské"]
         ).astype("Int64")
 
         movers = (
             movers
-            .sort_values("STR_změna", ascending=False)
+            .sort_values("STR změna", ascending=False)
             .reset_index(drop=True)
         )
 
         movers["Pořadí"] = (
-            movers["STR_změna"]
+            movers["STR změna"]
             .rank(method="min", ascending=False)
             .astype(int)
         )
 
-        file = output_dir / f"movers_{previous}_{current}_STR{STRmin}.csv"
+        file = output_dir / f"movers_{previous}_{current}_STR{str_min}.csv"
 
         movers.to_csv(
             file,
@@ -69,6 +69,6 @@ def export_movers(master, output_dir, season=None, STRmin=800):
         )
 
         print(
-            f"✓ Uloženi skokani sezóny {previous}/{current} "
-            f", STRmin = {STRmin} ({len(movers)} hráčů)."
+            f"✓ Uloženi skokani sezóny {previous}/{current}"
+            f", STRmin = {str_min} ({len(movers)} hráčů)."
         )

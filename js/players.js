@@ -6,6 +6,9 @@ const searchStatus = document.getElementById("player-search-status");
 const resultsContainer = document.getElementById("player-results");
 
 let playersPromise;
+let currentMatches = [];
+let visibleResultCount = 0;
+const RESULTS_PER_PAGE = 50;
 
 function normalizeSearchText(value) {
     return String(value ?? "")
@@ -42,7 +45,7 @@ function playerLink(player) {
 
     const details = document.createElement("span");
     const birthYear = player["Rok narození"] || "rok narození neuveden";
-    details.textContent = `STIS ID ${player.ID} · ${birthYear}`;
+    details.textContent = `Ročník: ${birthYear}, ID: ${player.ID}`;
 
     link.append(name, details);
     return link;
@@ -61,27 +64,66 @@ async function searchPlayers(query) {
 
     try {
         const players = await loadPlayers();
-        const matches = players.filter(player =>
-            normalizeSearchText(player["Hráč"]).includes(normalizedQuery) ||
-            String(player.ID) === normalizedQuery
-        );
+        const queryText = String(query).trim();
+        const queryLower = queryText.toLocaleLowerCase("cs");
+        const matches = players
+            .map(player => {
+                const name = String(player["Hráč"] ?? "");
+                let matchPriority = null;
+
+                if (String(player.ID) === queryText) matchPriority = -1;
+                else if (name.includes(queryText)) matchPriority = 0;
+                else if (name.toLocaleLowerCase("cs").includes(queryLower)) matchPriority = 1;
+                else if (normalizeSearchText(name).includes(normalizedQuery)) matchPriority = 2;
+
+                return { player, matchPriority };
+            })
+            .filter(result => result.matchPriority !== null)
+            .sort((first, second) =>
+                first.matchPriority - second.matchPriority ||
+                String(first.player["Hráč"]).localeCompare(String(second.player["Hráč"]), "cs", {
+                    sensitivity: "variant"
+                })
+            )
+            .map(result => result.player);
 
         if (matches.length === 0) {
             searchStatus.textContent = "Žádný hráč nebyl nalezen.";
             return;
         }
 
-        const visibleMatches = matches.slice(0, 50);
-        searchStatus.textContent = matches.length > visibleMatches.length
-            ? `Nalezeno ${matches.length} hráčů. Zobrazeno prvních ${visibleMatches.length}; upřesněte hledání.`
-            : `Nalezeno hráčů: ${matches.length}`;
-
-        const list = document.createElement("div");
-        list.className = "player-results-list";
-        visibleMatches.forEach(player => list.appendChild(playerLink(player)));
-        resultsContainer.appendChild(list);
+        currentMatches = matches;
+        visibleResultCount = Math.min(RESULTS_PER_PAGE, matches.length);
+        renderSearchResults();
     } catch (error) {
         searchStatus.textContent = "Seznam hráčů se nepodařilo načíst. Zkuste stránku obnovit.";
+    }
+}
+
+function renderSearchResults() {
+    resultsContainer.replaceChildren();
+    const visibleMatches = currentMatches.slice(0, visibleResultCount);
+
+    searchStatus.textContent = visibleResultCount < currentMatches.length
+        ? `Nalezeno ${currentMatches.length} hráčů. Zobrazeno ${visibleResultCount}.`
+        : `Nalezeno hráčů: ${currentMatches.length}`;
+
+    const list = document.createElement("div");
+    list.className = "player-results-list";
+    visibleMatches.forEach(player => list.appendChild(playerLink(player)));
+    resultsContainer.appendChild(list);
+
+    if (visibleResultCount < currentMatches.length) {
+        const showMore = document.createElement("button");
+        const remaining = currentMatches.length - visibleResultCount;
+        showMore.type = "button";
+        showMore.className = "button show-more-results";
+        showMore.textContent = `Zobrazit další (${Math.min(RESULTS_PER_PAGE, remaining)})`;
+        showMore.addEventListener("click", () => {
+            visibleResultCount = Math.min(visibleResultCount + RESULTS_PER_PAGE, currentMatches.length);
+            renderSearchResults();
+        });
+        resultsContainer.appendChild(showMore);
     }
 }
 
@@ -112,8 +154,8 @@ function renderPlayerHistory(player) {
                 formatSeason(year),
                 player[`${year} STR`],
                 player[`${year} pořadí`],
-                formatValue(player[`${year} změna`], true),
-                formatValue(player[`${year} skokani pořadí`])
+                formatValue(player[`${year} STR změna`], true),
+                formatValue(player[`${year} Pořadí skokani`])
             ];
 
             values.forEach(value => {
@@ -250,14 +292,14 @@ async function showPlayerDetail(playerId) {
 
         if (!player) {
             document.getElementById("player-name").textContent = "Hráč nebyl nalezen";
-            document.getElementById("player-info").textContent = "Zkontrolujte STIS ID v adrese.";
+            document.getElementById("player-info").textContent = "Zkontrolujte ID v adrese.";
             return;
         }
 
         document.title = `${player["Hráč"]} – statiSTIS`;
         document.getElementById("player-name").textContent = player["Hráč"];
         document.getElementById("player-info").textContent =
-            `STIS ID: ${player.ID} · Rok narození: ${formatValue(player["Rok narození"])} · Pohlaví: ${formatValue(player["Pohlaví"])}`;
+            `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, Pohlaví: ${formatValue(player["Pohlaví"])}`;
         renderPlayerHistory(player);
         renderPlayerChart(player);
     } catch (error) {

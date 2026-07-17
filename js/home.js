@@ -76,6 +76,6 @@ loadTopTable(
         { key: "Pořadí", label: "#" },
         { key: "Hráč", label: "Hráč" },
         { key: "Oddíl", label: "Oddíl" },
-        { key: "STR_změna", label: "STR změna" }
+        { key: "STR změna", label: "STR změna" }
     ]
 );

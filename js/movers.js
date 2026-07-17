@@ -41,9 +41,9 @@ Papa.parse(csvFile, {
             "Pohlaví": row["Pohlaví"],
             "Oddíl": row["Oddíl"],
             "Kraj": row["Kraj"],
-            "STR loňské": row["PreviousSTR"],
-            "STR letošní": row["CurrentSTR"],
-            "STR změna": row["STR_změna"]
+            "STR loňské": row["STR loňské"],
+            "STR letošní": row["STR letošní"],
+            "STR změna": row["STR změna"]
         }));
 
         const columns = Object.keys(data[0]).map(name => ({
@@ -66,8 +66,10 @@ Papa.parse(csvFile, {
             autoWidth: false,
 
             layout: {
-                topStart: "search",
-                topEnd: "pageLength",
+                top2Start: "search",
+                top2End: "pageLength",
+                topStart: "info",
+                topEnd: "paging",
                 bottomStart: "info",
                 bottomEnd: "paging"
             },

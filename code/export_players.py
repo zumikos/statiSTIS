@@ -45,22 +45,22 @@ def export_players(master, output_dir, movers_str_min=800):
 
         previous_ratings = (
             master[master["Sezóna"] == previous][["ID", "STR"]]
-            .rename(columns={"STR": "PreviousSTR"})
+            .rename(columns={"STR": "previous_str"})
         )
         current_ratings = (
             master[master["Sezóna"] == current][["ID", "STR"]]
-            .rename(columns={"STR": "CurrentSTR"})
+            .rename(columns={"STR": "current_str"})
         )
         movers = current_ratings.merge(previous_ratings, on="ID", how="inner")
-        movers = movers[movers["PreviousSTR"] >= movers_str_min].copy()
-        movers[f"{current} změna"] = movers["CurrentSTR"] - movers["PreviousSTR"]
-        movers[f"{current} skokani pořadí"] = (
-            movers[f"{current} změna"]
+        movers = movers[movers["previous_str"] >= movers_str_min].copy()
+        movers[f"{current} STR změna"] = movers["current_str"] - movers["previous_str"]
+        movers[f"{current} Pořadí skokani"] = (
+            movers[f"{current} STR změna"]
             .rank(method="min", ascending=False)
             .astype("Int64")
         )
         mover_columns.append(
-            movers.set_index("ID")[[f"{current} změna", f"{current} skokani pořadí"]]
+            movers.set_index("ID")[[f"{current} STR změna", f"{current} Pořadí skokani"]]
         )
     
     players = (

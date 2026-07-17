@@ -60,8 +60,10 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
             autoWidth: false,
 
             layout: {
-                topStart: "search",
-                topEnd: "pageLength",
+                top2Start: "search",
+                top2End: "pageLength",
+                topStart: "info",
+                topEnd: "paging",
                 bottomStart: "info",
                 bottomEnd: "paging"
             },

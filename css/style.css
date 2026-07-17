@@ -10,6 +10,7 @@
     --text:#1d1d1d;
     --text-muted:#555;
     --grid:#d5dbe3;
+    --search-button:#0d47a1;
 }
 
 :root[data-theme="dark"] {
@@ -24,6 +25,7 @@
     --text:#edf2f7;
     --text-muted:#b8c2cc;
     --grid:#43505e;
+    --search-button:#165d9f;
 }
 
 body{
@@ -223,12 +225,26 @@ table.dataTable tbody td {
 
 .player-search button {
     padding: 8px 14px;
-    border: 1px solid var(--blue);
+    border: 1px solid var(--search-button);
     border-radius: 0 6px 6px 0;
-    background: var(--blue);
+    background: var(--search-button);
     color: white;
     cursor: pointer;
-    font-size: 1rem;
+}
+
+.player-search button:hover,
+.player-search button:focus-visible {
+    filter:brightness(1.2);
+}
+
+.player-search button svg {
+    display:block;
+    width:24px;
+    height:24px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2.75;
+    stroke-linecap:round;
 }
 
 .player-search input:focus {
@@ -245,6 +261,57 @@ table.dataTable tbody td {
     display: grid;
     gap: 0.5rem;
     max-width: 48rem;
+}
+
+.show-more-results {
+    margin-top:1rem;
+    border:0;
+    cursor:pointer;
+    font-size:1rem;
+}
+
+.info-tooltip {
+    position:relative;
+    display:inline-flex;
+    vertical-align:middle;
+}
+
+.info-button {
+    width:1.5rem;
+    height:1.5rem;
+    padding:0;
+    border:2px solid var(--blue);
+    border-radius:50%;
+    background:var(--surface);
+    color:var(--blue);
+    font-weight:bold;
+    cursor:help;
+}
+
+.info-tooltip-text {
+    position:absolute;
+    z-index:10;
+    top:calc(100% + 0.5rem);
+    left:50%;
+    width:min(22rem, 75vw);
+    padding:0.75rem;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:var(--surface);
+    color:var(--text);
+    box-shadow:0 4px 14px rgba(0,0,0,0.22);
+    font-size:0.9rem;
+    font-weight:normal;
+    line-height:1.4;
+    opacity:0;
+    visibility:hidden;
+    transform:translateX(-50%);
+}
+
+.info-tooltip:hover .info-tooltip-text,
+.info-tooltip:focus-within .info-tooltip-text {
+    opacity:1;
+    visibility:visible;
 }
 
 .player-result {
