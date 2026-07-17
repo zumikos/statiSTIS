@@ -272,6 +272,17 @@ table.dataTable tbody td {
     border: none;
 }
 
+.home-player-count-chart {
+    width:100%;
+    height:420px;
+}
+
+.home-player-count-chart svg {
+    display:block;
+    width:100%;
+    height:100%;
+}
+
 @media (max-width: 800px) {
     .grid.two-columns {
         grid-template-columns: 1fr;
@@ -511,6 +522,17 @@ table.dataTable tbody td {
 .chart-point:focus {
     outline:none;
     stroke-width:7;
+}
+
+.chart-hover-column {
+    fill:transparent;
+    pointer-events:all;
+}
+
+.chart-hover-column:hover,
+.chart-hover-column:focus {
+    fill:rgba(100,181,246,0.08);
+    outline:none;
 }
 
 .chart-point:hover,

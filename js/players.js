@@ -69,15 +69,15 @@ function playerMatchPriority(player, queryText) {
 
     if (surname === queryText) return 0;
     if (surnameLower === queryLower) return 1;
-    if (normalizedSurname === normalizedQuery) return 2;
-    if (name === queryText || name === reversedQuery) return 3;
-    if (nameLower === queryLower || nameLower === reversedLower) return 4;
-    if (normalizedName === normalizedQuery || normalizedName === normalizedReversed) return 5;
-    if (name.startsWith(queryText) || name.startsWith(reversedQuery)) return 6;
-    if (nameLower.startsWith(queryLower) || nameLower.startsWith(reversedLower)) return 7;
-    if (normalizedName.startsWith(normalizedQuery) || normalizedName.startsWith(normalizedReversed)) return 8;
-    if (name.includes(queryText) || name.includes(reversedQuery)) return 9;
-    if (nameLower.includes(queryLower) || nameLower.includes(reversedLower)) return 10;
+    if (name === queryText || name === reversedQuery) return 2;
+    if (nameLower === queryLower || nameLower === reversedLower) return 3;
+    if (name.startsWith(queryText) || name.startsWith(reversedQuery)) return 4;
+    if (nameLower.startsWith(queryLower) || nameLower.startsWith(reversedLower)) return 5;
+    if (name.includes(queryText) || name.includes(reversedQuery)) return 6;
+    if (nameLower.includes(queryLower) || nameLower.includes(reversedLower)) return 7;
+    if (normalizedSurname === normalizedQuery) return 8;
+    if (normalizedName === normalizedQuery || normalizedName === normalizedReversed) return 9;
+    if (normalizedName.startsWith(normalizedQuery) || normalizedName.startsWith(normalizedReversed)) return 10;
     if (normalizedName.includes(normalizedQuery) || normalizedName.includes(normalizedReversed)) return 11;
 
     return null;
@@ -325,6 +325,8 @@ function renderPlayerChart(player) {
         point.classList.remove("is-active");
     };
 
+    const pointsByYear = new Map();
+
     availableRatings.forEach(item => {
         const point = createSvgElement("circle", {
             cx: x(item.year),
@@ -339,7 +341,32 @@ function renderPlayerChart(player) {
         point.addEventListener("focus", () => showPointValue(item, point));
         point.addEventListener("blur", () => hidePointValue(point));
         svg.appendChild(point);
+        pointsByYear.set(item.year, point);
     });
+
+    const seasonSpacing = plotWidth / Math.max(1, SEASONS.length - 1);
+    availableRatings.forEach(item => {
+        const center = x(item.year);
+        const left = Math.max(margin.left, center - seasonSpacing / 2);
+        const right = Math.min(width - margin.right, center + seasonSpacing / 2);
+        const point = pointsByYear.get(item.year);
+        const hoverColumn = createSvgElement("rect", {
+            x: left,
+            y: margin.top,
+            width: right - left,
+            height: plotHeight,
+            class: "chart-hover-column",
+            tabindex: 0,
+            "aria-label": `${formatSeason(item.year)}: STR ${item.value}`
+        });
+        hoverColumn.addEventListener("mouseenter", () => showPointValue(item, point));
+        hoverColumn.addEventListener("mouseleave", () => hidePointValue(point));
+        hoverColumn.addEventListener("focus", () => showPointValue(item, point));
+        hoverColumn.addEventListener("blur", () => hidePointValue(point));
+        svg.appendChild(hoverColumn);
+    });
+
+    svg.appendChild(tooltip);
 
     container.appendChild(svg);
 }
