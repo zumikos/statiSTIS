@@ -31,13 +31,34 @@
 
 <main>
 
-<h2>Hráči</h2>
+<section id="player-search-view">
+    <h2>Hráči</h2>
+    <p>Vyhledejte hráče podle jména nebo STIS ID.</p>
 
-<p>
-Statistiky jednotlivých hráčů
-</p>
+    <form id="player-search-form" class="player-search" role="search">
+        <label class="visually-hidden" for="player-search-input">Jméno nebo STIS ID</label>
+        <input id="player-search-input" type="search" placeholder="Jméno nebo STIS ID" autocomplete="off">
+        <button type="submit" aria-label="Vyhledat" title="Vyhledat">&#128269;</button>
+    </form>
+
+    <p id="player-search-status" class="status-message" aria-live="polite"></p>
+    <div id="player-results"></div>
+</section>
+
+<section id="player-detail-view" hidden>
+    <a href="hraci.html" class="back-link">← Zpět na vyhledávání</a>
+    <h2 id="player-name"></h2>
+    <p id="player-info"></p>
+    <div class="table-scroll">
+        <table id="player-history"></table>
+    </div>
+</section>
 
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/players.js"></script>
 
 </body>
 </html>

@@ -59,7 +59,7 @@ print(f"Načteno {len(master)} záznamů.\n")
 
 #export_ranking(master, CSV_DIR, None)  # export všech sezón
 #export_movers(master, CSV_DIR, None, MOVERS_STR_MIN) # export všech sezón
-#export_players(master, CSV_DIR) # export jednotlivých hráčů
+export_players(master, CSV_DIR, MOVERS_STR_MIN) # export jednotlivých hráčů
 
 plot_histogram(master, IMG_DIR)
 plot_player_count(master, IMG_DIR)
