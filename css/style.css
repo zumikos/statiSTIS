@@ -171,3 +171,9 @@ table.dataTable tbody td {
         grid-template-columns: 1fr;
     }
 }
+
+.data-error {
+    padding: 1rem;
+    color: #8b1a1a;
+    text-align: left;
+}

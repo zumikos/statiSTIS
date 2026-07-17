@@ -9,6 +9,11 @@ function loadTopTable(csvFile, tableId, columnsToShow, maxRows = 10) {
             const data = results.data
                 .filter(row => row["ID"] !== undefined)
                 .slice(0, maxRows);
+                
+            if (data.length === 0) {
+                showTableError(tableId, "Pro tuto sezónu nejsou dostupná žádná data.");
+                return;
+            }
 
             const table = document.getElementById(tableId);
 
@@ -39,12 +44,22 @@ function loadTopTable(csvFile, tableId, columnsToShow, maxRows = 10) {
 
             table.appendChild(thead);
             table.appendChild(tbody);
+        },
+
+        error: function () {
+            showTableError(tableId, "Data se nepodařilo načíst. Zkuste stránku obnovit.");
         }
     });
 }
 
+const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
+document.getElementById("home-ranking-season").textContent = homeSeasonLabel;
+document.getElementById("home-movers-season").textContent = homeSeasonLabel;
+document.getElementById("home-histogram-season").textContent = homeSeasonLabel;
+document.getElementById("home-histogram").src = `images/histogram_STR_${DEFAULT_SEASON}.html`;
+
 loadTopTable(
-    "csv/ranking_2026.csv",
+    `csv/ranking_${DEFAULT_SEASON}.csv`,
     "home-ranking",
     [
         { key: "Pořadí", label: "#" },
@@ -55,7 +70,7 @@ loadTopTable(
 );
 
 loadTopTable(
-    "csv/movers_2025_2026_STR800.csv",
+    `csv/movers_${DEFAULT_SEASON - 1}_${DEFAULT_SEASON}_STR800.csv`,
     "home-movers",
     [
         { key: "Pořadí", label: "#" },

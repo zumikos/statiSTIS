@@ -1,14 +1,12 @@
-const params = new URLSearchParams(window.location.search);
-const selectedSeason = params.get("season") || DEFAULT_SEASON.toString();
+const moverSeasons = SEASONS.slice(1);
+const selectedSeason = getSelectedSeason(moverSeasons);
 
 const seasonSelect = document.getElementById("season");
 
-SEASONS.slice().reverse().forEach(year => {
-    if (year === SEASONS[0]) return;
-
+moverSeasons.slice().reverse().forEach(year => {
     const option = document.createElement("option");
     option.value = year;
-    option.textContent = `${year - 1}/${String(year).slice(2)}`;
+    option.textContent = formatSeason(year);
     seasonSelect.appendChild(option);
 });
 
@@ -29,6 +27,12 @@ Papa.parse(csvFile, {
 
     complete: function (results) {
         let data = results.data.filter(row => row["ID"] !== undefined);
+
+        if (data.length === 0) {
+            showTableError("movers", "Pro tuto sezónu nejsou dostupná žádná data.");
+            return;
+        }
+
         data = data.map(row => ({
             "Pořadí": row["Pořadí"],
             "ID": row["ID"],
@@ -92,5 +96,9 @@ Papa.parse(csvFile, {
                     .classList.add("entries-dropdown");
             }
         });
+    },
+
+    error: function () {
+        showTableError("movers", "Data se nepodařilo načíst. Zkuste stránku obnovit.");
     }
 });

@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>statiSTIS</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -31,13 +32,13 @@
     <section class="grid two-columns">
 
         <article class="card">
-            <h3>Top 10 žebříček 2025/26</h3>
+            <h3>Top 10 hráči <span id="home-ranking-season"></span></h3>
             <table id="home-ranking" class="compact-table"></table>
             <a class="button" href="zebricky.html">Celý žebříček</a>
         </article>
 
         <article class="card">
-            <h3>Top 10 skokani 2025/26</h3>
+            <h3>Top 10 skokani <span id="home-movers-season"></span></h3>
             <table id="home-movers" class="compact-table"></table>
             <a class="button" href="skokani.html">Všichni skokani</a>
         </article>
@@ -52,8 +53,8 @@
         </article>
 
         <article class="card">
-            <h3>Rozložení STR v sezóně 2025/26</h3>
-            <iframe src="images/histogram_STR_2026.html" class="graph-frame"></iframe>
+            <h3>Rozložení STR v sezóně <span id="home-histogram-season"></span></h3>
+            <iframe id="home-histogram" class="graph-frame" title="Rozložení STR"></iframe>
         </article>
 
     </section>
@@ -61,6 +62,7 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/home.js"></script>
 
 </body>

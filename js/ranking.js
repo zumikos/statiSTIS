@@ -1,12 +1,11 @@
-const params = new URLSearchParams(window.location.search);
-const selectedSeason = params.get("season") || DEFAULT_SEASON.toString();
+const selectedSeason = getSelectedSeason();
 
 const seasonSelect = document.getElementById("season");
 
 SEASONS.slice().reverse().forEach(year => {
     const option = document.createElement("option");
     option.value = year;
-    option.textContent = `${year - 1}/${String(year).slice(2)}`;
+    option.textContent = formatSeason(year);
     seasonSelect.appendChild(option);
 });
 
@@ -24,6 +23,12 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
 
     complete: function (results) {
         let data = results.data.filter(row => row["ID"] !== undefined);
+        
+        if (data.length === 0) {
+            showTableError("ranking", "Pro tuto sezónu nejsou dostupná žádná data.");
+            return;
+        }
+
         data = data.map(row => ({
             "Pořadí": row["Pořadí"],
             "ID": row["ID"],
@@ -84,5 +89,9 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
                     .classList.add("entries-dropdown");
             }
         });
+    },
+
+    error: function () {
+        showTableError("ranking", "Data se nepodařilo načíst. Zkuste stránku obnovit.");
     }
 });

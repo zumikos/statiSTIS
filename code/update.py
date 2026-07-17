@@ -1,9 +1,13 @@
 from pathlib import Path
+import sys
 import pandas as pd
 from export_ranking import export_ranking
 from export_movers import export_movers
 from export_players import export_players
 from plots import plot_histogram, plot_player_count
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 BASE_DIR = Path(__file__).resolve().parent.parent # složka projektu
 DATA_DIR = BASE_DIR / "source" # zdroje dat jsou ve složce /source

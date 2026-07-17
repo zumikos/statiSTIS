@@ -34,7 +34,11 @@ def plot_histogram(master, output_dir):
         separatethousands=True
     )
 
-    fig.write_html(output_dir / f"histogram_STR_{season}.html")
+    fig.write_html(
+        output_dir / f"histogram_STR_{season}.html",
+        include_plotlyjs="cdn",
+        full_html=True,
+    )
     
     print("✓ Uložen histogram STR.")
     
@@ -79,7 +83,9 @@ def plot_player_count(master, output_dir):
 
     fig.write_html(
         output_dir / "player_count.html",
-        include_plotlyjs="cdn"
+        include_plotlyjs="cdn",
+        full_html=True,
     )
 
     print("✓ Uložen graf počtu hráčů.")
+    
