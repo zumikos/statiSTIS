@@ -114,9 +114,31 @@ tr:nth-child(even){
 table.dataTable tbody td {
     padding: 6px 8px;
     line-height: 1.25;
-    min-height: 2.8em;
+    height: 3rem;
     vertical-align: middle;
     white-space: nowrap;
+}
+
+.dt-scroll-head table.dataTable thead th {
+    height:3.5rem !important;
+    min-height:3.5rem !important;
+    vertical-align:middle !important;
+    box-sizing:border-box;
+}
+
+.dt-scroll-head .dt-column-title {
+    white-space:normal;
+}
+
+/* DataTables keeps a second header in the scroll body only to measure columns. */
+.dt-scroll-body table.dataTable thead tr,
+.dt-scroll-body table.dataTable thead th {
+    height:0 !important;
+    min-height:0 !important;
+    padding-top:0 !important;
+    padding-bottom:0 !important;
+    border-top:0 !important;
+    border-bottom:0 !important;
 }
 
 .wrap-column {
@@ -125,14 +147,22 @@ table.dataTable tbody td {
 }
 
 .entries-dropdown {
-    min-width: 5.5em;
-    padding: 4px 8px;
+    min-width: 4.8em;
+    padding: 3px 6px;
     border: 1px solid var(--border-dark);
     border-radius: 6px;
     background-color: var(--surface);
     color:var(--text);
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-variant-numeric: tabular-nums;
+}
+
+.dt-length {
+    margin-right:0.75rem;
+}
+
+.entries-dropdown option {
+    text-align: right;
 }
 
 .hero {
@@ -162,18 +192,65 @@ table.dataTable tbody td {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 1rem;
+    table-layout: fixed;
 }
 
 .compact-table th,
 .compact-table td {
     border-bottom: 1px solid var(--border);
     padding: 6px 8px;
+    height: 1rem;
+    line-height: 1.25;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.compact-cell-content {
+    display:-webkit-box;
+    overflow:hidden;
+    line-height:1.15;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    line-clamp:2;
 }
 
 .compact-table th {
-    text-align: left;
+    text-align: center;
     background: var(--blue);
     color: white;
+    height:3rem;
+}
+
+.compact-table th:first-child,
+.compact-table td:first-child {
+    width: 6%;
+    text-align: center;
+}
+
+.compact-table th:nth-child(2),
+.compact-table td:nth-child(2) {
+    width: 32%;
+}
+
+.compact-table th:nth-child(3),
+.compact-table td:nth-child(3) {
+    width: 50%;
+}
+
+.compact-table th:last-child,
+.compact-table td:last-child {
+    width: 12%;
+    text-align: right;
+}
+
+.compact-table thead th {
+    text-align:center;
+    white-space:pre-line;
+}
+
+#home-ranking thead th,
+#home-movers thead th {
+    text-align:center;
 }
 
 .button {
@@ -272,32 +349,36 @@ table.dataTable tbody td {
 
 .info-tooltip {
     position:relative;
+    z-index:1001;
     display:inline-flex;
-    vertical-align:middle;
+    vertical-align:super;
+    transform:translateY(-0.15em);
 }
 
 .info-button {
-    width:1.5rem;
-    height:1.5rem;
+    width:1.2rem;
+    height:1.2rem;
     padding:0;
     border:2px solid var(--blue);
     border-radius:50%;
     background:var(--surface);
     color:var(--blue);
     font-weight:bold;
+    font-size:0.75rem;
+    line-height:1;
     cursor:help;
 }
 
 .info-tooltip-text {
     position:absolute;
-    z-index:10;
+    z-index:1000;
     top:calc(100% + 0.5rem);
     left:50%;
     width:min(22rem, 75vw);
     padding:0.75rem;
     border:1px solid var(--border);
     border-radius:6px;
-    background:var(--surface);
+    background-color:var(--surface);
     color:var(--text);
     box-shadow:0 4px 14px rgba(0,0,0,0.22);
     font-size:0.9rem;
@@ -384,6 +465,10 @@ table.dataTable tbody td {
     margin-top:2rem;
 }
 
+.player-statistics-section {
+    margin-top:2rem;
+}
+
 .player-str-chart {
     padding:1rem;
     border:1px solid var(--border);
@@ -428,9 +513,60 @@ table.dataTable tbody td {
     stroke-width:7;
 }
 
+.chart-point:hover,
+.chart-point.is-active {
+    fill:var(--blue);
+    stroke-width:6;
+}
+
+.chart-value-tooltip {
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity 0.1s;
+}
+
+.chart-value-tooltip.is-visible {
+    opacity:1;
+    visibility:visible;
+}
+
+.chart-value-tooltip rect {
+    fill:var(--blue-dark);
+    stroke:var(--surface);
+    stroke-width:1;
+}
+
+.chart-value-tooltip text {
+    fill:white;
+    font-size:15px;
+    font-weight:bold;
+}
+
 .chart-note {
     color:var(--text-muted);
     font-size:0.9rem;
+}
+
+#player-history {
+    table-layout:fixed;
+}
+
+#player-history th,
+#player-history td {
+    width:21%;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+}
+
+#player-history th:first-child,
+#player-history td:first-child {
+    width:16%;
+    text-align:center;
+}
+
+#player-history th {
+    text-align:center;
 }
 
 .dt-container,

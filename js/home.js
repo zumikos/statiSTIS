@@ -35,7 +35,12 @@ function loadTopTable(csvFile, tableId, columnsToShow, maxRows = 10) {
 
                 columnsToShow.forEach(column => {
                     const td = document.createElement("td");
-                    td.textContent = row[column.key];
+                    const content = document.createElement("span");
+                    content.className = "compact-cell-content";
+                    content.textContent = column.key === "Oddíl"
+                        ? formatTeamName(row[column.key])
+                        : row[column.key];
+                    td.appendChild(content);
                     tr.appendChild(td);
                 });
 
@@ -56,7 +61,7 @@ const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
 document.getElementById("home-ranking-season").textContent = homeSeasonLabel;
 document.getElementById("home-movers-season").textContent = homeSeasonLabel;
 document.getElementById("home-histogram-season").textContent = homeSeasonLabel;
-document.getElementById("home-histogram").src = `images/histogram_STR_${DEFAULT_SEASON}.html`;
+document.getElementById("home-histogram").src = `images/histogram_STR_${DEFAULT_SEASON}.html?v=native-2`;
 
 loadTopTable(
     `csv/ranking_${DEFAULT_SEASON}.csv`,
@@ -76,6 +81,6 @@ loadTopTable(
         { key: "Pořadí", label: "#" },
         { key: "Hráč", label: "Hráč" },
         { key: "Oddíl", label: "Oddíl" },
-        { key: "STR změna", label: "STR změna" }
+        { key: "STR změna", label: "STR\nzměna" }
     ]
 );

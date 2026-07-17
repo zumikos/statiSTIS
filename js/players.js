@@ -51,6 +51,38 @@ function playerLink(player) {
     return link;
 }
 
+function playerMatchPriority(player, queryText) {
+    if (String(player.ID) === queryText) return -1;
+
+    const name = String(player["Hráč"] ?? "").trim();
+    const surname = name.split(/\s+/)[0] || "";
+    const queryWords = queryText.split(/\s+/).filter(Boolean);
+    const reversedQuery = queryWords.length > 1 ? [...queryWords].reverse().join(" ") : queryText;
+    const nameLower = name.toLocaleLowerCase("cs");
+    const surnameLower = surname.toLocaleLowerCase("cs");
+    const queryLower = queryText.toLocaleLowerCase("cs");
+    const reversedLower = reversedQuery.toLocaleLowerCase("cs");
+    const normalizedName = normalizeSearchText(name);
+    const normalizedSurname = normalizeSearchText(surname);
+    const normalizedQuery = normalizeSearchText(queryText);
+    const normalizedReversed = normalizeSearchText(reversedQuery);
+
+    if (surname === queryText) return 0;
+    if (surnameLower === queryLower) return 1;
+    if (normalizedSurname === normalizedQuery) return 2;
+    if (name === queryText || name === reversedQuery) return 3;
+    if (nameLower === queryLower || nameLower === reversedLower) return 4;
+    if (normalizedName === normalizedQuery || normalizedName === normalizedReversed) return 5;
+    if (name.startsWith(queryText) || name.startsWith(reversedQuery)) return 6;
+    if (nameLower.startsWith(queryLower) || nameLower.startsWith(reversedLower)) return 7;
+    if (normalizedName.startsWith(normalizedQuery) || normalizedName.startsWith(normalizedReversed)) return 8;
+    if (name.includes(queryText) || name.includes(reversedQuery)) return 9;
+    if (nameLower.includes(queryLower) || nameLower.includes(reversedLower)) return 10;
+    if (normalizedName.includes(normalizedQuery) || normalizedName.includes(normalizedReversed)) return 11;
+
+    return null;
+}
+
 async function searchPlayers(query) {
     const normalizedQuery = normalizeSearchText(query);
     resultsContainer.replaceChildren();
@@ -65,18 +97,9 @@ async function searchPlayers(query) {
     try {
         const players = await loadPlayers();
         const queryText = String(query).trim();
-        const queryLower = queryText.toLocaleLowerCase("cs");
         const matches = players
             .map(player => {
-                const name = String(player["Hráč"] ?? "");
-                let matchPriority = null;
-
-                if (String(player.ID) === queryText) matchPriority = -1;
-                else if (name.includes(queryText)) matchPriority = 0;
-                else if (name.toLocaleLowerCase("cs").includes(queryLower)) matchPriority = 1;
-                else if (normalizeSearchText(name).includes(normalizedQuery)) matchPriority = 2;
-
-                return { player, matchPriority };
+                return { player, matchPriority: playerMatchPriority(player, queryText) };
             })
             .filter(result => result.matchPriority !== null)
             .sort((first, second) =>
@@ -233,6 +256,14 @@ function renderPlayerChart(player) {
     }
 
     SEASONS.forEach(year => {
+        svg.appendChild(createSvgElement("line", {
+            x1: x(year),
+            y1: margin.top,
+            x2: x(year),
+            y2: height - margin.bottom,
+            class: "chart-grid-line"
+        }));
+
         const label = createSvgElement("text", {
             x: x(year),
             y: height - margin.bottom + 24,
@@ -264,6 +295,36 @@ function renderPlayerChart(player) {
     });
     drawSegment();
 
+    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
+    const tooltipBackground = createSvgElement("rect", {
+        width: 82,
+        height: 30,
+        rx: 6
+    });
+    const tooltipText = createSvgElement("text", {
+        x: 41,
+        y: 20,
+        "text-anchor": "middle"
+    });
+    tooltip.append(tooltipBackground, tooltipText);
+    svg.appendChild(tooltip);
+
+    const showPointValue = (item, point) => {
+        const pointX = x(item.year);
+        const pointY = y(Number(item.value));
+        const tooltipY = pointY < 60 ? pointY + 14 : pointY - 42;
+        const tooltipX = Math.min(Math.max(pointX - 41, 0), width - 82);
+        tooltip.setAttribute("transform", `translate(${tooltipX} ${tooltipY})`);
+        tooltipText.textContent = `STR ${item.value}`;
+        tooltip.classList.add("is-visible");
+        point.classList.add("is-active");
+    };
+
+    const hidePointValue = point => {
+        tooltip.classList.remove("is-visible");
+        point.classList.remove("is-active");
+    };
+
     availableRatings.forEach(item => {
         const point = createSvgElement("circle", {
             cx: x(item.year),
@@ -272,9 +333,11 @@ function renderPlayerChart(player) {
             class: "chart-point",
             tabindex: 0
         });
-        const title = createSvgElement("title");
-        title.textContent = `${formatSeason(item.year)}: STR ${item.value}`;
-        point.appendChild(title);
+        point.setAttribute("aria-label", `${formatSeason(item.year)}: STR ${item.value}`);
+        point.addEventListener("mouseenter", () => showPointValue(item, point));
+        point.addEventListener("mouseleave", () => hidePointValue(point));
+        point.addEventListener("focus", () => showPointValue(item, point));
+        point.addEventListener("blur", () => hidePointValue(point));
         svg.appendChild(point);
     });
 
@@ -298,8 +361,10 @@ async function showPlayerDetail(playerId) {
 
         document.title = `${player["Hráč"]} – statiSTIS`;
         document.getElementById("player-name").textContent = player["Hráč"];
+        const genderLabels = { M: "Muži", Z: "Ženy" };
+        const gender = genderLabels[player["Pohlaví"]] || formatValue(player["Pohlaví"]);
         document.getElementById("player-info").textContent =
-            `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, Pohlaví: ${formatValue(player["Pohlaví"])}`;
+            `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, Pohlaví: ${gender}`;
         renderPlayerHistory(player);
         renderPlayerChart(player);
     } catch (error) {

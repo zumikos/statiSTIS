@@ -1,5 +1,8 @@
 const selectedSeason = getSelectedSeason();
 
+// Šířky sloupců: Pořadí, ID, Hráč, Rok narození, Pohlaví, Oddíl, Kraj, STR.
+const RANKING_COLUMN_WIDTHS = ["0rem", "0rem", "10rem", "0rem", "0rem", "12rem", "0rem", "0rem"];
+
 const seasonSelect = document.getElementById("season");
 
 SEASONS.slice().reverse().forEach(year => {
@@ -35,14 +38,15 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
             "Hráč": row["Hráč"],
             "Rok narození": row["Rok narození"],
             "Pohlaví": row["Pohlaví"],
-            "Oddíl": row["Oddíl"],
+            "Oddíl": formatTeamName(row["Oddíl"]),
             "Kraj": row["Kraj"],
             "STR": row["STR"]
         }));
 
-        const columns = Object.keys(data[0]).map(name => ({
+        const columns = Object.keys(data[0]).map((name, index) => ({
             title: name,
-            data: name
+            data: name,
+            width: RANKING_COLUMN_WIDTHS[index]
         }));
 
         new DataTable("#ranking", {

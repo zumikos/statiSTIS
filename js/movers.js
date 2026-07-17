@@ -1,6 +1,9 @@
 const moverSeasons = SEASONS.slice(1);
 const selectedSeason = getSelectedSeason(moverSeasons);
 
+// Šířky sloupců: Pořadí,ID,Hráč,Rok narození,Pohlaví,Oddíl,Kraj,STR loňské,STR letošní,STR změna.
+const MOVERS_COLUMN_WIDTHS = ["0rem", "0rem", "10rem", "0rem", "0rem", "12rem", "0rem", "0rem", "0rem", "0rem"];
+
 const seasonSelect = document.getElementById("season");
 
 moverSeasons.slice().reverse().forEach(year => {
@@ -39,16 +42,17 @@ Papa.parse(csvFile, {
             "Hráč": row["Hráč"],
             "Rok narození": row["Rok narození"],
             "Pohlaví": row["Pohlaví"],
-            "Oddíl": row["Oddíl"],
+            "Oddíl": formatTeamName(row["Oddíl"]),
             "Kraj": row["Kraj"],
             "STR loňské": row["STR loňské"],
             "STR letošní": row["STR letošní"],
             "STR změna": row["STR změna"]
         }));
 
-        const columns = Object.keys(data[0]).map(name => ({
+        const columns = Object.keys(data[0]).map((name, index) => ({
             title: name,
-            data: name
+            data: name,
+            width: MOVERS_COLUMN_WIDTHS[index]
         }));
 
         new DataTable("#movers", {
