@@ -127,6 +127,118 @@ function renderPlayerHistory(player) {
     table.append(thead, tbody);
 }
 
+function createSvgElement(name, attributes = {}) {
+    const element = document.createElementNS("http://www.w3.org/2000/svg", name);
+    Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+    return element;
+}
+
+function renderPlayerChart(player) {
+    const container = document.getElementById("player-str-chart");
+    container.replaceChildren();
+
+    const ratings = SEASONS.map(year => ({
+        year,
+        value: player[`${year} STR`]
+    }));
+    const availableRatings = ratings.filter(item => item.value !== null && item.value !== undefined);
+
+    if (availableRatings.length === 0) {
+        container.textContent = "Pro tohoto hráče nejsou dostupná data STR.";
+        return;
+    }
+
+    const width = 1000;
+    const height = 420;
+    const margin = { top: 25, right: 25, bottom: 75, left: 70 };
+    const plotWidth = width - margin.left - margin.right;
+    const plotHeight = height - margin.top - margin.bottom;
+    const values = availableRatings.map(item => Number(item.value));
+    const rawMin = Math.min(...values);
+    const rawMax = Math.max(...values);
+    const padding = Math.max(50, (rawMax - rawMin) * 0.15);
+    const minValue = Math.max(0, Math.floor((rawMin - padding) / 100) * 100);
+    const maxValue = Math.ceil((rawMax + padding) / 100) * 100 || 100;
+
+    const x = year => margin.left + ((year - SEASONS[0]) / (SEASONS.length - 1)) * plotWidth;
+    const y = value => margin.top + ((maxValue - value) / (maxValue - minValue)) * plotHeight;
+
+    const svg = createSvgElement("svg", {
+        viewBox: `0 0 ${width} ${height}`,
+        role: "img",
+        "aria-label": `Vývoj STR hráče ${player["Hráč"]}`
+    });
+
+    for (let step = 0; step <= 4; step += 1) {
+        const value = minValue + ((maxValue - minValue) * step) / 4;
+        const lineY = y(value);
+        svg.appendChild(createSvgElement("line", {
+            x1: margin.left,
+            y1: lineY,
+            x2: width - margin.right,
+            y2: lineY,
+            class: "chart-grid-line"
+        }));
+
+        const label = createSvgElement("text", {
+            x: margin.left - 12,
+            y: lineY + 5,
+            class: "chart-axis-label",
+            "text-anchor": "end"
+        });
+        label.textContent = Math.round(value);
+        svg.appendChild(label);
+    }
+
+    SEASONS.forEach(year => {
+        const label = createSvgElement("text", {
+            x: x(year),
+            y: height - margin.bottom + 24,
+            class: "chart-axis-label",
+            "text-anchor": "end",
+            transform: `rotate(-45 ${x(year)} ${height - margin.bottom + 24})`
+        });
+        label.textContent = formatSeason(year);
+        svg.appendChild(label);
+    });
+
+    let currentSegment = [];
+    const drawSegment = () => {
+        if (currentSegment.length > 1) {
+            svg.appendChild(createSvgElement("polyline", {
+                points: currentSegment.map(item => `${x(item.year)},${y(item.value)}`).join(" "),
+                class: "chart-line"
+            }));
+        }
+        currentSegment = [];
+    };
+
+    ratings.forEach(item => {
+        if (item.value === null || item.value === undefined) {
+            drawSegment();
+        } else {
+            currentSegment.push({ year: item.year, value: Number(item.value) });
+        }
+    });
+    drawSegment();
+
+    availableRatings.forEach(item => {
+        const point = createSvgElement("circle", {
+            cx: x(item.year),
+            cy: y(Number(item.value)),
+            r: 6,
+            class: "chart-point",
+            tabindex: 0
+        });
+        const title = createSvgElement("title");
+        title.textContent = `${formatSeason(item.year)}: STR ${item.value}`;
+        point.appendChild(title);
+        svg.appendChild(point);
+    });
+
+    container.appendChild(svg);
+}
+
 async function showPlayerDetail(playerId) {
     searchView.hidden = true;
     detailView.hidden = false;
@@ -147,6 +259,7 @@ async function showPlayerDetail(playerId) {
         document.getElementById("player-info").textContent =
             `STIS ID: ${player.ID} · Rok narození: ${formatValue(player["Rok narození"])} · Pohlaví: ${formatValue(player["Pohlaví"])}`;
         renderPlayerHistory(player);
+        renderPlayerChart(player);
     } catch (error) {
         document.getElementById("player-name").textContent = "Data se nepodařilo načíst";
         document.getElementById("player-info").textContent = "Zkuste stránku obnovit.";
