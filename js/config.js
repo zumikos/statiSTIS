@@ -1,18 +1,31 @@
 const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const DEFAULT_SEASON = Math.max(...SEASONS);
+const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
+const TABLE_LANGUAGE = {
+    thousands: " ",
+    lengthMenu: "Zobrazit _MENU_ záznamů na stránku",
+    info: "Zobrazeno _START_ až _END_ z _TOTAL_ záznamů",
+    infoEmpty: "Žádné záznamy",
+    infoFiltered: "(filtrováno z celkem _MAX_ záznamů)",
+    zeroRecords: "Nenalezeny žádné záznamy",
+    emptyTable: "Tabulka neobsahuje žádná data"
+};
 
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
 const TEAM_NAME_OVERRIDES = {
     "Dům dětí a mládeže Cvikováček, příspěvková organiz": "DDM Cvikováček",
     "Klub přátel školy při Střední průmyslové škole Zengrova 1, Ostrava-Vítkovice, z.s.": "Klub přátel školy při SPŠ Zengrova 1, Ostrava-Vítkovice",
     "Městský sportovní klub Břeclav stolní tenis, pobočný spolek": "MSK Břeclav",
+    "MK Řeznovice, oddíl stolního tenisu Sportovního klubu Řeznovice": "MK Řeznovice",
     "Oddíl stolního tenisu TTC MG ODRA GAS Vratimov,z.s.": "TTC MG ODRA GAS Vratimov",
     "Spolek Sportovního klubu Dobrá Voda u Českých Budějovic": "SK Dobrá Voda u Českých Budějovic",
+    "Spolek TableTenisClub Jablonec nad Nisou": "TTC Jablonec nad Nisou",
     "Stavební fakulta SK Kotlářka El Niňo Praha": "SF SKK El Niňo Praha",
     "Stolní tenis club Slaný, z.s.": "STC Slaný",
     "Stolní tenis Sever Žatec z.s.": "ST Sever Žatec",
     "TJ ABC Braník, z. s. oddíl stolního tenisu": "TJ ABC Braník",
     "TT Club Ostrava, z.s.": "TTC Ostrava",
+    "TTC Praha - klub stolního tenisu": "TTC Praha",
     "zapsaný spolek Stolní tenis Střekov": "Stolní tenis Střekov",
 };
 
@@ -29,8 +42,47 @@ const TEAM_NAME_REPLACEMENTS = [
     [/^Tělocvičná jednota\b/i, "TJ"],
     [/^Table Tennis Club\b/i, "TTC"],
     [/^TT Club\b/i, "TTC"],
-    [/^T.J.\b/i, "TJ"]
+    [/^T\.?\s*J\.?/i, "TJ"]
 ];
+
+function loadCsv(csvFile) {
+    return new Promise((resolve, reject) => {
+        Papa.parse(csvFile, {
+            download: true,
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+            complete: results => resolve(results.data),
+            error: reject
+        });
+    });
+}
+
+function createSvgElement(name, attributes = {}) {
+    const element = document.createElementNS("http://www.w3.org/2000/svg", name);
+    Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+    return element;
+}
+
+function addRotatedXLabel(svg, x, y, text, offset = 10) {
+    const labelX = x + offset;
+    const label = createSvgElement("text", {
+        x: labelX,
+        y,
+        "text-anchor": "end",
+        transform: `rotate(-45 ${labelX} ${y})`,
+        class: "chart-axis-label"
+    });
+    label.textContent = text;
+    svg.appendChild(label);
+}
+
+function bindHoverEvents(element, show, hide) {
+    element.addEventListener("mouseenter", show);
+    element.addEventListener("mouseleave", hide);
+    element.addEventListener("focus", show);
+    element.addEventListener("blur", hide);
+}
 
 function formatSeason(year) {
     return `${year - 1}/${String(year).slice(-2)}`;
@@ -72,20 +124,87 @@ function createPlayerTableSearch() {
     return { control, input };
 }
 
+function normalizeText(value, removeDiacritics = false) {
+    let text = String(value ?? "").trim().toLocaleLowerCase("cs");
+    if (removeDiacritics) {
+        text = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    return text;
+}
+
+function setupSeasonSelect(availableSeasons, selectedSeason, pageUrl) {
+    const seasonSelect = document.getElementById("season");
+    availableSeasons.slice().reverse().forEach(year => {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = formatSeason(year);
+        seasonSelect.appendChild(option);
+    });
+    seasonSelect.value = selectedSeason;
+    seasonSelect.addEventListener("change", () => {
+        location.href = `${pageUrl}?season=${seasonSelect.value}`;
+    });
+}
+
+async function createStatisticsTable({ tableId, csvFile, columns, columnDefs, order }) {
+    try {
+        const data = (await loadCsv(csvFile)).filter(row => row.ID !== undefined);
+        if (data.length === 0) {
+            showTableError(tableId, "Pro tuto sezónu nejsou dostupná žádná data.");
+            return;
+        }
+
+        data.forEach(row => { row["Oddíl"] = formatTeamName(row["Oddíl"]); });
+        const playerSearch = createPlayerTableSearch();
+        const table = new DataTable(`#${tableId}`, {
+            data,
+            columns,
+            pageLength: TABLE_PAGE_LENGTHS[0],
+            lengthMenu: [TABLE_PAGE_LENGTHS, TABLE_PAGE_LENGTHS],
+            order,
+            scrollX: true,
+            autoWidth: false,
+            layout: {
+                top2Start: () => playerSearch.control,
+                top2End: "pageLength",
+                topStart: "info",
+                topEnd: "paging",
+                bottomStart: "info",
+                bottomEnd: "paging"
+            },
+            columnDefs,
+            language: TABLE_LANGUAGE,
+            initComplete: function () {
+                this.api().table().container()
+                    .querySelector(".dt-length select")
+                    ?.classList.add("entries-dropdown");
+            }
+        });
+
+        playerSearch.input.addEventListener("input", () => {
+            const query = playerSearch.input.value;
+            table.column(2).search((_searchText, row) =>
+                playerNameMatchesSearch(row["Hráč"], query)
+            ).draw();
+        });
+    } catch (error) {
+        showTableError(tableId, "Data se nepodařilo načíst. Zkuste stránku obnovit.");
+    }
+}
+
 function playerNameMatchesSearch(name, query) {
-    const removeDiacritics = value => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const enteredQuery = String(query).trim().toLocaleLowerCase("cs");
-    const hasTypedDiacritics = removeDiacritics(enteredQuery) !== enteredQuery;
+    const enteredQuery = normalizeText(query);
+    const hasTypedDiacritics = normalizeText(enteredQuery, true) !== enteredQuery;
     const searchedWords = enteredQuery.split(/\s+/).filter(Boolean);
     if (searchedWords.length === 0) return true;
 
-    let playerName = String(name ?? "").toLocaleLowerCase("cs");
+    let playerName = normalizeText(name);
     let searchedName = searchedWords.join(" ");
     let reversedName = [...searchedWords].reverse().join(" ");
     if (!hasTypedDiacritics) {
-        playerName = removeDiacritics(playerName);
-        searchedName = removeDiacritics(searchedName);
-        reversedName = removeDiacritics(reversedName);
+        playerName = normalizeText(playerName, true);
+        searchedName = normalizeText(searchedName, true);
+        reversedName = normalizeText(reversedName, true);
     }
 
     return playerName.includes(searchedName) || playerName.includes(reversedName);

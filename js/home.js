@@ -1,66 +1,44 @@
-function loadTopTable(csvFile, tableId, columnsToShow, maxRows = 10) {
-    Papa.parse(csvFile, {
-        download: true,
-        header: true,
-        dynamicTyping: true,
-        skipEmptyLines: true,
-
-        complete: function (results) {
-            const data = results.data
-                .filter(row => row["ID"] !== undefined)
-                .slice(0, maxRows);
+function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
+    const data = rows.filter(row => row.ID !== undefined).slice(0, maxRows);
                 
-            if (data.length === 0) {
-                showTableError(tableId, "Pro tuto sezónu nejsou dostupná žádná data.");
-                return;
-            }
+    if (data.length === 0) {
+        showTableError(tableId, "Pro tuto sezónu nejsou dostupná žádná data.");
+        return;
+    }
 
-            const table = document.getElementById(tableId);
+    const table = document.getElementById(tableId);
 
-            const thead = document.createElement("thead");
-            const tbody = document.createElement("tbody");
+    const thead = document.createElement("thead");
+    const tbody = document.createElement("tbody");
 
-            const headerRow = document.createElement("tr");
+    const headerRow = document.createElement("tr");
 
-            columnsToShow.forEach(column => {
-                const th = document.createElement("th");
-                th.textContent = column.label;
-                headerRow.appendChild(th);
-            });
-
-            thead.appendChild(headerRow);
-
-            data.forEach(row => {
-                const tr = document.createElement("tr");
-
-                columnsToShow.forEach(column => {
-                    const td = document.createElement("td");
-                    const content = document.createElement("span");
-                    content.className = "compact-cell-content";
-                    content.textContent = column.key === "Oddíl"
-                        ? formatTeamName(row[column.key])
-                        : row[column.key];
-                    td.appendChild(content);
-                    tr.appendChild(td);
-                });
-
-                tbody.appendChild(tr);
-            });
-
-            table.appendChild(thead);
-            table.appendChild(tbody);
-        },
-
-        error: function () {
-            showTableError(tableId, "Data se nepodařilo načíst. Zkuste stránku obnovit.");
-        }
+    columnsToShow.forEach(column => {
+        const th = document.createElement("th");
+        th.textContent = column.label;
+        headerRow.appendChild(th);
     });
-}
 
-function createHomeSvgElement(name, attributes = {}) {
-    const element = document.createElementNS("http://www.w3.org/2000/svg", name);
-    Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
-    return element;
+    thead.appendChild(headerRow);
+
+    data.forEach(row => {
+        const tr = document.createElement("tr");
+
+        columnsToShow.forEach(column => {
+            const td = document.createElement("td");
+            const content = document.createElement("span");
+            content.className = "compact-cell-content";
+            content.textContent = column.key === "Oddíl"
+                ? formatTeamName(row[column.key])
+                : row[column.key];
+            td.appendChild(content);
+            tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+    });
+
+    table.append(thead, tbody);
 }
 
 function renderPlayerCountChart(data) {
@@ -77,7 +55,7 @@ function renderPlayerCountChart(data) {
     const x = year => margin.left + ((year - SEASONS[0]) / (SEASONS.length - 1)) * plotWidth;
     const y = value => margin.top + ((maxValue - value) / (maxValue - minValue)) * plotHeight;
 
-    const svg = createHomeSvgElement("svg", {
+    const svg = createSvgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
         role: "img",
         "aria-label": "Vývoj počtu hráčů"
@@ -85,11 +63,11 @@ function renderPlayerCountChart(data) {
 
     for (let value = minValue; value <= maxValue; value += 2000) {
         const lineY = y(value);
-        svg.appendChild(createHomeSvgElement("line", {
+        svg.appendChild(createSvgElement("line", {
             x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
             class: "chart-grid-line"
         }));
-        const label = createHomeSvgElement("text", {
+        const label = createSvgElement("text", {
             x: margin.left - 10, y: lineY + 5, "text-anchor": "end",
             class: "chart-axis-label"
         });
@@ -99,36 +77,37 @@ function renderPlayerCountChart(data) {
 
     data.forEach(item => {
         const lineX = x(item.year);
-        svg.appendChild(createHomeSvgElement("line", {
+        svg.appendChild(createSvgElement("line", {
             x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
             class: "chart-grid-line"
         }));
-        const labelX = lineX + 16;
-        const label = createHomeSvgElement("text", {
-            x: labelX, y: height - margin.bottom + 24, "text-anchor": "end",
-            transform: `rotate(-45 ${labelX} ${height - margin.bottom + 24})`,
-            class: "chart-axis-label"
-        });
-        label.textContent = `${formatSeason(item.year)}${item.year === 2021 ? "*" : ""}`;
-        svg.appendChild(label);
+        addRotatedXLabel(
+            svg, lineX, height - margin.bottom + 24,
+            `${formatSeason(item.year)}${item.year === 2021 ? "*" : ""}`, 16
+        );
     });
 
-    svg.appendChild(createHomeSvgElement("polyline", {
+    svg.appendChild(createSvgElement("polyline", {
         points: data.map(item => `${x(item.year)},${y(item.value)}`).join(" "),
         class: "chart-line"
     }));
 
-    const tooltip = createHomeSvgElement("g", { class: "chart-value-tooltip" });
-    const tooltipBackground = createHomeSvgElement("rect", { width: 118, height: 30, rx: 6 });
-    const tooltipText = createHomeSvgElement("text", {
+    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
+    const tooltipBackground = createSvgElement("rect", { width: 118, height: 30, rx: 6 });
+    const tooltipText = createSvgElement("text", {
         x: 59, y: 20, "text-anchor": "middle"
     });
     tooltip.append(tooltipBackground, tooltipText);
 
     const points = new Map();
     data.forEach(item => {
-        const point = createHomeSvgElement("circle", {
-            cx: x(item.year), cy: y(item.value), r: 6, class: "chart-point"
+        const point = createSvgElement("circle", {
+            cx: x(item.year),
+            cy: y(item.value),
+            r: 6,
+            class: "chart-point",
+            tabindex: 0,
+            "aria-label": `${formatSeason(item.year)}: ${item.value.toLocaleString("cs-CZ")} hráčů`
         });
         svg.appendChild(point);
         points.set(item.year, point);
@@ -140,7 +119,7 @@ function renderPlayerCountChart(data) {
         const left = Math.max(margin.left, center - spacing / 2);
         const right = Math.min(width - margin.right, center + spacing / 2);
         const point = points.get(item.year);
-        const column = createHomeSvgElement("rect", {
+        const column = createSvgElement("rect", {
             x: left, y: margin.top, width: right - left, height: plotHeight,
             class: "chart-hover-column", tabindex: 0
         });
@@ -157,16 +136,14 @@ function renderPlayerCountChart(data) {
             tooltip.classList.remove("is-visible");
             point.classList.remove("is-active");
         };
-        column.addEventListener("mouseenter", show);
-        column.addEventListener("mouseleave", hide);
-        column.addEventListener("focus", show);
-        column.addEventListener("blur", hide);
+        bindHoverEvents(point, show, hide);
+        bindHoverEvents(column, show, hide);
         svg.appendChild(column);
     });
 
     svg.appendChild(tooltip);
 
-    const xTitle = createHomeSvgElement("text", {
+    const xTitle = createSvgElement("text", {
         x: margin.left + plotWidth / 2,
         y: height - 8,
         "text-anchor": "middle",
@@ -175,7 +152,7 @@ function renderPlayerCountChart(data) {
     xTitle.textContent = "Sezóna";
     svg.appendChild(xTitle);
 
-    const yTitle = createHomeSvgElement("text", {
+    const yTitle = createSvgElement("text", {
         x: 18,
         y: margin.top + plotHeight / 2,
         "text-anchor": "middle",
@@ -212,7 +189,7 @@ function renderHistogram(data) {
     const yMax = 2500;
     const x = value => margin.left + (value / 2600) * plotWidth;
     const y = value => margin.top + ((yMax - value) / yMax) * plotHeight;
-    const svg = createHomeSvgElement("svg", {
+    const svg = createSvgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
         role: "img",
         "aria-label": "Rozložení STR"
@@ -220,11 +197,11 @@ function renderHistogram(data) {
 
     for (let value = 0; value <= yMax; value += 500) {
         const lineY = y(value);
-        svg.appendChild(createHomeSvgElement("line", {
+        svg.appendChild(createSvgElement("line", {
             x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
             class: "chart-grid-line"
         }));
-        const label = createHomeSvgElement("text", {
+        const label = createSvgElement("text", {
             x: margin.left - 10, y: lineY + 5, "text-anchor": "end",
             class: "chart-axis-label"
         });
@@ -234,25 +211,18 @@ function renderHistogram(data) {
 
     for (let value = 0; value <= 2600; value += 200) {
         const lineX = x(value);
-        svg.appendChild(createHomeSvgElement("line", {
+        svg.appendChild(createSvgElement("line", {
             x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
             class: "chart-grid-line"
         }));
-        const labelX = lineX + 12;
-        const label = createHomeSvgElement("text", {
-            x: labelX, y: height - margin.bottom + 24, "text-anchor": "end",
-            transform: `rotate(-45 ${labelX} ${height - margin.bottom + 24})`,
-            class: "chart-axis-label"
-        });
-        label.textContent = value.toLocaleString("cs-CZ");
-        svg.appendChild(label);
+        addRotatedXLabel(svg, lineX, height - margin.bottom + 24, value.toLocaleString("cs-CZ"), 12);
     }
 
     const bars = new Map();
     bins.forEach(item => {
         const left = x(item.start);
         const right = x(item.end);
-        const bar = createHomeSvgElement("rect", {
+        const bar = createSvgElement("rect", {
             x: left + 1,
             y: y(item.count),
             width: Math.max(1, right - left - 2),
@@ -263,17 +233,17 @@ function renderHistogram(data) {
         bars.set(item.start, bar);
     });
 
-    const tooltip = createHomeSvgElement("g", { class: "chart-value-tooltip" });
-    const tooltipBackground = createHomeSvgElement("rect", { width: 190, height: 48, rx: 6 });
-    const rangeText = createHomeSvgElement("text", { x: 10, y: 19 });
-    const countText = createHomeSvgElement("text", { x: 10, y: 39 });
+    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
+    const tooltipBackground = createSvgElement("rect", { width: 190, height: 48, rx: 6 });
+    const rangeText = createSvgElement("text", { x: 10, y: 19 });
+    const countText = createSvgElement("text", { x: 10, y: 39 });
     tooltip.append(tooltipBackground, rangeText, countText);
 
     bins.forEach(item => {
         const left = x(item.start);
         const right = x(item.end);
         const bar = bars.get(item.start);
-        const column = createHomeSvgElement("rect", {
+        const column = createSvgElement("rect", {
             x: left, y: margin.top, width: right - left, height: plotHeight,
             class: "chart-histogram-hover", tabindex: 0
         });
@@ -289,22 +259,19 @@ function renderHistogram(data) {
             tooltip.classList.remove("is-visible");
             bar.classList.remove("is-active");
         };
-        column.addEventListener("mouseenter", show);
-        column.addEventListener("mouseleave", hide);
-        column.addEventListener("focus", show);
-        column.addEventListener("blur", hide);
+        bindHoverEvents(column, show, hide);
         svg.appendChild(column);
     });
     svg.appendChild(tooltip);
 
-    const xTitle = createHomeSvgElement("text", {
+    const xTitle = createSvgElement("text", {
         x: margin.left + plotWidth / 2, y: height - 8,
         "text-anchor": "middle", class: "chart-axis-label"
     });
     xTitle.textContent = "STR";
     svg.appendChild(xTitle);
 
-    const yTitle = createHomeSvgElement("text", {
+    const yTitle = createSvgElement("text", {
         x: 18, y: margin.top + plotHeight / 2, "text-anchor": "middle",
         transform: `rotate(-90 18 ${margin.top + plotHeight / 2})`,
         class: "chart-axis-label"
@@ -314,56 +281,47 @@ function renderHistogram(data) {
     container.appendChild(svg);
 }
 
-Papa.parse("csv/player_count.csv", {
-    download: true,
-    header: true,
-    dynamicTyping: true,
-    skipEmptyLines: true,
-    complete: results => renderPlayerCountChart(results.data.map(row => ({
+loadCsv("csv/player_count.csv")
+    .then(data => renderPlayerCountChart(data.map(row => ({
         year: row["Sezóna"],
         value: row["Počet hráčů"]
-    }))),
-    error: () => {
+    }))))
+    .catch(() => {
         document.getElementById("home-player-count").textContent =
             "Graf se nepodařilo načíst.";
-    }
-});
+    });
 
 const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
 document.getElementById("home-ranking-season").textContent = homeSeasonLabel;
 document.getElementById("home-movers-season").textContent = homeSeasonLabel;
 document.getElementById("home-histogram-season").textContent = homeSeasonLabel;
 
-Papa.parse(`csv/ranking_${DEFAULT_SEASON}.csv`, {
-    download: true,
-    header: true,
-    dynamicTyping: true,
-    skipEmptyLines: true,
-    complete: results => renderHistogram(results.data),
-    error: () => {
+const rankingColumns = [
+    { key: "Pořadí", label: "#" },
+    { key: "Hráč", label: "Hráč" },
+    { key: "Oddíl", label: "Oddíl" },
+    { key: "STR", label: "STR" }
+];
+const moverColumns = [
+    { key: "Pořadí", label: "#" },
+    { key: "Hráč", label: "Hráč" },
+    { key: "Oddíl", label: "Oddíl" },
+    { key: "STR změna", label: "STR\nzměna" }
+];
+
+loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
+    .then(data => {
+        renderHistogram(data);
+        renderTopTable(data, "home-ranking", rankingColumns);
+    })
+    .catch(() => {
         document.getElementById("home-histogram").textContent =
             "Graf se nepodařilo načíst.";
-    }
-});
+        showTableError("home-ranking", "Data se nepodařilo načíst. Zkuste stránku obnovit.");
+    });
 
-loadTopTable(
-    `csv/ranking_${DEFAULT_SEASON}.csv`,
-    "home-ranking",
-    [
-        { key: "Pořadí", label: "#" },
-        { key: "Hráč", label: "Hráč" },
-        { key: "Oddíl", label: "Oddíl" },
-        { key: "STR", label: "STR" }
-    ]
-);
-
-loadTopTable(
-    `csv/movers_${DEFAULT_SEASON - 1}_${DEFAULT_SEASON}_STR800.csv`,
-    "home-movers",
-    [
-        { key: "Pořadí", label: "#" },
-        { key: "Hráč", label: "Hráč" },
-        { key: "Oddíl", label: "Oddíl" },
-        { key: "STR změna", label: "STR\nzměna" }
-    ]
-);
+loadCsv(`csv/movers_${DEFAULT_SEASON - 1}_${DEFAULT_SEASON}_STR800.csv`)
+    .then(data => renderTopTable(data, "home-movers", moverColumns))
+    .catch(() => showTableError(
+        "home-movers", "Data se nepodařilo načíst. Zkuste stránku obnovit."
+    ));

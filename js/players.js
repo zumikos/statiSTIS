@@ -11,26 +11,10 @@ let currentMatches = [];
 let visibleResultCount = 0;
 const RESULTS_PER_PAGE = 50;
 
-function normalizeSearchText(value) {
-    return String(value ?? "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLocaleLowerCase("cs")
-        .trim();
-}
-
 function loadPlayers() {
     if (!playersPromise) {
-        playersPromise = new Promise((resolve, reject) => {
-            Papa.parse("csv/players.csv", {
-                download: true,
-                header: true,
-                dynamicTyping: true,
-                skipEmptyLines: true,
-                complete: results => resolve(results.data.filter(player => player.ID !== undefined)),
-                error: reject
-            });
-        });
+        playersPromise = loadCsv("csv/players.csv")
+            .then(data => data.filter(player => player.ID !== undefined));
     }
 
     return playersPromise;
@@ -38,18 +22,9 @@ function loadPlayers() {
 
 function loadPlayerCounts() {
     if (!playerCountsPromise) {
-        playerCountsPromise = new Promise((resolve, reject) => {
-            Papa.parse("csv/player_count.csv", {
-                download: true,
-                header: true,
-                dynamicTyping: true,
-                skipEmptyLines: true,
-                complete: results => resolve(new Map(
-                    results.data.map(row => [Number(row["Sezóna"]), Number(row["Počet hráčů"])])
-                )),
-                error: reject
-            });
-        });
+        playerCountsPromise = loadCsv("csv/player_count.csv").then(data => new Map(
+            data.map(row => [Number(row["Sezóna"]), Number(row["Počet hráčů"])])
+        ));
     }
 
     return playerCountsPromise;
@@ -82,10 +57,10 @@ function playerMatchPriority(player, queryText) {
     const surnameLower = surname.toLocaleLowerCase("cs");
     const queryLower = queryText.toLocaleLowerCase("cs");
     const reversedLower = reversedQuery.toLocaleLowerCase("cs");
-    const normalizedName = normalizeSearchText(name);
-    const normalizedSurname = normalizeSearchText(surname);
-    const normalizedQuery = normalizeSearchText(queryText);
-    const normalizedReversed = normalizeSearchText(reversedQuery);
+    const normalizedName = normalizeText(name, true);
+    const normalizedSurname = normalizeText(surname, true);
+    const normalizedQuery = normalizeText(queryText, true);
+    const normalizedReversed = normalizeText(reversedQuery, true);
 
     if (surname === queryText) return 0;
     if (surnameLower === queryLower) return 1;
@@ -104,7 +79,7 @@ function playerMatchPriority(player, queryText) {
 }
 
 async function searchPlayers(query) {
-    const normalizedQuery = normalizeSearchText(query);
+    const normalizedQuery = normalizeText(query, true);
     resultsContainer.replaceChildren();
 
     if (normalizedQuery.length < 2) {
@@ -222,12 +197,6 @@ function renderPlayerHistory(player, playerCounts) {
     table.append(thead, tbody);
 }
 
-function createSvgElement(name, attributes = {}) {
-    const element = document.createElementNS("http://www.w3.org/2000/svg", name);
-    Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
-    return element;
-}
-
 function renderPlayerChart(player) {
     const container = document.getElementById("player-str-chart");
     container.replaceChildren();
@@ -294,16 +263,7 @@ function renderPlayerChart(player) {
             class: "chart-grid-line"
         }));
 
-        const labelX = x(year) + 10;
-        const label = createSvgElement("text", {
-            x: labelX,
-            y: height - margin.bottom + 24,
-            class: "chart-axis-label",
-            "text-anchor": "end",
-            transform: `rotate(-45 ${labelX} ${height - margin.bottom + 24})`
-        });
-        label.textContent = formatSeason(year);
-        svg.appendChild(label);
+        addRotatedXLabel(svg, x(year), height - margin.bottom + 24, formatSeason(year));
     });
 
     let currentSegment = [];
@@ -367,10 +327,11 @@ function renderPlayerChart(player) {
             tabindex: 0
         });
         point.setAttribute("aria-label", `${formatSeason(item.year)}: STR ${item.value}`);
-        point.addEventListener("mouseenter", () => showPointValue(item, point));
-        point.addEventListener("mouseleave", () => hidePointValue(point));
-        point.addEventListener("focus", () => showPointValue(item, point));
-        point.addEventListener("blur", () => hidePointValue(point));
+        bindHoverEvents(
+            point,
+            () => showPointValue(item, point),
+            () => hidePointValue(point)
+        );
         svg.appendChild(point);
         pointsByYear.set(item.year, point);
     });
@@ -390,10 +351,11 @@ function renderPlayerChart(player) {
             tabindex: 0,
             "aria-label": `${formatSeason(item.year)}: STR ${item.value}`
         });
-        hoverColumn.addEventListener("mouseenter", () => showPointValue(item, point));
-        hoverColumn.addEventListener("mouseleave", () => hidePointValue(point));
-        hoverColumn.addEventListener("focus", () => showPointValue(item, point));
-        hoverColumn.addEventListener("blur", () => hidePointValue(point));
+        bindHoverEvents(
+            hoverColumn,
+            () => showPointValue(item, point),
+            () => hidePointValue(point)
+        );
         svg.appendChild(hoverColumn);
     });
 

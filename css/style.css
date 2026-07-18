@@ -198,8 +198,6 @@ table.dataTable tbody td {
 }
 
 .compact-table {
-    width: 100%;
-    border-collapse: collapse;
     margin-bottom: 1rem;
     table-layout: fixed;
 }
@@ -225,15 +223,14 @@ table.dataTable tbody td {
 
 .compact-table th {
     text-align: center;
-    background: var(--blue);
-    color: white;
     height:3rem;
+    white-space:pre-line;
 }
 
 .compact-table th:first-child,
 .compact-table td:first-child {
     width: 6%;
-    text-align: center;
+    text-align: right;
 }
 
 .compact-table th:nth-child(2),
@@ -249,17 +246,7 @@ table.dataTable tbody td {
 .compact-table th:last-child,
 .compact-table td:last-child {
     width: 12%;
-    text-align: right;
-}
-
-.compact-table thead th {
-    text-align:center;
-    white-space:pre-line;
-}
-
-#home-ranking thead th,
-#home-movers thead th {
-    text-align:center;
+    text-align: center;
 }
 
 .button {
@@ -275,14 +262,12 @@ table.dataTable tbody td {
     background: var(--blue-dark);
 }
 
-.home-player-count-chart,
-.home-histogram-chart {
+.home-chart {
     width:100%;
     height:420px;
 }
 
-.home-player-count-chart svg,
-.home-histogram-chart svg {
+.home-chart svg {
     display:block;
     width:100%;
     height:100%;
@@ -477,10 +462,7 @@ table.dataTable tbody td {
     background:rgba(255,255,255,0.24);
 }
 
-.player-chart-section {
-    margin-top:2rem;
-}
-
+.player-chart-section,
 .player-statistics-section {
     margin-top:2rem;
 }
@@ -529,13 +511,16 @@ table.dataTable tbody td {
     stroke-width:7;
 }
 
-.chart-hover-column {
+.chart-hover-column,
+.chart-histogram-hover {
     fill:transparent;
     pointer-events:all;
 }
 
 .chart-hover-column:hover,
-.chart-hover-column:focus {
+.chart-hover-column:focus,
+.chart-histogram-hover:hover,
+.chart-histogram-hover:focus {
     fill:rgba(100,181,246,0.08);
     outline:none;
 }
@@ -552,17 +537,6 @@ table.dataTable tbody td {
 
 .chart-histogram-bar.is-active {
     fill:#64b5f6;
-}
-
-.chart-histogram-hover {
-    fill:transparent;
-    pointer-events:all;
-}
-
-.chart-histogram-hover:hover,
-.chart-histogram-hover:focus {
-    fill:rgba(100,181,246,0.08);
-    outline:none;
 }
 
 .chart-value-tooltip {
