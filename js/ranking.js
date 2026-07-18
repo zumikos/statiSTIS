@@ -49,7 +49,8 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
             width: RANKING_COLUMN_WIDTHS[index]
         }));
 
-        new DataTable("#ranking", {
+        const playerSearch = createPlayerTableSearch();
+        const rankingTable = new DataTable("#ranking", {
             data: data,
             columns: columns,
 
@@ -64,7 +65,7 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
             autoWidth: false,
 
             layout: {
-                top2Start: "search",
+                top2Start: () => playerSearch.control,
                 top2End: "pageLength",
                 topStart: "info",
                 topEnd: "paging",
@@ -95,6 +96,13 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
                     .querySelector(".dt-length select")
                     .classList.add("entries-dropdown");
             }
+        });
+
+        playerSearch.input.addEventListener("input", () => {
+            const query = playerSearch.input.value;
+            rankingTable.column(2).search((_searchText, row) =>
+                playerNameMatchesSearch(row["Hráč"], query)
+            ).draw();
         });
     },
 

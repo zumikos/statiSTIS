@@ -55,7 +55,8 @@ Papa.parse(csvFile, {
             width: MOVERS_COLUMN_WIDTHS[index]
         }));
 
-        new DataTable("#movers", {
+        const playerSearch = createPlayerTableSearch();
+        const moversTable = new DataTable("#movers", {
             data: data,
             columns: columns,
 
@@ -70,7 +71,7 @@ Papa.parse(csvFile, {
             autoWidth: false,
 
             layout: {
-                top2Start: "search",
+                top2Start: () => playerSearch.control,
                 top2End: "pageLength",
                 topStart: "info",
                 topEnd: "paging",
@@ -102,6 +103,13 @@ Papa.parse(csvFile, {
                     .querySelector(".dt-length select")
                     .classList.add("entries-dropdown");
             }
+        });
+
+        playerSearch.input.addEventListener("input", () => {
+            const query = playerSearch.input.value;
+            moversTable.column(2).search((_searchText, row) =>
+                playerNameMatchesSearch(row["Hráč"], query)
+            ).draw();
         });
     },
 

@@ -1,127 +1,94 @@
 const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const DEFAULT_SEASON = Math.max(...SEASONS);
+
+// Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
 const TEAM_NAME_OVERRIDES = {
-    "AC Sparta Praha - stolní tenis, z.s.": "AC Sparta Praha",
-    "Akademie stolního tenisu Petra Korbela, z.s.": "Akademie stolního tenisu Petra Korbela",
-    "HB Ostrov , z.s.": "HB Ostrov",
+    "Dům dětí a mládeže Cvikováček, příspěvková organiz": "DDM Cvikováček",
     "Klub přátel školy při Střední průmyslové škole Zengrova 1, Ostrava-Vítkovice, z.s.": "Klub přátel školy při SPŠ Zengrova 1, Ostrava-Vítkovice",
-    "Klub stolního tenisu Bohnice z.s.": "KST Bohnice",
-    "Klub stolního tenisu Dolní Němčí, z.s.": "KST Dolní Němčí",
-    "Klub stolního tenisu Kunštát, z.s.": "KST Kunštát",
-    "Klub stolního tenisu LVA, z.s.": "KST LVA",
-    "Klub stolního tenisu Rakovník, z.s.": "KST Rakovník",
-    "KST Apollo Ústí nad Labem z.s.": "KST Apollo Ústí nad Labem",
-    "KST NOVÝ JIČÍN, z.s.": "KST Nový Jičín",
-    "KST Slezan Opava z.s.": "KST Slezan Opava",
-    "KST Zlín, z.s.": "KST Zlín",
     "Městský sportovní klub Břeclav stolní tenis, pobočný spolek": "MSK Břeclav",
     "Oddíl stolního tenisu TTC MG ODRA GAS Vratimov,z.s.": "TTC MG ODRA GAS Vratimov",
-    "PINK Liberec, z.s.": "PINK Liberec",
-    "SK ARBORE VOLARY z.s.": "SK ARBORE Volary",
-    "SK Dobré, z.s.": "SK Dobré",
-    "SK Domeček Soběslav z.s.": "SK Domeček Soběslav",
-    "SK Kotlářka, z.s.": "SK Kotlářka",
-    "SK Liběchov, z.s.": "SK Liběchov",
-    "SK Slavia Praha - stolní tenis, z. s.": "SK Slavia Praha",
-    "SK Slopné, z. s.": "SK Slopné",
-    "SK Smilovice, z.s.": "SK Smilovice",
-    "SK Telč, z.s.": "SK Telč",
-    "SKC Zruč nad Sázavou z.s.": "SKC Zruč nad Sázavou",
-    "SKST Děčín, z.s.": "SKST Děčín",
-    "SKST Hodonín z.s.": "SKST Hodonín",
-    "SKST Týn nad Vltavou, z.s.": "SKST Týn nad Vltavou",
-    "Sokol Březno, z.s.": "Sokol Březno",
-    "Sportovní klub Frýdlant nad Ostravicí, z.s.": "SK Frýdlant nad Ostravicí",
-    "Sportovní klub Janské Lázně z.s.": "SK Janské Lázně",
-    "Sportovní klub Jihlava, z.s.": "SK Jihlava",
-    "Sportovní klub Kravaře,z.s.": "SK Kravaře",
-    "Sportovní klub policie Sever Ústí nad Labem z.s.": "SKP Sever Ústí nad Labem",
-    "Sportovní klub Spartak Hulín, z. s.": "SK Spartak Hulín",
-    "Sportovní klub stolního tenisu Chodov z. s.": "SKST Chodov",
-    "Sportovní klub stolního tenisu Havířov z.s.": "SKST Havířov",
-    "Sportovní klub stolního tenisu Liga Pro Liberec z.s.": "SKST Liga Pro Liberec",
-    "Sportovní Klub Viktorie Ořech, z.s.": "SK Viktorie Ořech",
-    "ST Kunovice z.s.": "ST Kunovice",
+    "Spolek Sportovního klubu Dobrá Voda u Českých Budějovic": "SK Dobrá Voda u Českých Budějovic",
     "Stavební fakulta SK Kotlářka El Niňo Praha": "SF SKK El Niňo Praha",
     "Stolní tenis club Slaný, z.s.": "STC Slaný",
     "Stolní tenis Sever Žatec z.s.": "ST Sever Žatec",
-    "Table Tennis Club Litoměřice, z.s.": "TTC Litoměřice",
-    "Tělocvičná jednota Sokol Černošice": "TJ Sokol Černošice",
-    "Tělocvičná jednota Sokol Česká Skalice": "TJ Sokol Česká Skalice",
-    "Tělocvičná jednota Sokol České Meziříčí, z.s.": "TJ Sokol České Meziříčí",
-    "Tělocvičná jednota Sokol Horažďovice": "TJ Sokol Horažďovice",
-    "Tělocvičná jednota Sokol Mnichovo Hradiště": "TJ Sokol Mnichovo Hradiště",
-    "Tělocvičná jednota Sokol Plzeň V": "TJ Sokol Plzeň V",
-    "Tělocvičná jednota Sokol Příbor": "TJ Sokol Příbor",
-    "Tělocvičná jednota Sokol Rudná": "TJ Sokol Rudná",
-    "Tělocvičná jednota Sokol Stochov-Honice": "TJ Sokol Stochov-Honice",
-    "Tělocvičná jednota Sokol Turnov": "TJ Sokol Turnov",
-    "Tělocvičná jednota Sokol Studená I.": "TJ Sokol Studená I.",
-    "Tělocvičná jednota Sokol Verneřice": "TJ Sokol Verneřice",
-    "Tělocvičná jednota Sokol Vranovice": "TJ Sokol Vranovice",
-    "Tělocvičná jednota Sokol Vsetín": "TJ Sokol Vsetín",
-    "Tělovýchovná jednota Bižuterie, z.s.": "TJ Bižuterie",
-    "Tělovýchovná jednota Holešov, z. s.": "TJ Holešov",
-    "Tělovýchovná jednota JISKRA Chlum u Třeboně, z.s.": "TJ JISKRA Chlum u Třeboně",
-    "Tělovýchovná jednota Ostrava": "TJ Ostrava",
-    "Tělovýchovná jednota Sokol Bobrovníky,z.s.": "TJ Sokol Bobrovníky",
-    "Tělovýchovná jednota Sokol Kralovice, z.s.": "TJ Sokol Kralovice",
-    "Tělovýchovná jednota Sokol Roškopov, z.s.": "TJ Sokol Roškopov",
-    "Tělovýchovná jednota Sokol Opava- Kateřinky,z.s": "TJ Sokol Opava-Kateřinky",
-    "Tělovýchovná jednota Spartak Bílovec z.s.": "TJ Spartak Bílovec",
-    "Tělovýchovná jednota Spartak Pelhřimov, z.s.": "TJ Spartak Pelhřimov",
-    "Tělovýchovná jednota Union Plzeň, z.s.": "TJ Union Plzeň",
-    "TJ Aero Odolena Voda, z.s.": "TJ Aero Odolena Voda",
-    "TJ Agrotec Hustopeče z.s.": "TJ Agrotec Hustopeče",
-    "TJ Auto Škoda Mladá Boleslav, z.s.": "TJ Auto Škoda Mladá Boleslav",
-    "TJ AVIA Čakovice, z.s.": "TJ AVIA Čakovice",
-    "TJ ČZ Strakonice , spolek": "TJ ČZ Strakonice",
-    "TJ Dobřany, z.s.": "TJ Dobřany",
-    "TJ Jiskra Heřmanův Městec z.s.": "TJ Jiskra Heřmanův Městec",
-    "TJ Jiskra Humpolec, z.s.": "TJ Jiskra Humpolec",
-    "TJ Jiskra Strážnice z.s.": "TJ Jiskra Strážnice",
-    "TJ Lokomotiva Česká Lípa, z.s.": "TJ Lokomotiva Česká Lípa",
-    "TJ Mořkov, z.s.": "TJ Mořkov",
-    "TJ ODRY, z.s.": "TJ Odry",
-    "TJ Orion Praha, z.s.": "TJ Orion Praha",
-    "TJ Sadská o.s.": "TJ Sadská",
-    "TJ Slavoj Praha, spolek": "TJ Slavoj Praha",
-    "TJ Slovan Broumov, z.s.": "TJ Slovan Broumov",
-    "TJ Sokol Čechovice, z.s.": "TJ Sokol Čechovice",
-    "TJ Sokol Kostelec-Zlín, z.s.": "TJ Sokol Kostelec-Zlín",
-    "TJ Sokol Malín z.s.": "TJ Sokol Malín",
-    "TJ Sokol Ostrovačice z.s.": "TJ Sokol Ostrovačice",
-    "TJ Sokol Popůvky, z.s.": "TJ Sokol Popůvky",
-    "TJ SOKOL Stará Paka z.s.": "TJ Sokol Stará Paka",
-    "TJ Sokol Šarovy z.s.": "TJ Sokol Šarovy",
-    "TJ Sokol Vracov z.s.": "TJ Sokol Vracov",
-    "TJ Spartak Čelákovice, z.s.": "TJ Spartak Čelákovice",
-    "TJ Šanov, z.s.": "TJ Šanov",
-    "TJ Šumavan Vimperk z.s.": "TJ Šumavan Vimperk",
-    "TJ Tatran Hostinné, spolek": "TJ Tatran Hostinné",
-    "TJ Třineckých železáren, spolek": "TJ Třineckých železáren",
-    "TJ VS Tábor, z.s.": "TJ VS Tábor",
-    "TJ VTŽ Chomutov, z.s.": "TJ VTŽ Chomutov",
-    "TSM Kladno, z.s.": "TSM Kladno",
+    "TJ ABC Braník, z. s. oddíl stolního tenisu": "TJ ABC Braník",
     "TT Club Ostrava, z.s.": "TTC Ostrava",
-    "TT Moravský Krumlov, z.s.": "TT Moravský Krumlov",
-    "TTC ELIZZA PRAHA, z.s.": "TTC Elizza Praha",
-    "TTC Frýdek-Místek z.s.": "TTC Frýdek-Místek",
-    "TTC FRÝDLANT, z.s.": "TTC Frýdlant",
-    "TTC KARLOVARSKO 2020, z.s.": "TTC Karlovarsko 2020",
-    "TTC Kladno, z.s.": "TTC Kladno",
-    "TTC Kostelec nad Orlicí, z.s.": "TTC Kostelec nad Orlicí",
-    "TTC Moravská Slavia Brno, z.s.": "TTC Moravská Slavia Brno",
-    "TTC Siko Orlová z.s.": "TTC Siko Orlová",
-    "z.s.TTC Klánovice - stolní tenis": "TTC Klánovice",
+    "zapsaný spolek Stolní tenis Střekov": "Stolní tenis Střekov",
 };
+
+const TEAM_NAME_REPLACEMENTS = [
+    [/Sbor dobrovolných hasičů/gi, "SDH"],
+    [/Dům dětí a mládeže/gi, "DDM"],
+    [/^Sportovní klub stolního tenisu\b/i, "SKST"],
+    [/^Sportovní klub policie\b/i, "SKP"],
+    [/^Klub stolního tenisu\b/i, "KST"],
+    [/^Městský sportovní klub\b/i, "MSK"],
+    [/^Sportovní klub\b/i, "SK"],
+    [/^Tělovýchovná jednota\b/i, "TJ"],
+    [/^Tělocvična jednota\b/i, "TJ"],
+    [/^Tělocvičná jednota\b/i, "TJ"],
+    [/^Table Tennis Club\b/i, "TTC"],
+    [/^TT Club\b/i, "TTC"],
+    [/^T.J.\b/i, "TJ"]
+];
 
 function formatSeason(year) {
     return `${year - 1}/${String(year).slice(-2)}`;
 }
 
 function formatTeamName(name) {
-    return TEAM_NAME_OVERRIDES[name] || name;
+    if (!name) return name;
+    if (TEAM_NAME_OVERRIDES[name]) return TEAM_NAME_OVERRIDES[name];
+
+    let formattedName = String(name)
+        .replace(/^\s*z\.?\s*s\.?\s*/i, "")
+        .replace(/\s*,?\s*(?:pobočný\s+spolek|spolek|z\.?\s*s\.?|o\.?\s*s\.?)\s*$/i, "")
+        .replace(/\s+-\s+stolní tenis\s*$/i, "")
+        .replace(/\s*,\s*/g, ", ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    TEAM_NAME_REPLACEMENTS.forEach(([pattern, replacement]) => {
+        formattedName = formattedName.replace(pattern, replacement).trim();
+    });
+
+    return formattedName;
+}
+
+function createPlayerTableSearch() {
+    const control = document.createElement("div");
+    control.className = "dt-search";
+
+    const label = document.createElement("label");
+    label.textContent = "Hledat hráče: ";
+
+    const input = document.createElement("input");
+    input.type = "search";
+    input.autocomplete = "off";
+    input.setAttribute("aria-label", "Hledat hráče");
+
+    label.appendChild(input);
+    control.appendChild(label);
+    return { control, input };
+}
+
+function playerNameMatchesSearch(name, query) {
+    const removeDiacritics = value => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const enteredQuery = String(query).trim().toLocaleLowerCase("cs");
+    const hasTypedDiacritics = removeDiacritics(enteredQuery) !== enteredQuery;
+    const searchedWords = enteredQuery.split(/\s+/).filter(Boolean);
+    if (searchedWords.length === 0) return true;
+
+    let playerName = String(name ?? "").toLocaleLowerCase("cs");
+    let searchedName = searchedWords.join(" ");
+    let reversedName = [...searchedWords].reverse().join(" ");
+    if (!hasTypedDiacritics) {
+        playerName = removeDiacritics(playerName);
+        searchedName = removeDiacritics(searchedName);
+        reversedName = removeDiacritics(reversedName);
+    }
+
+    return playerName.includes(searchedName) || playerName.includes(reversedName);
 }
 
 function getSelectedSeason(availableSeasons = SEASONS) {

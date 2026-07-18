@@ -148,7 +148,7 @@ function renderSearchResults() {
     const visibleMatches = currentMatches.slice(0, visibleResultCount);
 
     searchStatus.textContent = visibleResultCount < currentMatches.length
-        ? `Nalezeno ${currentMatches.length} hráčů. Zobrazeno ${visibleResultCount}.`
+        ? `Nalezeno ${currentMatches.length} hráčů`
         : `Nalezeno hráčů: ${currentMatches.length}`;
 
     const list = document.createElement("div");
@@ -294,12 +294,13 @@ function renderPlayerChart(player) {
             class: "chart-grid-line"
         }));
 
+        const labelX = x(year) + 10;
         const label = createSvgElement("text", {
-            x: x(year),
+            x: labelX,
             y: height - margin.bottom + 24,
             class: "chart-axis-label",
             "text-anchor": "end",
-            transform: `rotate(-45 ${x(year)} ${height - margin.bottom + 24})`
+            transform: `rotate(-45 ${labelX} ${height - margin.bottom + 24})`
         });
         label.textContent = formatSeason(year);
         svg.appendChild(label);
@@ -416,7 +417,7 @@ async function showPlayerDetail(playerId) {
             return;
         }
 
-        document.title = `${player["Hráč"]} – statiSTIS`;
+        document.title = `statiSTIS - ${player["Hráč"]}`;
         document.getElementById("player-name").textContent = player["Hráč"];
         const genderLabels = { M: "Muži", Z: "Ženy" };
         const gender = genderLabels[player["Pohlaví"]] || formatValue(player["Pohlaví"]);

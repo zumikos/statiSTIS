@@ -103,9 +103,10 @@ function renderPlayerCountChart(data) {
             x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
             class: "chart-grid-line"
         }));
+        const labelX = lineX + 16;
         const label = createHomeSvgElement("text", {
-            x: lineX, y: height - margin.bottom + 24, "text-anchor": "end",
-            transform: `rotate(-45 ${lineX} ${height - margin.bottom + 24})`,
+            x: labelX, y: height - margin.bottom + 24, "text-anchor": "end",
+            transform: `rotate(-45 ${labelX} ${height - margin.bottom + 24})`,
             class: "chart-axis-label"
         });
         label.textContent = `${formatSeason(item.year)}${item.year === 2021 ? "*" : ""}`;
@@ -237,9 +238,10 @@ function renderHistogram(data) {
             x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
             class: "chart-grid-line"
         }));
+        const labelX = lineX + 12;
         const label = createHomeSvgElement("text", {
-            x: lineX, y: height - margin.bottom + 24, "text-anchor": "end",
-            transform: `rotate(-45 ${lineX} ${height - margin.bottom + 24})`,
+            x: labelX, y: height - margin.bottom + 24, "text-anchor": "end",
+            transform: `rotate(-45 ${labelX} ${height - margin.bottom + 24})`,
             class: "chart-axis-label"
         });
         label.textContent = value.toLocaleString("cs-CZ");
