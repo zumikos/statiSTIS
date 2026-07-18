@@ -1,7 +1,7 @@
 const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const DEFAULT_SEASON = Math.max(...SEASONS);
 const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
-const TABLE_PAGE_LENGTH_LABELS = ["\u00a0\u00a0\u00a050", "\u00a0\u00a0100", "\u00a0\u00a0500", "1 000"];
+const TABLE_PAGE_LENGTH_LABELS = ["\u00a0\u00a0\u00a050", "\u00a0\u00a0100", "\u00a0\u00a0500", "\u00a01 000"];
 const PLAYER_SEXES = [
     { value: "all", label: "Všichni" },
     { value: "M", label: "Muži" },
