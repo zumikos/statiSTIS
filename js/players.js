@@ -6,6 +6,7 @@ const searchStatus = document.getElementById("player-search-status");
 const resultsContainer = document.getElementById("player-results");
 
 let playersPromise;
+let playerCountsPromise;
 let currentMatches = [];
 let visibleResultCount = 0;
 const RESULTS_PER_PAGE = 50;
@@ -33,6 +34,25 @@ function loadPlayers() {
     }
 
     return playersPromise;
+}
+
+function loadPlayerCounts() {
+    if (!playerCountsPromise) {
+        playerCountsPromise = new Promise((resolve, reject) => {
+            Papa.parse("csv/player_count.csv", {
+                download: true,
+                header: true,
+                dynamicTyping: true,
+                skipEmptyLines: true,
+                complete: results => resolve(new Map(
+                    results.data.map(row => [Number(row["Sezóna"]), Number(row["Počet hráčů"])])
+                )),
+                error: reject
+            });
+        });
+    }
+
+    return playerCountsPromise;
 }
 
 function playerLink(player) {
@@ -155,11 +175,20 @@ function formatValue(value, signed = false) {
     return signed && Number(value) > 0 ? `+${value}` : String(value);
 }
 
-function renderPlayerHistory(player) {
+function formatPercentile(rank, totalPlayers) {
+    const numericRank = Number(rank);
+    const numericTotal = Number(totalPlayers);
+    if (!Number.isFinite(numericRank) || !Number.isFinite(numericTotal) || numericTotal < 1) return "—";
+
+    const percentile = 100 * (numericTotal - numericRank + 1) / numericTotal;
+    return `${percentile.toFixed(1).replace(".", ",")}`;
+}
+
+function renderPlayerHistory(player, playerCounts) {
     const table = document.getElementById("player-history");
     table.replaceChildren();
 
-    const headers = ["Sezóna", "STR", "Pořadí", "Změna STR", "Pořadí skokanů"];
+    const headers = ["Sezóna", "STR", "Pořadí", "Percentil", "Změna STR", "Pořadí skokanů"];
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
     headers.forEach(label => {
@@ -177,6 +206,7 @@ function renderPlayerHistory(player) {
                 formatSeason(year),
                 player[`${year} STR`],
                 player[`${year} pořadí`],
+                formatPercentile(player[`${year} pořadí`], playerCounts.get(year)),
                 formatValue(player[`${year} STR změna`], true),
                 formatValue(player[`${year} Pořadí skokani`])
             ];
@@ -377,7 +407,7 @@ async function showPlayerDetail(playerId) {
     document.getElementById("player-name").textContent = "Načítám hráče…";
 
     try {
-        const players = await loadPlayers();
+        const [players, playerCounts] = await Promise.all([loadPlayers(), loadPlayerCounts()]);
         const player = players.find(item => String(item.ID) === playerId);
 
         if (!player) {
@@ -392,7 +422,7 @@ async function showPlayerDetail(playerId) {
         const gender = genderLabels[player["Pohlaví"]] || formatValue(player["Pohlaví"]);
         document.getElementById("player-info").textContent =
             `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, Pohlaví: ${gender}`;
-        renderPlayerHistory(player);
+        renderPlayerHistory(player, playerCounts);
         renderPlayerChart(player);
     } catch (error) {
         document.getElementById("player-name").textContent = "Data se nepodařilo načíst";

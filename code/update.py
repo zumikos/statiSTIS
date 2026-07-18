@@ -4,7 +4,7 @@ import pandas as pd
 from export_ranking import export_ranking
 from export_movers import export_movers
 from export_players import export_players
-from plots import plot_histogram, plot_player_count
+from export_player_count import export_player_count
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -12,10 +12,8 @@ if hasattr(sys.stdout, "reconfigure"):
 BASE_DIR = Path(__file__).resolve().parent.parent # složka projektu
 DATA_DIR = BASE_DIR / "source" # zdroje dat jsou ve složce /source
 CSV_DIR = BASE_DIR / "csv"     # csv soubory budou ve složce /csv
-IMG_DIR = BASE_DIR / "images"  # obrázky a grafy budou ve složce /images
 
 CSV_DIR.mkdir(exist_ok=True)
-IMG_DIR.mkdir(exist_ok=True)
 
 MOVERS_STR_MIN = 800
 
@@ -60,7 +58,6 @@ print(f"Načteno {len(master)} záznamů.\n")
 export_ranking(master, CSV_DIR, None) # export všech sezón
 export_movers(master, CSV_DIR, None, MOVERS_STR_MIN) # export všech sezón
 export_players(master, CSV_DIR, MOVERS_STR_MIN) # export jednotlivých hráčů
-plot_histogram(master, IMG_DIR) # vykreslení histogramu STR pro všechny sezóny
-plot_player_count(master, CSV_DIR) # export počtu hráčů v jednotlivých sezónách
+export_player_count(master, CSV_DIR) # export počtu hráčů v jednotlivých sezónách
 
 print("\nHotovo.")

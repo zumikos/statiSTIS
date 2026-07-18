@@ -2,7 +2,7 @@ const moverSeasons = SEASONS.slice(1);
 const selectedSeason = getSelectedSeason(moverSeasons);
 
 // Šířky sloupců: Pořadí,ID,Hráč,Rok narození,Pohlaví,Oddíl,Kraj,STR loňské,STR letošní,STR změna.
-const MOVERS_COLUMN_WIDTHS = ["0rem", "0rem", "10rem", "0rem", "0rem", "12rem", "0rem", "0rem", "0rem", "0rem"];
+const MOVERS_COLUMN_WIDTHS = ["1%", "1%", "10rem", "1%", "1%", "12rem", "1%", "1%", "1%", "1%"];
 
 const seasonSelect = document.getElementById("season");
 
@@ -81,7 +81,8 @@ Papa.parse(csvFile, {
             columnDefs: [
                 { targets: "_all", className: "dt-head-center" },
                 { targets: [3, 4, 6], className: "dt-body-center" },
-                { targets: [2, 5, 6], className: "wrap-column" },
+                { targets: [2, 5], className: "wrap-column" },
+                { targets: [0, 1, 3, 4, 6, 7, 8, 9], className: "nowrap-column" },
                 { targets: 9, className: "dt-body-right strong-column" }
             ],
 

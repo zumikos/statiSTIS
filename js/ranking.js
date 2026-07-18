@@ -1,7 +1,7 @@
 const selectedSeason = getSelectedSeason();
 
 // Šířky sloupců: Pořadí, ID, Hráč, Rok narození, Pohlaví, Oddíl, Kraj, STR.
-const RANKING_COLUMN_WIDTHS = ["0rem", "0rem", "10rem", "0rem", "0rem", "12rem", "0rem", "0rem"];
+const RANKING_COLUMN_WIDTHS = ["1%", "1%", "10rem", "1%", "1%", "12rem", "1%", "1%"];
 
 const seasonSelect = document.getElementById("season");
 
@@ -75,7 +75,8 @@ Papa.parse(`csv/ranking_${selectedSeason}.csv`, {
             columnDefs: [
                 { targets: "_all", className: "dt-head-center" }, // zarovná na střed hlavičky všech sloupců
                 { targets: [3, 4, 6], className: "dt-body-center" }, // zarovná na střed obsah sloupců "Rok" a "Pohlaví"
-                { targets: [2, 5, 6], className: "wrap-column" }
+                { targets: [2, 5], className: "wrap-column" },
+                { targets: [0, 1, 3, 4, 6, 7], className: "nowrap-column" }
             ],
 
             language: {
