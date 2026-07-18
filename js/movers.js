@@ -1,5 +1,6 @@
 const moverSeasons = SEASONS.slice(1);
 const selectedSeason = getSelectedSeason(moverSeasons);
+const selectedSex = getSelectedSex();
 
 // Sloupce a jejich šířky lze upravit přímo zde.
 const MOVERS_COLUMNS = [
@@ -16,10 +17,13 @@ const MOVERS_COLUMNS = [
 ];
 
 setupSeasonSelect(moverSeasons, selectedSeason, "skokani.html");
+setupSexSelection(selectedSex, "skokani.html", selectedSeason);
 createStatisticsTable({
     tableId: "movers",
     csvFile: `csv/movers_${selectedSeason - 1}_${selectedSeason}_STR800.csv`,
     columns: MOVERS_COLUMNS,
+    rowFilter: row => selectedSex === "all" || row["Pohlaví"] === selectedSex,
+    renumberRows: selectedSex !== "all",
     order: [[0, "asc"]],
     columnDefs: [
         { targets: "_all", className: "dt-head-center" },

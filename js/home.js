@@ -1,3 +1,12 @@
+function formatTopTableValue(row, column) {
+    const value = row[column];
+    if (column === "Oddíl") return formatTeamName(value);
+    if (["STR", "STR změna"].includes(column) && Number.isFinite(Number(value))) {
+        return Number(value).toLocaleString("cs-CZ");
+    }
+    return value;
+}
+
 function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
     const data = rows.filter(row => row.ID !== undefined).slice(0, maxRows);
                 
@@ -28,9 +37,7 @@ function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
             const td = document.createElement("td");
             const content = document.createElement("span");
             content.className = "compact-cell-content";
-            content.textContent = column.key === "Oddíl"
-                ? formatTeamName(row[column.key])
-                : row[column.key];
+            content.textContent = formatTopTableValue(row, column.key);
             td.appendChild(content);
             tr.appendChild(td);
         });
@@ -292,9 +299,19 @@ loadCsv("csv/player_count.csv")
     });
 
 const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
-document.getElementById("home-ranking-season").textContent = homeSeasonLabel;
-document.getElementById("home-movers-season").textContent = homeSeasonLabel;
+document.getElementById("home-men-ranking-season").textContent = homeSeasonLabel;
+document.getElementById("home-men-movers-season").textContent = homeSeasonLabel;
+document.getElementById("home-women-ranking-season").textContent = homeSeasonLabel;
+document.getElementById("home-women-movers-season").textContent = homeSeasonLabel;
 document.getElementById("home-histogram-season").textContent = homeSeasonLabel;
+document.getElementById("home-women-ranking-link").href =
+    `zebricky.html?sezona=${DEFAULT_SEASON}&pohlavi=Z`;
+document.getElementById("home-women-movers-link").href =
+    `skokani.html?sezona=${DEFAULT_SEASON}&pohlavi=Z`;
+document.getElementById("home-men-ranking-link").href =
+    `zebricky.html?sezona=${DEFAULT_SEASON}&pohlavi=M`;
+document.getElementById("home-men-movers-link").href =
+    `skokani.html?sezona=${DEFAULT_SEASON}&pohlavi=M`;
 
 const rankingColumns = [
     { key: "Pořadí", label: "#" },
@@ -312,16 +329,28 @@ const moverColumns = [
 loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
     .then(data => {
         renderHistogram(data);
-        renderTopTable(data, "home-ranking", rankingColumns);
+        const men = filterAndRenumberRows(data, row => row["Pohlaví"] === "M", true);
+        renderTopTable(men, "home-men-ranking", rankingColumns);
+        const women = filterAndRenumberRows(data, row => row["Pohlaví"] === "Z", true);
+        renderTopTable(women, "home-women-ranking", rankingColumns);
     })
     .catch(() => {
         document.getElementById("home-histogram").textContent =
             "Graf se nepodařilo načíst.";
-        showTableError("home-ranking", "Data se nepodařilo načíst. Zkuste stránku obnovit.");
+        const message = "Data se nepodařilo načíst. Zkuste stránku obnovit.";
+        showTableError("home-men-ranking", message);
+        showTableError("home-women-ranking", message);
     });
 
 loadCsv(`csv/movers_${DEFAULT_SEASON - 1}_${DEFAULT_SEASON}_STR800.csv`)
-    .then(data => renderTopTable(data, "home-movers", moverColumns))
-    .catch(() => showTableError(
-        "home-movers", "Data se nepodařilo načíst. Zkuste stránku obnovit."
-    ));
+    .then(data => {
+        const men = filterAndRenumberRows(data, row => row["Pohlaví"] === "M", true);
+        renderTopTable(men, "home-men-movers", moverColumns);
+        const women = filterAndRenumberRows(data, row => row["Pohlaví"] === "Z", true);
+        renderTopTable(women, "home-women-movers", moverColumns);
+    })
+    .catch(() => {
+        const message = "Data se nepodařilo načíst. Zkuste stránku obnovit.";
+        showTableError("home-men-movers", message);
+        showTableError("home-women-movers", message);
+    });

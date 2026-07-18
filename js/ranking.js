@@ -1,4 +1,5 @@
 const selectedSeason = getSelectedSeason();
+const selectedSex = getSelectedSex();
 
 // Sloupce a jejich šířky lze upravit přímo zde.
 const RANKING_COLUMNS = [
@@ -13,10 +14,13 @@ const RANKING_COLUMNS = [
 ];
 
 setupSeasonSelect(SEASONS, selectedSeason, "zebricky.html");
+setupSexSelection(selectedSex, "zebricky.html", selectedSeason);
 createStatisticsTable({
     tableId: "ranking",
     csvFile: `csv/ranking_${selectedSeason}.csv`,
     columns: RANKING_COLUMNS,
+    rowFilter: row => selectedSex === "all" || row["Pohlaví"] === selectedSex,
+    renumberRows: selectedSex !== "all",
     order: [[0, "asc"]],
     columnDefs: [
         { targets: "_all", className: "dt-head-center" },

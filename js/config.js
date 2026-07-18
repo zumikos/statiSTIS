@@ -1,6 +1,12 @@
 const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const DEFAULT_SEASON = Math.max(...SEASONS);
 const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
+const TABLE_PAGE_LENGTH_LABELS = ["\u00a0\u00a0\u00a050", "\u00a0\u00a0100", "\u00a0\u00a0500", "1 000"];
+const PLAYER_SEXES = [
+    { value: "all", label: "Všichni" },
+    { value: "M", label: "Muži" },
+    { value: "Z", label: "Ženy" }
+];
 const TABLE_LANGUAGE = {
     thousands: " ",
     lengthMenu: "Zobrazit _MENU_ záznamů na stránku",
@@ -142,25 +148,59 @@ function setupSeasonSelect(availableSeasons, selectedSeason, pageUrl) {
     });
     seasonSelect.value = selectedSeason;
     seasonSelect.addEventListener("change", () => {
-        location.href = `${pageUrl}?season=${seasonSelect.value}`;
+        const parameters = new URLSearchParams(window.location.search);
+        parameters.set("sezona", seasonSelect.value);
+        location.href = `${pageUrl}?${parameters}`;
     });
 }
 
-async function createStatisticsTable({ tableId, csvFile, columns, columnDefs, order }) {
+function getSelectedSex() {
+    const requestedSex = new URLSearchParams(window.location.search).get("pohlavi");
+    return PLAYER_SEXES.some(sex => sex.value === requestedSex)
+        ? requestedSex
+        : "all";
+}
+
+function setupSexSelection(selectedSex, pageUrl, selectedSeason) {
+    const container = document.getElementById("sex-selection");
+    PLAYER_SEXES.forEach(sex => {
+        const link = document.createElement("a");
+        const parameters = new URLSearchParams({ sezona: selectedSeason });
+        if (sex.value !== "all") parameters.set("pohlavi", sex.value);
+        link.href = `${pageUrl}?${parameters}`;
+        link.className = "sex-button";
+        link.textContent = sex.label;
+        if (sex.value === selectedSex) {
+            link.classList.add("is-active");
+            link.setAttribute("aria-current", "page");
+        }
+        container.appendChild(link);
+    });
+}
+
+async function createStatisticsTable({
+    tableId, csvFile, columns, columnDefs, order, rowFilter = () => true, renumberRows = false
+}) {
     try {
-        const data = (await loadCsv(csvFile)).filter(row => row.ID !== undefined);
+        const data = filterAndRenumberRows(
+            await loadCsv(csvFile),
+            row => row.ID !== undefined && rowFilter(row),
+            renumberRows
+        );
         if (data.length === 0) {
             showTableError(tableId, "Pro tuto sezónu nejsou dostupná žádná data.");
             return;
         }
 
-        data.forEach(row => { row["Oddíl"] = formatTeamName(row["Oddíl"]); });
+        data.forEach(row => {
+            row["Oddíl"] = formatTeamName(row["Oddíl"]);
+        });
         const playerSearch = createPlayerTableSearch();
         const table = new DataTable(`#${tableId}`, {
             data,
             columns,
             pageLength: TABLE_PAGE_LENGTHS[0],
-            lengthMenu: [TABLE_PAGE_LENGTHS, TABLE_PAGE_LENGTHS],
+            lengthMenu: [TABLE_PAGE_LENGTHS, TABLE_PAGE_LENGTH_LABELS],
             order,
             scrollX: true,
             autoWidth: false,
@@ -192,6 +232,13 @@ async function createStatisticsTable({ tableId, csvFile, columns, columnDefs, or
     }
 }
 
+function filterAndRenumberRows(rows, rowFilter, renumberRows = false) {
+    return rows.filter(rowFilter).map((row, index) => ({
+        ...row,
+        "Pořadí": renumberRows ? index + 1 : row["Pořadí"]
+    }));
+}
+
 function playerNameMatchesSearch(name, query) {
     const enteredQuery = normalizeText(query);
     const hasTypedDiacritics = normalizeText(enteredQuery, true) !== enteredQuery;
@@ -211,7 +258,7 @@ function playerNameMatchesSearch(name, query) {
 }
 
 function getSelectedSeason(availableSeasons = SEASONS) {
-    const requestedSeason = Number(new URLSearchParams(window.location.search).get("season"));
+    const requestedSeason = Number(new URLSearchParams(window.location.search).get("sezona"));
     return availableSeasons.includes(requestedSeason) ? requestedSeason : DEFAULT_SEASON;
 }
 
