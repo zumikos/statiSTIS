@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>statiSTIS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
+</head>
+
+<body>
+<header>
+    <h1><a class="site-title" href="index.html">statiSTIS</a></h1>
+    <nav>
+        <a href="index.html">Domů</a>
+        <a href="skokani.html">Skokani sezóny</a>
+        <a href="zebricky.html">Žebříčky</a>
+        <a href="hraci.html">Hráči</a>
+        <a href="oddily.html">Oddíly</a>
+    </nav>
+</header>
+
+<main>
+    <section id="team-search-view">
+        <h2>Oddíly</h2>
+        <p>Vyhledejte oddíl a zobrazte si jeho aktuální hráčský žebříček.</p>
+        <form id="team-search-form" class="player-search" role="search">
+            <label class="visually-hidden" for="team-search-input">Název oddílu</label>
+            <input id="team-search-input" type="search" placeholder="Zadejte název oddílu" autocomplete="off">
+            <button type="submit" aria-label="Vyhledat" title="Vyhledat">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                    <path d="M15.5 15.5 21 21"></path>
+                </svg>
+            </button>
+        </form>
+        <p id="team-search-status" class="status-message" aria-live="polite"></p>
+        <div id="team-results"></div>
+    </section>
+
+    <section id="team-detail-view" hidden>
+        <a href="oddily.html" class="back-link">← Zpět na vyhledávání</a>
+        <h2 id="team-name"></h2>
+        <p>Žebříček hráčů v sezóně <span id="team-season"></span></p>
+        <table id="team-ranking" class="display" style="width:100%"></table>
+    </section>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/teams.js"></script>
+</body>
+</html>
