@@ -29,7 +29,6 @@ def load_all_seasons():
 
         df = pd.read_excel(file)
 
-        df["Pořadí"] = df["Pořadí"].astype("Int64")  
         df["Rok narození"] = df["Rok narození"].astype("Int64")
         df["STR"] = df["STR"].astype("Int64")
         df["Sezóna"] = year
@@ -44,7 +43,6 @@ def load_all_seasons():
                 "Kraj",
                 "Region",
                 "STR",
-                "Pořadí",
                 "Sezóna"
             ]
         ])

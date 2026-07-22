@@ -20,8 +20,7 @@ createStatisticsTable({
     csvFile: `csv/ranking_${selectedSeason}.csv`,
     columns: RANKING_COLUMNS,
     rowFilter: row => selectedSex === "all" || row["Pohlaví"] === selectedSex,
-    renumberRows: selectedSex !== "all",
-    rankField: "STR",
+    rankField: selectedSex === "all" ? null : "STR",
     order: [[0, "asc"]],
     columnDefs: [
         { targets: "_all", className: "dt-head-center" },

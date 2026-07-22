@@ -8,7 +8,6 @@ const PLAYER_SEXES = [
 ];
 const TABLE_LANGUAGE = {
     thousands: " ",
-    lengthMenu: "Zobrazit _MENU_ záznamů na stránku",
     info: "Zobrazeno _START_ až _END_ z _TOTAL_ záznamů",
     infoEmpty: "Žádné záznamy",
     infoFiltered: "(filtrováno z celkem _MAX_ záznamů)",
@@ -207,6 +206,15 @@ function normalizeText(value, removeDiacritics = false) {
     return text;
 }
 
+function createShowMoreButton(remaining, batchSize, onClick) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "button show-more-results";
+    button.textContent = `Zobrazit další (${Math.min(batchSize, remaining)})`;
+    button.addEventListener("click", onClick);
+    return button;
+}
+
 function setupSeasonSelect(availableSeasons, selectedSeason, pageUrl) {
     const seasonSelect = document.getElementById("season");
     availableSeasons.slice().reverse().forEach(year => {
@@ -250,13 +258,12 @@ function setupSexSelection(selectedSex, pageUrl, selectedSeason = null, addition
 
 async function createStatisticsTable({
     tableId, csvFile, columns, columnDefs, order, rowFilter = () => true,
-    renumberRows = false, rankField = null, showPageLength = true
+    rankField = null, showPageLength = true
 }) {
     try {
-        const data = filterAndRenumberRows(
+        const data = filterAndRankRows(
             await loadCsv(csvFile),
             row => row.ID !== undefined && rowFilter(row),
-            renumberRows,
             rankField
         );
         if (data.length === 0) {
@@ -303,14 +310,14 @@ async function createStatisticsTable({
     }
 }
 
-function filterAndRenumberRows(rows, rowFilter, renumberRows = false, rankField = null) {
+function filterAndRankRows(rows, rowFilter, rankField = null) {
     let previousValue;
     let previousRank;
     return rows.filter(rowFilter).map((row, index) => {
         let rank = row["Pořadí"];
-        if (renumberRows) {
-            const value = rankField ? row[rankField] : undefined;
-            rank = rankField && value === previousValue ? previousRank : index + 1;
+        if (rankField) {
+            const value = row[rankField];
+            rank = value === previousValue ? previousRank : index + 1;
             previousValue = value;
             previousRank = rank;
         }

@@ -1,3 +1,6 @@
+from export_movers import calculate_movers
+
+
 def export_players(master, output_dir, movers_str_min=800):
     players = (
         master
@@ -51,25 +54,20 @@ def export_players(master, output_dir, movers_str_min=800):
         if previous not in years:
             continue
 
-        previous_ratings = (
-            master[master["Sezóna"] == previous][["ID", "STR"]]
-            .rename(columns={"STR": "previous_str"})
+        movers = calculate_movers(master, current, movers_str_min, ["Pohlaví"])
+        movers[f"{current} počet skokanů"] = (
+            movers.groupby("Pohlaví")["ID"].transform("size").astype("Int64")
         )
-        current_ratings = (
-            master[master["Sezóna"] == current][["ID", "STR", "Pohlaví"]]
-            .rename(columns={"STR": "current_str"})
-        )
-        movers = current_ratings.merge(previous_ratings, on="ID", how="inner")
-        movers = movers[movers["previous_str"] >= movers_str_min].copy()
-        movers[f"{current} STR změna"] = movers["current_str"] - movers["previous_str"]
-        movers[f"{current} Pořadí skokani"] = (
-            movers
-            .groupby("Pohlaví")[f"{current} STR změna"]
-            .rank(method="min", ascending=False)
-            .astype("Int64")
-        )
+        movers = movers.rename(columns={
+            "STR změna": f"{current} STR změna",
+            "Pořadí": f"{current} Pořadí skokani"
+        })
         mover_columns.append(
-            movers.set_index("ID")[[f"{current} STR změna", f"{current} Pořadí skokani"]]
+            movers.set_index("ID")[[
+                f"{current} STR změna",
+                f"{current} Pořadí skokani",
+                f"{current} počet skokanů"
+            ]]
         )
     
     players = (

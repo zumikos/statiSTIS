@@ -21,7 +21,7 @@ function loadPlayers() {
 
 function playerLink(player) {
     const link = document.createElement("a");
-    link.className = "player-result";
+    link.className = "search-result";
     link.href = `hraci.html?ID=${encodeURIComponent(player.ID)}`;
 
     const name = document.createElement("strong");
@@ -116,17 +116,13 @@ function renderSearchResults() {
         : `Nalezeno hráčů: ${currentMatches.length}`;
 
     const list = document.createElement("div");
-    list.className = "player-results-list";
+    list.className = "search-results-list";
     visibleMatches.forEach(player => list.appendChild(playerLink(player)));
     resultsContainer.appendChild(list);
 
     if (visibleResultCount < currentMatches.length) {
-        const showMore = document.createElement("button");
         const remaining = currentMatches.length - visibleResultCount;
-        showMore.type = "button";
-        showMore.className = "button show-more-results";
-        showMore.textContent = `Zobrazit další (${Math.min(RESULTS_PER_PAGE, remaining)})`;
-        showMore.addEventListener("click", () => {
+        const showMore = createShowMoreButton(remaining, RESULTS_PER_PAGE, () => {
             visibleResultCount = Math.min(visibleResultCount + RESULTS_PER_PAGE, currentMatches.length);
             renderSearchResults();
         });
@@ -152,7 +148,10 @@ function renderPlayerHistory(player) {
     const table = document.getElementById("player-history");
     table.replaceChildren();
 
-    const headers = ["Sezóna", "STR", "Pořadí", "Percentil", "Změna STR", "Pořadí skokanů"];
+    const headers = [
+        "Sezóna", "STR", "Pořadí", "Percentil", "Změna STR",
+        "Pořadí skokani", "Percentil skokani"
+    ];
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
     headers.forEach(label => {
@@ -172,7 +171,11 @@ function renderPlayerHistory(player) {
                 player[`${year} pořadí`],
                 formatPercentile(player[`${year} pořadí`], player[`${year} počet hráčů`]),
                 formatValue(player[`${year} STR změna`], true),
-                formatValue(player[`${year} Pořadí skokani`])
+                formatValue(player[`${year} Pořadí skokani`]),
+                formatPercentile(
+                    player[`${year} Pořadí skokani`],
+                    player[`${year} počet skokanů`]
+                )
             ];
 
             values.forEach(value => {

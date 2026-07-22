@@ -45,11 +45,11 @@ function teamMatchPriority(name, query) {
 function renderTeamResults() {
     teamResults.replaceChildren();
     const list = document.createElement("div");
-    list.className = "player-results-list";
+    list.className = "search-results-list";
 
     currentTeamMatches.slice(0, visibleTeamCount).forEach(team => {
         const link = document.createElement("a");
-        link.className = "player-result";
+        link.className = "search-result";
         link.href = `oddily.html?oddil=${encodeURIComponent(team.name)}`;
         const name = document.createElement("strong");
         name.textContent = team.name;
@@ -61,12 +61,8 @@ function renderTeamResults() {
     teamResults.appendChild(list);
 
     if (visibleTeamCount < currentTeamMatches.length) {
-        const showMore = document.createElement("button");
         const remaining = currentTeamMatches.length - visibleTeamCount;
-        showMore.type = "button";
-        showMore.className = "button show-more-results";
-        showMore.textContent = `Zobrazit další (${Math.min(TEAM_RESULTS_PER_PAGE, remaining)})`;
-        showMore.addEventListener("click", () => {
+        const showMore = createShowMoreButton(remaining, TEAM_RESULTS_PER_PAGE, () => {
             visibleTeamCount = Math.min(
                 visibleTeamCount + TEAM_RESULTS_PER_PAGE,
                 currentTeamMatches.length
@@ -132,7 +128,6 @@ function showTeamDetail(teamName) {
         rowFilter: row =>
             formatTeamName(row["Oddíl"]) === teamName &&
             (selectedSex === "all" || row["Pohlaví"] === selectedSex),
-        renumberRows: true,
         rankField: "STR",
         showPageLength: false,
         order: [[0, "asc"]],

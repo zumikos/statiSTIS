@@ -1,3 +1,33 @@
+def calculate_movers(master, current, str_min=800, rank_groups=None):
+    previous = current - 1
+    previous_ratings = (
+        master[master["Sezóna"] == previous][["ID", "STR"]]
+        .rename(columns={"STR": "STR loňské"})
+    )
+    current_ratings = (
+        master[master["Sezóna"] == current][
+            ["ID", "Hráč", "Rok narození", "Pohlaví", "Oddíl", "Kraj", "Region", "STR"]
+        ]
+        .rename(columns={"STR": "STR letošní"})
+    )
+
+    movers = current_ratings.merge(previous_ratings, on="ID", how="inner")
+    movers = movers[movers["STR loňské"] >= str_min].copy()
+    movers["STR změna"] = (movers["STR letošní"] - movers["STR loňské"]).astype("Int64")
+    movers = movers.sort_values("STR změna", ascending=False).reset_index(drop=True)
+
+    if rank_groups:
+        movers["Pořadí"] = (
+            movers.groupby(rank_groups)["STR změna"]
+            .rank(method="min", ascending=False)
+            .astype("Int64")
+        )
+    else:
+        movers["Pořadí"] = movers["STR změna"].rank(method="min", ascending=False).astype("Int64")
+
+    return movers
+
+
 def export_movers(master, output_dir, season=None, str_min=800):
     """Vytvoří žebříčky skokanů STR pro všechny dostupné sezóny nebo pro zadanou sezónu."""
 
@@ -19,46 +49,13 @@ def export_movers(master, output_dir, season=None, str_min=800):
             print(f"⚠ Přeskakuji {current}: chybí předchozí sezóna {previous}.")
             continue
 
-        prev = (
-            master[master["Sezóna"] == previous][["ID", "STR"]]
-            .rename(columns={"STR": "STR loňské"})
-        )
+        movers = calculate_movers(master, current, str_min)
 
-        curr = (
-            master[master["Sezóna"] == current][
-                [
-                    "Pořadí",
-                    "ID",
-                    "Hráč",
-                    "Rok narození",
-                    "Pohlaví",
-                    "Oddíl",
-                    "Kraj",
-                    "Region",
-                    "STR",
-                ]
-            ]
-            .rename(columns={"STR": "STR letošní"})
-        )
-
-        movers = curr.merge(prev, on="ID", how="inner")
-        movers = movers[movers["STR loňské"] >= str_min]
-
-        movers["STR změna"] = (
-            movers["STR letošní"] - movers["STR loňské"]
-        ).astype("Int64")
-
-        movers = (
-            movers
-            .sort_values("STR změna", ascending=False)
-            .reset_index(drop=True)
-        )
-
-        movers["Pořadí"] = (
-            movers["STR změna"]
-            .rank(method="min", ascending=False)
-            .astype(int)
-        )
+        columns = [
+            "Pořadí", "ID", "Hráč", "Rok narození", "Pohlaví",
+            "Oddíl", "Kraj", "Region", "STR letošní", "STR loňské", "STR změna"
+        ]
+        movers = movers[columns]
 
         file = output_dir / f"movers_{previous}_{current}_STR{str_min}.csv"
 
