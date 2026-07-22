@@ -88,27 +88,27 @@ tr:nth-child(even){
     background:var(--surface-alternate);
 }
 
+#season,
 .dt-search input {
     font-size: 1rem;
-    padding: 4px 8px;
     border: 1px solid var(--border-dark);
     border-radius: 6px;
     background-color: var(--surface);
     color:var(--text);
+}
+
+.dt-search input {
+    padding: 4px 8px;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 #season {
-    font-size: 1rem;
     padding: 4px 4px;
-    border: 1px solid var(--border-dark);
-    border-radius: 6px;
-    background-color: var(--surface);
-    color:var(--text);
 }
 
 #season:focus,
-.dt-search input:focus {
+.dt-search input:focus,
+.entity-search input:focus {
     outline: none;
     border-color: var(--blue);
     box-shadow: 0 0 4px rgba(25,118,210,0.3);
@@ -401,12 +401,6 @@ table.dataTable tbody td {
     stroke-linecap:round;
 }
 
-.entity-search input:focus {
-    outline: none;
-    border-color: var(--blue);
-    box-shadow: 0 0 4px rgba(25,118,210,0.3);
-}
-
 .status-message {
     min-height: 1.5em;
 }
@@ -640,6 +634,12 @@ table.dataTable tbody td {
 }
 
 .chart-note {
+    color:var(--text-muted);
+    font-size:0.9rem;
+}
+
+.chart-stats {
+    margin:0 0 0.5rem;
     color:var(--text-muted);
     font-size:0.9rem;
 }

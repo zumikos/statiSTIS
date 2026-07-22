@@ -1,5 +1,6 @@
 const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const DEFAULT_SEASON = Math.max(...SEASONS);
+const SITE_NAME = "statiSTIS";
 const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
 const PLAYER_SEXES = [
     { value: "all", label: "Všichni" },
@@ -13,6 +14,10 @@ const TABLE_LANGUAGE = {
     infoFiltered: "(filtrováno z celkem _MAX_ záznamů)",
     zeroRecords: "Nenalezeny žádné záznamy",
     emptyTable: "Tabulka neobsahuje žádná data"
+};
+
+const PLAYER_NAME_OVERRIDES = {
+    "LIAO Ting-Yao": "Liao Ting-Yao"
 };
 
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
@@ -90,6 +95,10 @@ function bindHoverEvents(element, show, hide) {
 
 function formatSeason(year) {
     return `${year - 1}/${String(year).slice(-2)}`;
+}
+
+function formatPlayerName(name) {
+    return PLAYER_NAME_OVERRIDES[name] || name;
 }
 
 function formatTeamName(name) {
@@ -272,6 +281,7 @@ async function createStatisticsTable({
         }
 
         data.forEach(row => {
+            row["Hráč"] = formatPlayerName(row["Hráč"]);
             row["Oddíl"] = formatTeamName(row["Oddíl"]);
         });
         const playerSearch = createPlayerTableSearch();

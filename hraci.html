@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>statiSTIS</title>
+<title>statiSTIS – Hráči</title>
 
 <link rel="stylesheet" href="css/style.css">
 <script src="js/theme.js"></script>
@@ -22,7 +22,7 @@
 <nav>
 
 <a href="index.html">Domů</a>
-<a href="skokani.html">Skokani sezóny</a>
+<a href="skokani.html">Skokani</a>
 <a href="zebricky.html">Žebříčky</a>
 <a href="hraci.html">Hráči</a>
 <a href="oddily.html">Oddíly</a>
@@ -61,7 +61,13 @@
         <div id="player-str-chart" class="player-str-chart"></div>
     </section>
     <section class="player-statistics-section">
-        <h3>Všechny statistiky</h3>
+        <h3>
+            Všechny statistiky
+            <span class="info-tooltip">
+                <button type="button" class="info-button" aria-label="Informace o pořadí a percentilech" aria-describedby="player-statistics-info">i</button>
+                <span id="player-statistics-info" class="info-tooltip-text" role="tooltip">Pořadí a percentily jsou počítány z žebříčků pro dané pohlaví.</span>
+            </span>
+        </h3>
         <div class="table-scroll">
             <table id="player-history"></table>
         </div>

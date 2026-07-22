@@ -108,7 +108,7 @@ function showTeamDetail(teamName) {
     teamDetailView.hidden = false;
     document.getElementById("team-name").textContent = teamName;
     document.getElementById("team-season").textContent = formatSeason(DEFAULT_SEASON);
-    document.title = `statiSTIS - ${teamName}`;
+    document.title = `${SITE_NAME} – ${teamName}`;
     const selectedSex = getSelectedSex();
     setupSexSelection(selectedSex, "oddily.html", null, { oddil: teamName });
 

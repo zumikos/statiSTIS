@@ -1,5 +1,6 @@
 function formatTopTableValue(row, column) {
     const value = row[column];
+    if (column === "Hráč") return formatPlayerName(value);
     if (column === "Oddíl") return formatTeamName(value);
     if (["STR", "STR změna"].includes(column) && Number.isFinite(Number(value))) {
         return Number(value).toLocaleString("cs-CZ");
@@ -177,6 +178,21 @@ function renderHistogram(data) {
     container.replaceChildren();
 
     const ratings = data.map(row => Number(row.STR)).filter(Number.isFinite);
+    const sortedRatings = [...ratings].sort((first, second) => first - second);
+    const mean = ratings.reduce((sum, value) => sum + value, 0) / ratings.length;
+    const middle = Math.floor(sortedRatings.length / 2);
+    const median = sortedRatings.length % 2
+        ? sortedRatings[middle]
+        : (sortedRatings[middle - 1] + sortedRatings[middle]) / 2;
+    const standardDeviation = Math.sqrt(
+        ratings.reduce((sum, value) => sum + (value - mean) ** 2, 0) / ratings.length
+    );
+    const formatStatistic = value => value.toLocaleString("cs-CZ", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+    });
+    document.getElementById("home-histogram-stats").textContent =
+        `medián = ${formatStatistic(median)}; průměr = ${formatStatistic(mean)}; sm. odchylka = ${formatStatistic(standardDeviation)}`;
     const bins = Array.from({ length: 26 }, (_, index) => ({
         start: index * 100,
         end: (index + 1) * 100,

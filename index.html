@@ -16,7 +16,7 @@
 
     <nav>
         <a href="index.html">Domů</a>
-        <a href="skokani.html">Skokani sezóny</a>
+        <a href="skokani.html">Skokani</a>
         <a href="zebricky.html">Žebříčky</a>
         <a href="hraci.html">Hráči</a>
         <a href="oddily.html">Oddíly</a>
@@ -33,13 +33,29 @@
 
     <section class="grid two-columns">
         <article class="card">
-            <h3>Top 10 skokani <span id="home-men-movers-season"></span></h3>
+            <h3>
+                Top 10 skokani
+                <span class="info-tooltip">
+                    <button type="button" class="info-button" aria-label="Informace o skokanech" aria-describedby="home-men-movers-info">i</button>
+                    <span id="home-men-movers-info" class="info-tooltip-text" role="tooltip">Skokani sezóny jsou hráči s největším progresem v sezóně. Minimální loňské STR musí být 800,
+            aby se vyluočily případy, kdy se kvůli malému počtu zápasů STR za jeden zápas změní například z hodnoty 1 na 1000.</span>
+                </span>
+                <span id="home-men-movers-season"></span>
+            </h3>
             <table id="home-men-movers" class="compact-table"></table>
             <a id="home-men-movers-link" class="button" href="skokani.html">Celý žebříček</a>
         </article>
 
         <article class="card">
-            <h3>Top 10 skokanky <span id="home-women-movers-season"></span></h3>
+            <h3>
+                Top 10 skokanky
+                <span class="info-tooltip">
+                    <button type="button" class="info-button" aria-label="Informace o skokankách" aria-describedby="home-women-movers-info">i</button>
+                    <span id="home-women-movers-info" class="info-tooltip-text" role="tooltip">Skokanky sezóny jsou hráčky s největším progresem v sezóně. Minimální loňské STR musí být 800,
+            aby se vyluočily případy, kdy se kvůli malému počtu zápasů STR za jeden zápas změní například z hodnoty 1 na 1000.</span>
+                </span>
+                <span id="home-women-movers-season"></span>
+            </h3>
             <table id="home-women-movers" class="compact-table"></table>
             <a id="home-women-movers-link" class="button" href="skokani.html">Celý žebříček</a>
         </article>
@@ -70,6 +86,7 @@
 
         <article class="card">
             <h3>Rozložení STR v sezóně <span id="home-histogram-season"></span></h3>
+            <p id="home-histogram-stats" class="chart-stats"></p>
             <div id="home-histogram" class="home-chart"></div>
         </article>
 

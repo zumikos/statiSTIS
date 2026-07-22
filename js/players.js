@@ -13,7 +13,13 @@ const RESULTS_PER_PAGE = 50;
 function loadPlayers() {
     if (!playersPromise) {
         playersPromise = loadCsv("csv/players.csv")
-            .then(data => data.filter(player => player.ID !== undefined));
+            .then(data => data
+                .filter(player => player.ID !== undefined)
+                .map(player => ({
+                    ...player,
+                    "Hráč": formatPlayerName(player["Hráč"])
+                }))
+            );
     }
 
     return playersPromise;
@@ -154,9 +160,9 @@ function renderPlayerHistory(player) {
     ];
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
-    headers.forEach(label => {
+    headers.forEach(header => {
         const th = document.createElement("th");
-        th.textContent = label;
+        th.textContent = header;
         headerRow.appendChild(th);
     });
     thead.appendChild(headerRow);
@@ -371,9 +377,9 @@ async function showPlayerDetail(playerId) {
             return;
         }
 
-        document.title = `statiSTIS - ${player["Hráč"]}`;
+        document.title = `${SITE_NAME} – ${player["Hráč"]}`;
         document.getElementById("player-name").textContent = player["Hráč"];
-        const genderLabels = { M: "Muži", Z: "Ženy" };
+        const genderLabels = { M: "muži", Z: "ženy" };
         const gender = genderLabels[player["Pohlaví"]] || formatValue(player["Pohlaví"]);
         document.getElementById("player-info").textContent =
             `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, Pohlaví: ${gender}`;
