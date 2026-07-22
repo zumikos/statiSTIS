@@ -329,9 +329,9 @@ const moverColumns = [
 loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
     .then(data => {
         renderHistogram(data);
-        const men = filterAndRenumberRows(data, row => row["Pohlaví"] === "M", true);
+        const men = filterAndRenumberRows(data, row => row["Pohlaví"] === "M", true, "STR");
         renderTopTable(men, "home-men-ranking", rankingColumns);
-        const women = filterAndRenumberRows(data, row => row["Pohlaví"] === "Z", true);
+        const women = filterAndRenumberRows(data, row => row["Pohlaví"] === "Z", true, "STR");
         renderTopTable(women, "home-women-ranking", rankingColumns);
     })
     .catch(() => {
@@ -344,9 +344,9 @@ loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
 
 loadCsv(`csv/movers_${DEFAULT_SEASON - 1}_${DEFAULT_SEASON}_STR800.csv`)
     .then(data => {
-        const men = filterAndRenumberRows(data, row => row["Pohlaví"] === "M", true);
+        const men = filterAndRenumberRows(data, row => row["Pohlaví"] === "M", true, "STR změna");
         renderTopTable(men, "home-men-movers", moverColumns);
-        const women = filterAndRenumberRows(data, row => row["Pohlaví"] === "Z", true);
+        const women = filterAndRenumberRows(data, row => row["Pohlaví"] === "Z", true, "STR změna");
         renderTopTable(women, "home-women-movers", moverColumns);
     })
     .catch(() => {

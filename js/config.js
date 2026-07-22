@@ -1,7 +1,6 @@
 const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const DEFAULT_SEASON = Math.max(...SEASONS);
 const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
-const TABLE_PAGE_LENGTH_LABELS = ["\u00a0\u00a0\u00a050", "\u00a0\u00a0100", "\u00a0\u00a0500", "\u00a01 000"];
 const PLAYER_SEXES = [
     { value: "all", label: "Všichni" },
     { value: "M", label: "Muži" },
@@ -130,6 +129,76 @@ function createPlayerTableSearch() {
     return { control, input };
 }
 
+function createPageLengthControl(initialLength) {
+    const control = document.createElement("div");
+    control.className = "page-length-control";
+    control.append("Zobrazit ");
+
+    const dropdown = document.createElement("div");
+    dropdown.className = "page-length-dropdown";
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "page-length-toggle";
+    toggle.setAttribute("aria-haspopup", "listbox");
+    toggle.setAttribute("aria-expanded", "false");
+
+    const menu = document.createElement("div");
+    menu.className = "page-length-menu";
+    menu.setAttribute("role", "listbox");
+    menu.hidden = true;
+
+    let table;
+    const closeMenu = () => {
+        menu.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+    };
+    const setLength = length => {
+        toggle.textContent = length.toLocaleString("cs-CZ");
+        menu.querySelectorAll("button").forEach(option => {
+            option.setAttribute("aria-selected", String(Number(option.dataset.value) === length));
+        });
+    };
+
+    TABLE_PAGE_LENGTHS.forEach(length => {
+        const option = document.createElement("button");
+        option.type = "button";
+        option.className = "page-length-option";
+        option.dataset.value = length;
+        option.setAttribute("role", "option");
+        option.textContent = length.toLocaleString("cs-CZ");
+        option.addEventListener("click", () => {
+            setLength(length);
+            table?.page.len(length).draw();
+            closeMenu();
+            toggle.focus();
+        });
+        menu.appendChild(option);
+    });
+
+    setLength(initialLength);
+    toggle.addEventListener("click", () => {
+        const willOpen = menu.hidden;
+        menu.hidden = !willOpen;
+        toggle.setAttribute("aria-expanded", String(willOpen));
+    });
+    control.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            closeMenu();
+            toggle.focus();
+        }
+    });
+    document.addEventListener("click", event => {
+        if (!control.contains(event.target)) closeMenu();
+    });
+
+    dropdown.append(toggle, menu);
+    control.append(dropdown, " záznamů na stránku");
+    return {
+        control,
+        connect: dataTable => { table = dataTable; }
+    };
+}
+
 function normalizeText(value, removeDiacritics = false) {
     let text = String(value ?? "").trim().toLocaleLowerCase("cs");
     if (removeDiacritics) {
@@ -179,13 +248,15 @@ function setupSexSelection(selectedSex, pageUrl, selectedSeason) {
 }
 
 async function createStatisticsTable({
-    tableId, csvFile, columns, columnDefs, order, rowFilter = () => true, renumberRows = false
+    tableId, csvFile, columns, columnDefs, order, rowFilter = () => true,
+    renumberRows = false, rankField = null
 }) {
     try {
         const data = filterAndRenumberRows(
             await loadCsv(csvFile),
             row => row.ID !== undefined && rowFilter(row),
-            renumberRows
+            renumberRows,
+            rankField
         );
         if (data.length === 0) {
             showTableError(tableId, "Pro tuto sezónu nejsou dostupná žádná data.");
@@ -196,30 +267,26 @@ async function createStatisticsTable({
             row["Oddíl"] = formatTeamName(row["Oddíl"]);
         });
         const playerSearch = createPlayerTableSearch();
+        const pageLength = createPageLengthControl(TABLE_PAGE_LENGTHS[0]);
         const table = new DataTable(`#${tableId}`, {
             data,
             columns,
             pageLength: TABLE_PAGE_LENGTHS[0],
-            lengthMenu: [TABLE_PAGE_LENGTHS, TABLE_PAGE_LENGTH_LABELS],
             order,
             scrollX: true,
             autoWidth: false,
             layout: {
                 top2Start: () => playerSearch.control,
-                top2End: "pageLength",
+                top2End: () => pageLength.control,
                 topStart: "info",
                 topEnd: "paging",
                 bottomStart: "info",
                 bottomEnd: "paging"
             },
             columnDefs,
-            language: TABLE_LANGUAGE,
-            initComplete: function () {
-                this.api().table().container()
-                    .querySelector(".dt-length select")
-                    ?.classList.add("entries-dropdown");
-            }
+            language: TABLE_LANGUAGE
         });
+        pageLength.connect(table);
 
         playerSearch.input.addEventListener("input", () => {
             const query = playerSearch.input.value;
@@ -232,11 +299,19 @@ async function createStatisticsTable({
     }
 }
 
-function filterAndRenumberRows(rows, rowFilter, renumberRows = false) {
-    return rows.filter(rowFilter).map((row, index) => ({
-        ...row,
-        "Pořadí": renumberRows ? index + 1 : row["Pořadí"]
-    }));
+function filterAndRenumberRows(rows, rowFilter, renumberRows = false, rankField = null) {
+    let previousValue;
+    let previousRank;
+    return rows.filter(rowFilter).map((row, index) => {
+        let rank = row["Pořadí"];
+        if (renumberRows) {
+            const value = rankField ? row[rankField] : undefined;
+            rank = rankField && value === previousValue ? previousRank : index + 1;
+            previousValue = value;
+            previousRank = rank;
+        }
+        return { ...row, "Pořadí": rank };
+    });
 }
 
 function playerNameMatchesSearch(name, query) {

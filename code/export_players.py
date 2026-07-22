@@ -24,8 +24,16 @@ def export_players(master, output_dir, movers_str_min=800):
 
     rating.columns = [f"{c} STR" for c in rating.columns]
     
+    ranked_by_sex = master.copy()
+    ranked_by_sex["Pořadí"] = (
+        ranked_by_sex
+        .groupby(["Sezóna", "Pohlaví"])["STR"]
+        .rank(method="min", ascending=False)
+        .astype("Int64")
+    )
+
     rank = (
-        master
+        ranked_by_sex
         .pivot(
             index="ID",
             columns="Sezóna",
@@ -48,14 +56,15 @@ def export_players(master, output_dir, movers_str_min=800):
             .rename(columns={"STR": "previous_str"})
         )
         current_ratings = (
-            master[master["Sezóna"] == current][["ID", "STR"]]
+            master[master["Sezóna"] == current][["ID", "STR", "Pohlaví"]]
             .rename(columns={"STR": "current_str"})
         )
         movers = current_ratings.merge(previous_ratings, on="ID", how="inner")
         movers = movers[movers["previous_str"] >= movers_str_min].copy()
         movers[f"{current} STR změna"] = movers["current_str"] - movers["previous_str"]
         movers[f"{current} Pořadí skokani"] = (
-            movers[f"{current} STR změna"]
+            movers
+            .groupby("Pohlaví")[f"{current} STR změna"]
             .rank(method="min", ascending=False)
             .astype("Int64")
         )
@@ -72,6 +81,12 @@ def export_players(master, output_dir, movers_str_min=800):
 
     for mover_data in mover_columns:
         players = players.join(mover_data)
+
+    player_counts = master.groupby(["Sezóna", "Pohlaví"]).size()
+    for year in years:
+        players[f"{year} počet hráčů"] = players["Pohlaví"].map(
+            player_counts.loc[year]
+        ).astype("Int64")
 
     players = players.reset_index()
     

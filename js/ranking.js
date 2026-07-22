@@ -21,6 +21,7 @@ createStatisticsTable({
     columns: RANKING_COLUMNS,
     rowFilter: row => selectedSex === "all" || row["Pohlaví"] === selectedSex,
     renumberRows: selectedSex !== "all",
+    rankField: "STR",
     order: [[0, "asc"]],
     columnDefs: [
         { targets: "_all", className: "dt-head-center" },

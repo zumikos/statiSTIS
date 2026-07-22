@@ -6,7 +6,6 @@ const searchStatus = document.getElementById("player-search-status");
 const resultsContainer = document.getElementById("player-results");
 
 let playersPromise;
-let playerCountsPromise;
 let currentMatches = [];
 let visibleResultCount = 0;
 const RESULTS_PER_PAGE = 50;
@@ -20,20 +19,10 @@ function loadPlayers() {
     return playersPromise;
 }
 
-function loadPlayerCounts() {
-    if (!playerCountsPromise) {
-        playerCountsPromise = loadCsv("csv/player_count.csv").then(data => new Map(
-            data.map(row => [Number(row["Sezóna"]), Number(row["Počet hráčů"])])
-        ));
-    }
-
-    return playerCountsPromise;
-}
-
 function playerLink(player) {
     const link = document.createElement("a");
     link.className = "player-result";
-    link.href = `hraci.html?player=${encodeURIComponent(player.ID)}`;
+    link.href = `hraci.html?ID=${encodeURIComponent(player.ID)}`;
 
     const name = document.createElement("strong");
     name.textContent = player["Hráč"];
@@ -159,7 +148,7 @@ function formatPercentile(rank, totalPlayers) {
     return `${percentile.toFixed(1).replace(".", ",")}`;
 }
 
-function renderPlayerHistory(player, playerCounts) {
+function renderPlayerHistory(player) {
     const table = document.getElementById("player-history");
     table.replaceChildren();
 
@@ -181,7 +170,7 @@ function renderPlayerHistory(player, playerCounts) {
                 formatSeason(year),
                 player[`${year} STR`],
                 player[`${year} pořadí`],
-                formatPercentile(player[`${year} pořadí`], playerCounts.get(year)),
+                formatPercentile(player[`${year} pořadí`], player[`${year} počet hráčů`]),
                 formatValue(player[`${year} STR změna`], true),
                 formatValue(player[`${year} Pořadí skokani`])
             ];
@@ -370,7 +359,7 @@ async function showPlayerDetail(playerId) {
     document.getElementById("player-name").textContent = "Načítám hráče…";
 
     try {
-        const [players, playerCounts] = await Promise.all([loadPlayers(), loadPlayerCounts()]);
+        const players = await loadPlayers();
         const player = players.find(item => String(item.ID) === playerId);
 
         if (!player) {
@@ -385,7 +374,7 @@ async function showPlayerDetail(playerId) {
         const gender = genderLabels[player["Pohlaví"]] || formatValue(player["Pohlaví"]);
         document.getElementById("player-info").textContent =
             `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, Pohlaví: ${gender}`;
-        renderPlayerHistory(player, playerCounts);
+        renderPlayerHistory(player);
         renderPlayerChart(player);
     } catch (error) {
         document.getElementById("player-name").textContent = "Data se nepodařilo načíst";
@@ -398,7 +387,7 @@ searchForm.addEventListener("submit", event => {
     searchPlayers(searchInput.value);
 });
 
-const requestedPlayer = new URLSearchParams(window.location.search).get("player");
+const requestedPlayer = new URLSearchParams(window.location.search).get("ID");
 if (requestedPlayer) {
     showPlayerDetail(requestedPlayer);
 }
