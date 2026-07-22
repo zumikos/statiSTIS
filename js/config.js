@@ -230,11 +230,12 @@ function getSelectedSex() {
         : "all";
 }
 
-function setupSexSelection(selectedSex, pageUrl, selectedSeason) {
+function setupSexSelection(selectedSex, pageUrl, selectedSeason = null, additionalParameters = {}) {
     const container = document.getElementById("sex-selection");
     PLAYER_SEXES.forEach(sex => {
         const link = document.createElement("a");
-        const parameters = new URLSearchParams({ sezona: selectedSeason });
+        const parameters = new URLSearchParams(additionalParameters);
+        if (selectedSeason !== null) parameters.set("sezona", selectedSeason);
         if (sex.value !== "all") parameters.set("pohlavi", sex.value);
         link.href = `${pageUrl}?${parameters}`;
         link.className = "sex-button";
@@ -249,7 +250,7 @@ function setupSexSelection(selectedSex, pageUrl, selectedSeason) {
 
 async function createStatisticsTable({
     tableId, csvFile, columns, columnDefs, order, rowFilter = () => true,
-    renumberRows = false, rankField = null
+    renumberRows = false, rankField = null, showPageLength = true
 }) {
     try {
         const data = filterAndRenumberRows(
@@ -267,7 +268,17 @@ async function createStatisticsTable({
             row["Oddíl"] = formatTeamName(row["Oddíl"]);
         });
         const playerSearch = createPlayerTableSearch();
-        const pageLength = createPageLengthControl(TABLE_PAGE_LENGTHS[0]);
+        const pageLength = showPageLength
+            ? createPageLengthControl(TABLE_PAGE_LENGTHS[0])
+            : null;
+        const layout = {
+            top2Start: () => playerSearch.control,
+            topStart: "info",
+            topEnd: "paging",
+            bottomStart: "info",
+            bottomEnd: "paging"
+        };
+        if (pageLength) layout.top2End = () => pageLength.control;
         const table = new DataTable(`#${tableId}`, {
             data,
             columns,
@@ -275,18 +286,11 @@ async function createStatisticsTable({
             order,
             scrollX: true,
             autoWidth: false,
-            layout: {
-                top2Start: () => playerSearch.control,
-                top2End: () => pageLength.control,
-                topStart: "info",
-                topEnd: "paging",
-                bottomStart: "info",
-                bottomEnd: "paging"
-            },
+            layout,
             columnDefs,
             language: TABLE_LANGUAGE
         });
-        pageLength.connect(table);
+        pageLength?.connect(table);
 
         playerSearch.input.addEventListener("input", () => {
             const query = playerSearch.input.value;

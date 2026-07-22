@@ -112,7 +112,9 @@ function showTeamDetail(teamName) {
     teamDetailView.hidden = false;
     document.getElementById("team-name").textContent = teamName;
     document.getElementById("team-season").textContent = formatSeason(DEFAULT_SEASON);
-    document.title = `${teamName} – statiSTIS`;
+    document.title = `statiSTIS - ${teamName}`;
+    const selectedSex = getSelectedSex();
+    setupSexSelection(selectedSex, "oddily.html", null, { oddil: teamName });
 
     const columns = [
         { data: "Pořadí", title: "Pořadí", width: "1%" },
@@ -127,9 +129,12 @@ function showTeamDetail(teamName) {
         tableId: "team-ranking",
         csvFile: `csv/ranking_${DEFAULT_SEASON}.csv`,
         columns,
-        rowFilter: row => formatTeamName(row["Oddíl"]) === teamName,
+        rowFilter: row =>
+            formatTeamName(row["Oddíl"]) === teamName &&
+            (selectedSex === "all" || row["Pohlaví"] === selectedSex),
         renumberRows: true,
         rankField: "STR",
+        showPageLength: false,
         order: [[0, "asc"]],
         columnDefs: [
             { targets: "_all", className: "dt-head-center" },
