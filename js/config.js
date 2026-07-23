@@ -22,6 +22,7 @@ const PLAYER_NAME_OVERRIDES = {
 
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
 const TEAM_NAME_OVERRIDES = {
+    "DDM Uherský Ostroh, příspěvková": "DDM Uherský Ostroh",
     "Dům dětí a mládeže Cvikováček, příspěvková organiz": "DDM Cvikováček",
     "Klub přátel školy při Střední průmyslové škole Zengrova 1, Ostrava-Vítkovice, z.s.": "Klub přátel školy při SPŠ Zengrova 1, Ostrava-Vítkovice",
     "Městský sportovní klub Břeclav stolní tenis, pobočný spolek": "MSK Břeclav",

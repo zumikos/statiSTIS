@@ -14,7 +14,8 @@ CSV_DIR = BASE_DIR / "csv"     # csv soubory budou ve složce /csv
 
 CSV_DIR.mkdir(exist_ok=True)
 
-MOVERS_STR_MIN = 800
+# MOVERS_STR_MIN = 800
+MOVERS_STR_MIN = 2000
 
 def load_all_seasons():
     """Načtení jednotlivých sezón"""

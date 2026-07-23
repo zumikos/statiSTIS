@@ -304,6 +304,158 @@ function renderHistogram(data) {
     container.appendChild(svg);
 }
 
+function regionStatistics(data) {
+    const ratingsByRegion = new Map();
+
+    data.forEach(row => {
+        const region = String(row["Kraj"] || "").trim();
+        const rating = Number(row["STR"]);
+        if (!region || !Number.isFinite(rating)) return;
+        if (!ratingsByRegion.has(region)) ratingsByRegion.set(region, []);
+        ratingsByRegion.get(region).push(rating);
+    });
+
+    return [...ratingsByRegion].map(([region, ratings]) => {
+        ratings.sort((first, second) => first - second);
+        const middle = Math.floor(ratings.length / 2);
+        const median = ratings.length % 2
+            ? ratings[middle]
+            : (ratings[middle - 1] + ratings[middle]) / 2;
+        return { region, count: ratings.length, median };
+    });
+}
+
+function niceAxisMaximum(maximum) {
+    const roughStep = maximum / 5;
+    const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+    const normalizedStep = roughStep / magnitude;
+    const step = (normalizedStep <= 1 ? 1 : normalizedStep <= 2 ? 2 :
+        normalizedStep <= 5 ? 5 : 10) * magnitude;
+    return Math.ceil(maximum / step) * step;
+}
+
+function renderRegionBarChart(containerId, data, valueKey, yTitle) {
+    const container = document.getElementById(containerId);
+    container.replaceChildren();
+
+    const sortedData = [...data].sort((first, second) =>
+        second[valueKey] - first[valueKey] || first.region.localeCompare(second.region, "cs")
+    );
+    if (sortedData.length === 0) {
+        container.textContent = "Graf neobsahuje žádná data.";
+        return;
+    }
+
+    const width = 760;
+    const height = 520;
+    const margin = { top: 24, right: 18, bottom: 175, left: 76 };
+    const plotWidth = width - margin.left - margin.right;
+    const plotHeight = height - margin.top - margin.bottom;
+    const yMaximum = niceAxisMaximum(Math.max(...sortedData.map(item => item[valueKey])));
+    const y = value => margin.top + plotHeight * (1 - value / yMaximum);
+    const columnWidth = plotWidth / sortedData.length;
+    const barWidth = Math.max(8, columnWidth * 0.68);
+    const svg = createSvgElement("svg", {
+        viewBox: `0 0 ${width} ${height}`,
+        role: "img",
+        "aria-label": yTitle
+    });
+
+    for (let index = 0; index <= 5; index += 1) {
+        const value = yMaximum * index / 5;
+        const lineY = y(value);
+        svg.appendChild(createSvgElement("line", {
+            x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
+            class: "chart-grid-line"
+        }));
+        const label = createSvgElement("text", {
+            x: margin.left - 10, y: lineY + 5, "text-anchor": "end",
+            class: "chart-axis-label"
+        });
+        label.textContent = Math.round(value).toLocaleString("cs-CZ");
+        svg.appendChild(label);
+    }
+
+    const bars = new Map();
+    sortedData.forEach((item, index) => {
+        const center = margin.left + columnWidth * (index + 0.5);
+        const lineX = margin.left + columnWidth * index;
+        svg.appendChild(createSvgElement("line", {
+            x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
+            class: "chart-grid-line"
+        }));
+        addRotatedXLabel(svg, center, height - margin.bottom + 26, item.region, 12);
+
+        const bar = createSvgElement("rect", {
+            x: center - barWidth / 2,
+            y: y(item[valueKey]),
+            width: barWidth,
+            height: height - margin.bottom - y(item[valueKey]),
+            class: "chart-histogram-bar"
+        });
+        svg.appendChild(bar);
+        bars.set(item.region, bar);
+    });
+    svg.appendChild(createSvgElement("line", {
+        x1: width - margin.right, y1: margin.top,
+        x2: width - margin.right, y2: height - margin.bottom,
+        class: "chart-grid-line"
+    }));
+
+    const tooltipWidth = 220;
+    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
+    const tooltipBackground = createSvgElement("rect", {
+        width: tooltipWidth, height: 48, rx: 6
+    });
+    const regionText = createSvgElement("text", { x: 10, y: 19 });
+    const valueText = createSvgElement("text", { x: 10, y: 39 });
+    tooltip.append(tooltipBackground, regionText, valueText);
+
+    sortedData.forEach((item, index) => {
+        const left = margin.left + columnWidth * index;
+        const center = left + columnWidth / 2;
+        const bar = bars.get(item.region);
+        const hoverColumn = createSvgElement("rect", {
+            x: left, y: margin.top, width: columnWidth, height: plotHeight,
+            class: "chart-histogram-hover", tabindex: 0,
+            "aria-label": `${item.region}: ${Math.round(item[valueKey]).toLocaleString("cs-CZ")}`
+        });
+        const show = () => {
+            const tooltipX = Math.min(Math.max(center - tooltipWidth / 2, 0), width - tooltipWidth);
+            tooltip.setAttribute("transform", `translate(${tooltipX} ${margin.top + 8})`);
+            regionText.textContent = item.region;
+            valueText.textContent = valueKey === "count"
+                ? `Počet hráčů: ${item.count.toLocaleString("cs-CZ")}`
+                : `Medián STR: ${item.median.toLocaleString("cs-CZ")}`;
+            tooltip.classList.add("is-visible");
+            bar.classList.add("is-active");
+        };
+        const hide = () => {
+            tooltip.classList.remove("is-visible");
+            bar.classList.remove("is-active");
+        };
+        bindHoverEvents(hoverColumn, show, hide);
+        svg.appendChild(hoverColumn);
+    });
+    svg.appendChild(tooltip);
+
+    const xAxisTitle = createSvgElement("text", {
+        x: margin.left + plotWidth / 2, y: height - 8,
+        "text-anchor": "middle", class: "chart-axis-label"
+    });
+    xAxisTitle.textContent = "Kraj";
+    svg.appendChild(xAxisTitle);
+
+    const yAxisTitle = createSvgElement("text", {
+        x: 18, y: margin.top + plotHeight / 2, "text-anchor": "middle",
+        transform: `rotate(-90 18 ${margin.top + plotHeight / 2})`,
+        class: "chart-axis-label"
+    });
+    yAxisTitle.textContent = yTitle;
+    svg.appendChild(yAxisTitle);
+    container.appendChild(svg);
+}
+
 loadCsv("csv/player_count.csv")
     .then(data => renderPlayerCountChart(data.map(row => ({
         year: row["Sezóna"],
@@ -320,6 +472,8 @@ document.getElementById("home-men-movers-season").textContent = homeSeasonLabel;
 document.getElementById("home-women-ranking-season").textContent = homeSeasonLabel;
 document.getElementById("home-women-movers-season").textContent = homeSeasonLabel;
 document.getElementById("home-histogram-season").textContent = homeSeasonLabel;
+document.getElementById("home-region-count-season").textContent = homeSeasonLabel;
+document.getElementById("home-region-median-season").textContent = homeSeasonLabel;
 document.getElementById("home-women-ranking-link").href =
     `zebricky.html?sezona=${DEFAULT_SEASON}&pohlavi=Z`;
 document.getElementById("home-women-movers-link").href =
@@ -345,6 +499,9 @@ const moverColumns = [
 loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
     .then(data => {
         renderHistogram(data);
+        const regions = regionStatistics(data);
+        renderRegionBarChart("home-region-count", regions, "count", "Počet hráčů");
+        renderRegionBarChart("home-region-median", regions, "median", "Medián STR");
         const men = filterAndRankRows(data, row => row["Pohlaví"] === "M", "STR");
         renderTopTable(men, "home-men-ranking", rankingColumns);
         const women = filterAndRankRows(data, row => row["Pohlaví"] === "Z", "STR");
@@ -352,6 +509,10 @@ loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
     })
     .catch(() => {
         document.getElementById("home-histogram").textContent =
+            "Graf se nepodařilo načíst.";
+        document.getElementById("home-region-count").textContent =
+            "Graf se nepodařilo načíst.";
+        document.getElementById("home-region-median").textContent =
             "Graf se nepodařilo načíst.";
         const message = "Data se nepodařilo načíst. Zkuste stránku obnovit.";
         showTableError("home-men-ranking", message);
