@@ -304,24 +304,24 @@ function renderHistogram(data) {
     container.appendChild(svg);
 }
 
-function regionStatistics(data) {
-    const ratingsByRegion = new Map();
+function associationStatistics(data) {
+    const ratingsByAssociation = new Map();
 
     data.forEach(row => {
-        const region = formatRegionName(row["Kraj"]);
+        const association = formatAssociationName(row["Kraj"]);
         const rating = Number(row["STR"]);
-        if (!region || !Number.isFinite(rating)) return;
-        if (!ratingsByRegion.has(region)) ratingsByRegion.set(region, []);
-        ratingsByRegion.get(region).push(rating);
+        if (!association || !Number.isFinite(rating)) return;
+        if (!ratingsByAssociation.has(association)) ratingsByAssociation.set(association, []);
+        ratingsByAssociation.get(association).push(rating);
     });
 
-    return [...ratingsByRegion].map(([region, ratings]) => {
+    return [...ratingsByAssociation].map(([association, ratings]) => {
         ratings.sort((first, second) => first - second);
         const middle = Math.floor(ratings.length / 2);
         const median = ratings.length % 2
             ? ratings[middle]
             : (ratings[middle - 1] + ratings[middle]) / 2;
-        return { region, count: ratings.length, median };
+        return { association, count: ratings.length, median };
     });
 }
 
@@ -331,12 +331,13 @@ function niceAxisMaximum(maximum) {
     return Math.ceil(maximum / step) * step;
 }
 
-function renderRegionBarChart(containerId, data, valueKey, yTitle) {
+function renderAssociationBarChart(containerId, data, valueKey, yTitle) {
     const container = document.getElementById(containerId);
     container.replaceChildren();
 
     const sortedData = [...data].sort((first, second) =>
-        second[valueKey] - first[valueKey] || first.region.localeCompare(second.region, "cs")
+        second[valueKey] - first[valueKey] ||
+        first.association.localeCompare(second.association, "cs")
     );
     if (sortedData.length === 0) {
         container.textContent = "Graf neobsahuje žádná data.";
@@ -381,7 +382,7 @@ function renderRegionBarChart(containerId, data, valueKey, yTitle) {
             x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
             class: "chart-grid-line"
         }));
-        addRotatedXLabel(svg, center, height - margin.bottom + 26, item.region, 12);
+        addRotatedXLabel(svg, center, height - margin.bottom + 26, item.association, 12);
 
         const bar = createSvgElement("rect", {
             x: center - barWidth / 2,
@@ -391,7 +392,7 @@ function renderRegionBarChart(containerId, data, valueKey, yTitle) {
             class: "chart-histogram-bar"
         });
         svg.appendChild(bar);
-        bars.set(item.region, bar);
+        bars.set(item.association, bar);
     });
     svg.appendChild(createSvgElement("line", {
         x1: width - margin.right, y1: margin.top,
@@ -404,23 +405,23 @@ function renderRegionBarChart(containerId, data, valueKey, yTitle) {
     const tooltipBackground = createSvgElement("rect", {
         width: tooltipWidth, height: 48, rx: 6
     });
-    const regionText = createSvgElement("text", { x: 10, y: 19 });
+    const associationText = createSvgElement("text", { x: 10, y: 19 });
     const valueText = createSvgElement("text", { x: 10, y: 39 });
-    tooltip.append(tooltipBackground, regionText, valueText);
+    tooltip.append(tooltipBackground, associationText, valueText);
 
     sortedData.forEach((item, index) => {
         const left = margin.left + columnWidth * index;
         const center = left + columnWidth / 2;
-        const bar = bars.get(item.region);
+        const bar = bars.get(item.association);
         const hoverColumn = createSvgElement("rect", {
             x: left, y: margin.top, width: columnWidth, height: plotHeight,
             class: "chart-histogram-hover", tabindex: 0,
-            "aria-label": `${item.region}: ${Math.round(item[valueKey]).toLocaleString("cs-CZ")}`
+            "aria-label": `${item.association}: ${Math.round(item[valueKey]).toLocaleString("cs-CZ")}`
         });
         const show = () => {
             const tooltipX = Math.min(Math.max(center - tooltipWidth / 2, 0), width - tooltipWidth);
             tooltip.setAttribute("transform", `translate(${tooltipX} ${margin.top + 8})`);
-            regionText.textContent = item.region;
+            associationText.textContent = item.association;
             valueText.textContent = valueKey === "count"
                 ? `Počet hráčů: ${item.count.toLocaleString("cs-CZ")}`
                 : `Medián STR: ${item.median.toLocaleString("cs-CZ")}`;
@@ -440,7 +441,7 @@ function renderRegionBarChart(containerId, data, valueKey, yTitle) {
         x: margin.left + plotWidth / 2, y: height - 8,
         "text-anchor": "middle", class: "chart-axis-label"
     });
-    xAxisTitle.textContent = "Kraj";
+    xAxisTitle.textContent = "Svaz";
     svg.appendChild(xAxisTitle);
 
     const yAxisTitle = createSvgElement("text", {
@@ -469,8 +470,8 @@ document.getElementById("home-men-movers-season").textContent = homeSeasonLabel;
 document.getElementById("home-women-ranking-season").textContent = homeSeasonLabel;
 document.getElementById("home-women-movers-season").textContent = homeSeasonLabel;
 document.getElementById("home-histogram-season").textContent = homeSeasonLabel;
-document.getElementById("home-region-count-season").textContent = homeSeasonLabel;
-document.getElementById("home-region-median-season").textContent = homeSeasonLabel;
+document.getElementById("home-association-count-season").textContent = homeSeasonLabel;
+document.getElementById("home-association-median-season").textContent = homeSeasonLabel;
 document.getElementById("home-women-ranking-link").href =
     `zebricky.html?sezona=${DEFAULT_SEASON}&pohlavi=Z`;
 document.getElementById("home-women-movers-link").href =
@@ -496,9 +497,9 @@ const moverColumns = [
 loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
     .then(data => {
         renderHistogram(data);
-        const regions = regionStatistics(data);
-        renderRegionBarChart("home-region-count", regions, "count", "Počet hráčů");
-        renderRegionBarChart("home-region-median", regions, "median", "Medián STR");
+        const associations = associationStatistics(data);
+        renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů");
+        renderAssociationBarChart("home-association-median", associations, "median", "Medián STR");
         const men = filterAndRankRows(data, row => row["Pohlaví"] === "M", "STR");
         renderTopTable(men, "home-men-ranking", rankingColumns);
         const women = filterAndRankRows(data, row => row["Pohlaví"] === "Z", "STR");
@@ -507,9 +508,9 @@ loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
     .catch(() => {
         document.getElementById("home-histogram").textContent =
             "Graf se nepodařilo načíst.";
-        document.getElementById("home-region-count").textContent =
+        document.getElementById("home-association-count").textContent =
             "Graf se nepodařilo načíst.";
-        document.getElementById("home-region-median").textContent =
+        document.getElementById("home-association-median").textContent =
             "Graf se nepodařilo načíst.";
         const message = "Data se nepodařilo načíst. Zkuste stránku obnovit.";
         showTableError("home-men-ranking", message);

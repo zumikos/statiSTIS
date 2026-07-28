@@ -8,11 +8,11 @@ Motivací k tomuto projektu bylo vytvořit první vlastní webové stránky a na
 
 Web spojuje veřejně dostupná data z žebříčků systému STIS a zobrazuje z nich vytvořené statistiky v tabulkách a grafech. Nabízí zejména:
 
-- největší skokany a skokanky sezóny;
-- žebříčky hráčů podle sezóny a pohlaví;
+- největší skokany a skokanky sezón, a to i pro jednotlivé mládežnické kategorie;
+- žebříčky hráčů podle sezóny, pohlaví a kategorie (U21, U19, U17, U15 a U13);
 - vyhledávání hráčů a jejich vývoj STR po konci každé aktivní sezóny;
 - vyhledávání oddílů a oddílové žebříčky;
-- souhrnné grafy o počtu hráčů, rozložení STR a krajích.
+- souhrnné grafy o počtu hráčů, rozložení STR.
 
 Web je nezávislý statistický projekt a není oficiální stránkou České asociace stolního tenisu.
 

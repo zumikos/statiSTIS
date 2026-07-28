@@ -20,18 +20,18 @@ function loadTeams() {
                     teams.set(name, {
                         name,
                         playerCount: 0,
-                        regions: new Set()
+                        associations: new Set()
                     });
                 }
                 const team = teams.get(name);
                 team.playerCount += 1;
-                const region = formatRegionName(row["Kraj"]);
-                if (region) team.regions.add(region);
+                const association = formatAssociationName(row["Kraj"]);
+                if (association) team.associations.add(association);
             });
             return [...teams.values()].map(team => ({
                 name: team.name,
                 playerCount: team.playerCount,
-                region: [...team.regions]
+                association: [...team.associations]
                     .sort((first, second) => first.localeCompare(second, "cs"))
                     .join(", ")
             }));
@@ -69,7 +69,7 @@ function renderTeamResults() {
         const name = document.createElement("strong");
         name.textContent = team.name;
         const details = document.createElement("span");
-        details.textContent = `${team.region ? `${team.region}, ` : ""}Hráčů: ${
+        details.textContent = `${team.association ? `Svaz: ${team.association}, ` : ""}Hráčů: ${
             team.playerCount.toLocaleString("cs-CZ")
         }`;
         link.append(name, details);

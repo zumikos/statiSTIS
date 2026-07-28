@@ -7,6 +7,19 @@ const PLAYER_SEXES = [
     { value: "M", label: "Muži" },
     { value: "Z", label: "Ženy" }
 ];
+const YOUTH_AGES = [21, 19, 17, 15, 13];
+const PLAYER_GROUPS = [
+    ...PLAYER_SEXES.map(sex => ({
+        value: sex.value,
+        label: sex.label,
+        sex: sex.value === "all" ? null : sex.value,
+        age: null
+    })),
+    ...YOUTH_AGES.flatMap(age => [
+        { value: `U${age}M`, label: `U${age}M`, sex: "M", age },
+        { value: `U${age}Z`, label: `U${age}Ž`, sex: "Z", age }
+    ])
+];
 const TABLE_LANGUAGE = {
     thousands: " ",
     info: "Zobrazeno _START_ až _END_ z _TOTAL_ záznamů",
@@ -18,12 +31,6 @@ const TABLE_LANGUAGE = {
 
 const PLAYER_NAME_OVERRIDES = {
     "LIAO Ting-Yao": "Liao Ting-Yao"
-};
-
-const REGION_NAME_OVERRIDES = {
-    "KSST Vysočina": "Kraj Vysočina",
-    "Pražský SST": "Hlavní město Praha",
-    "KSST Kralovéhradecký": "Královéhradecký kraj"
 };
 
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
@@ -108,15 +115,21 @@ function formatPlayerName(name) {
     return PLAYER_NAME_OVERRIDES[name] || name;
 }
 
-function formatRegionName(name) {
+function formatAssociationName(name) {
     if (!name) return "";
-    if (REGION_NAME_OVERRIDES[name]) return REGION_NAME_OVERRIDES[name];
-
-    const region = String(name)
+    return String(name)
         .replace(/^KSST\s+/i, "")
         .replace(/\s+SST$/i, "")
         .trim();
-    return region ? `${region} kraj` : "";
+}
+
+function getPlayerAgeCategory(birthYear, season) {
+    const year = Number(birthYear);
+    if (!Number.isFinite(year)) return "—";
+    if (year < season - 21) return "Dospělí";
+
+    const categoryAge = YOUTH_AGES.find(age => year <= season - age + 1);
+    return categoryAge ? `U${categoryAge}` : "U13";
 }
 
 function formatTeamName(name) {
@@ -283,9 +296,45 @@ function setupSexSelection(selectedSex, pageUrl, selectedSeason = null, addition
     });
 }
 
+function getSelectedPlayerGroup() {
+    const parameters = new URLSearchParams(window.location.search);
+    const category = parameters.get("kategorie");
+    const sex = parameters.get("pohlavi");
+    const value = category && sex ? `${category}${sex}` : sex || "all";
+    return PLAYER_GROUPS.find(group => group.value === value) || PLAYER_GROUPS[0];
+}
+
+function setupPlayerGroupSelection(selectedGroup, pageUrl, selectedSeason) {
+    const container = document.getElementById("sex-selection");
+    PLAYER_GROUPS.forEach(group => {
+        const link = document.createElement("a");
+        const parameters = new URLSearchParams();
+        parameters.set("sezona", selectedSeason);
+        if (group.sex) parameters.set("pohlavi", group.sex);
+        if (group.age) parameters.set("kategorie", `U${group.age}`);
+        link.href = `${pageUrl}?${parameters}`;
+        link.className = "sex-button";
+        link.textContent = group.label;
+        if (group.value === selectedGroup.value) {
+            link.classList.add("is-active");
+            link.setAttribute("aria-current", "page");
+        }
+        container.appendChild(link);
+    });
+}
+
+function playerMatchesGroup(row, group, season) {
+    if (group.sex && row["Pohlaví"] !== group.sex) return false;
+    if (!group.age) return true;
+
+    const birthYear = Number(row["Rok narození"]);
+    return Number.isFinite(birthYear) &&
+        birthYear >= season - group.age;
+}
+
 async function createStatisticsTable({
     tableId, csvFile, columns, columnDefs, order, rowFilter = () => true,
-    rankField = null, showPageLength = true
+    rankField = null, showPageLength = true, categorySeason = null
 }) {
     try {
         const data = filterAndRankRows(
@@ -301,6 +350,11 @@ async function createStatisticsTable({
         data.forEach(row => {
             row["Hráč"] = formatPlayerName(row["Hráč"]);
             row["Oddíl"] = formatTeamName(row["Oddíl"]);
+            row["Kraj"] = formatAssociationName(row["Kraj"]);
+            row["Pohlaví"] = row["Pohlaví"] === "Z" ? "Ž" : row["Pohlaví"];
+            if (categorySeason !== null) {
+                row["Kategorie"] = getPlayerAgeCategory(row["Rok narození"], categorySeason);
+            }
         });
         const playerSearch = createPlayerTableSearch();
         const pageLength = showPageLength
