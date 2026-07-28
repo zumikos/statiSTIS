@@ -48,127 +48,28 @@ function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
 }
 
 function renderPlayerCountChart(data) {
-    const container = document.getElementById("home-player-count");
-    container.replaceChildren();
-
-    const width = 650;
-    const height = 420;
-    const margin = { top: 25, right: 20, bottom: 95, left: 75 };
-    const plotWidth = width - margin.left - margin.right;
-    const plotHeight = height - margin.top - margin.bottom;
     const minValue = 8000;
     const maxValue = 20000;
-    const x = year => margin.left + ((year - SEASONS[0]) / (SEASONS.length - 1)) * plotWidth;
-    const y = value => margin.top + ((maxValue - value) / (maxValue - minValue)) * plotHeight;
-
-    const svg = createSvgElement("svg", {
-        viewBox: `0 0 ${width} ${height}`,
-        role: "img",
-        "aria-label": "Vývoj počtu hráčů"
+    renderInteractiveLineChart({
+        container: document.getElementById("home-player-count"),
+        data: data.map(item => ({ x: item.year, value: item.value })),
+        xValues: SEASONS,
+        width: 650,
+        height: 420,
+        margin: { top: 25, right: 20, bottom: 95, left: 75 },
+        minValue,
+        maxValue,
+        yTicks: Array.from({ length: 7 }, (_, index) => minValue + index * 2000),
+        ariaLabel: "Vývoj počtu hráčů",
+        xLabel: year => `${formatSeason(year)}${year === 2021 ? "*" : ""}`,
+        xLabelOffset: 16,
+        xTitle: "Sezóna",
+        yTitle: "Počet hráčů",
+        tooltipWidth: 118,
+        formatTooltip: item => formatThousands(item.value),
+        formatPointAria: item =>
+            `${formatSeason(item.x)}: ${formatThousands(item.value)} hráčů`
     });
-
-    for (let value = minValue; value <= maxValue; value += 2000) {
-        const lineY = y(value);
-        svg.appendChild(createSvgElement("line", {
-            x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
-            class: "chart-grid-line"
-        }));
-        const label = createSvgElement("text", {
-            x: margin.left - 10, y: lineY + 5, "text-anchor": "end",
-            class: "chart-axis-label"
-        });
-        label.textContent = value.toLocaleString("cs-CZ");
-        svg.appendChild(label);
-    }
-
-    data.forEach(item => {
-        const lineX = x(item.year);
-        svg.appendChild(createSvgElement("line", {
-            x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
-            class: "chart-grid-line"
-        }));
-        addRotatedXLabel(
-            svg, lineX, height - margin.bottom + 24,
-            `${formatSeason(item.year)}${item.year === 2021 ? "*" : ""}`, 16
-        );
-    });
-
-    svg.appendChild(createSvgElement("polyline", {
-        points: data.map(item => `${x(item.year)},${y(item.value)}`).join(" "),
-        class: "chart-line"
-    }));
-
-    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
-    const tooltipBackground = createSvgElement("rect", { width: 118, height: 30, rx: 6 });
-    const tooltipText = createSvgElement("text", {
-        x: 59, y: 20, "text-anchor": "middle"
-    });
-    tooltip.append(tooltipBackground, tooltipText);
-
-    const points = new Map();
-    data.forEach(item => {
-        const point = createSvgElement("circle", {
-            cx: x(item.year),
-            cy: y(item.value),
-            r: 6,
-            class: "chart-point",
-            tabindex: 0,
-            "aria-label": `${formatSeason(item.year)}: ${item.value.toLocaleString("cs-CZ")} hráčů`
-        });
-        svg.appendChild(point);
-        points.set(item.year, point);
-    });
-
-    const spacing = plotWidth / Math.max(1, data.length - 1);
-    data.forEach(item => {
-        const center = x(item.year);
-        const left = Math.max(margin.left, center - spacing / 2);
-        const right = Math.min(width - margin.right, center + spacing / 2);
-        const point = points.get(item.year);
-        const column = createSvgElement("rect", {
-            x: left, y: margin.top, width: right - left, height: plotHeight,
-            class: "chart-hover-column", tabindex: 0
-        });
-        const show = () => {
-            const tooltipX = Math.min(Math.max(center - 59, 0), width - 118);
-            const pointY = y(item.value);
-            const tooltipY = pointY < 60 ? pointY + 14 : pointY - 42;
-            tooltip.setAttribute("transform", `translate(${tooltipX} ${tooltipY})`);
-            tooltipText.textContent = item.value.toLocaleString("cs-CZ");
-            tooltip.classList.add("is-visible");
-            point.classList.add("is-active");
-        };
-        const hide = () => {
-            tooltip.classList.remove("is-visible");
-            point.classList.remove("is-active");
-        };
-        bindHoverEvents(point, show, hide);
-        bindHoverEvents(column, show, hide);
-        svg.appendChild(column);
-    });
-
-    svg.appendChild(tooltip);
-
-    const xTitle = createSvgElement("text", {
-        x: margin.left + plotWidth / 2,
-        y: height - 8,
-        "text-anchor": "middle",
-        class: "chart-axis-label"
-    });
-    xTitle.textContent = "Sezóna";
-    svg.appendChild(xTitle);
-
-    const yTitle = createSvgElement("text", {
-        x: 18,
-        y: margin.top + plotHeight / 2,
-        "text-anchor": "middle",
-        transform: `rotate(-90 18 ${margin.top + plotHeight / 2})`,
-        class: "chart-axis-label"
-    });
-    yTitle.textContent = "Počet hráčů";
-    svg.appendChild(yTitle);
-
-    container.appendChild(svg);
 }
 
 function renderHistogram(data) {

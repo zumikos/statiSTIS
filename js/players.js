@@ -6,9 +6,6 @@ const searchStatus = document.getElementById("player-search-status");
 const resultsContainer = document.getElementById("player-results");
 
 let playersPromise;
-let currentMatches = [];
-let visibleResultCount = 0;
-const RESULTS_PER_PAGE = 50;
 
 function loadPlayers() {
     if (!playersPromise) {
@@ -40,6 +37,8 @@ function playerLink(player) {
     link.append(name, details);
     return link;
 }
+
+const playerResults = createPaginatedResultList(resultsContainer, playerLink);
 
 function playerMatchPriority(player, queryText) {
     if (String(player.ID) === queryText) return -1;
@@ -75,7 +74,7 @@ function playerMatchPriority(player, queryText) {
 
 async function searchPlayers(query) {
     const normalizedQuery = normalizeText(query, true);
-    resultsContainer.replaceChildren();
+    playerResults.clear();
 
     if (normalizedQuery.length < 2) {
         searchStatus.textContent = "Zadejte alespoň dva znaky.";
@@ -105,40 +104,16 @@ async function searchPlayers(query) {
             return;
         }
 
-        currentMatches = matches;
-        visibleResultCount = Math.min(RESULTS_PER_PAGE, matches.length);
-        renderSearchResults();
+        searchStatus.textContent = `Nalezeno hráčů: ${matches.length}`;
+        playerResults.show(matches);
     } catch (error) {
         searchStatus.textContent = "Seznam hráčů se nepodařilo načíst. Zkuste stránku obnovit.";
     }
 }
 
-function renderSearchResults() {
-    resultsContainer.replaceChildren();
-    const visibleMatches = currentMatches.slice(0, visibleResultCount);
-
-    searchStatus.textContent = visibleResultCount < currentMatches.length
-        ? `Nalezeno ${currentMatches.length} hráčů`
-        : `Nalezeno hráčů: ${currentMatches.length}`;
-
-    const list = document.createElement("div");
-    list.className = "search-results-list";
-    visibleMatches.forEach(player => list.appendChild(playerLink(player)));
-    resultsContainer.appendChild(list);
-
-    if (visibleResultCount < currentMatches.length) {
-        const remaining = currentMatches.length - visibleResultCount;
-        const showMore = createShowMoreButton(remaining, RESULTS_PER_PAGE, () => {
-            visibleResultCount = Math.min(visibleResultCount + RESULTS_PER_PAGE, currentMatches.length);
-            renderSearchResults();
-        });
-        resultsContainer.appendChild(showMore);
-    }
-}
-
-function formatValue(value, signed = false) {
+function formatValue(value) {
     if (value === null || value === undefined || value === "") return "—";
-    return signed && Number(value) > 0 ? `+${value}` : String(value);
+    return String(value);
 }
 
 function formatPercentile(rank, totalPlayers) {
@@ -197,10 +172,8 @@ function renderPlayerHistory(player) {
 
 function renderPlayerChart(player) {
     const container = document.getElementById("player-str-chart");
-    container.replaceChildren();
-
     const ratings = SEASONS.map(year => ({
-        year,
+        x: year,
         value: player[`${year} STR`]
     }));
     const availableRatings = ratings.filter(item => item.value !== null && item.value !== undefined);
@@ -210,159 +183,34 @@ function renderPlayerChart(player) {
         return;
     }
 
-    const width = 1000;
-    const height = 420;
-    const margin = { top: 25, right: 25, bottom: 75, left: 70 };
-    const plotWidth = width - margin.left - margin.right;
-    const plotHeight = height - margin.top - margin.bottom;
     const values = availableRatings.map(item => Number(item.value));
     const rawMin = Math.min(...values);
     const rawMax = Math.max(...values);
     const padding = Math.max(50, (rawMax - rawMin) * 0.15);
     const minValue = Math.max(0, Math.floor((rawMin - padding) / 100) * 100);
     const maxValue = Math.ceil((rawMax + padding) / 100) * 100 || 100;
-
-    const x = year => margin.left + ((year - SEASONS[0]) / (SEASONS.length - 1)) * plotWidth;
-    const y = value => margin.top + ((maxValue - value) / (maxValue - minValue)) * plotHeight;
-
-    const svg = createSvgElement("svg", {
-        viewBox: `0 0 ${width} ${height}`,
-        role: "img",
-        "aria-label": `Vývoj STR hráče ${player["Hráč"]}`
+    renderInteractiveLineChart({
+        container,
+        data: ratings,
+        xValues: SEASONS,
+        width: 1000,
+        height: 420,
+        margin: { top: 25, right: 25, bottom: 75, left: 70 },
+        minValue,
+        maxValue,
+        yTicks: Array.from(
+            { length: 5 },
+            (_, step) => minValue + ((maxValue - minValue) * step) / 4
+        ),
+        ariaLabel: `Vývoj STR hráče ${player["Hráč"]}`,
+        xLabel: formatSeason,
+        formatYLabel: value => formatThousands(Math.round(value)),
+        formatTooltip: item => `STR ${formatThousands(item.value)}`,
+        formatPointAria: item =>
+            `${formatSeason(item.x)}: STR ${formatThousands(item.value)}`,
+        tooltipWidth: 82,
+        emptyMessage: "Pro tohoto hráče nejsou dostupná data STR."
     });
-
-    for (let step = 0; step <= 4; step += 1) {
-        const value = minValue + ((maxValue - minValue) * step) / 4;
-        const lineY = y(value);
-        svg.appendChild(createSvgElement("line", {
-            x1: margin.left,
-            y1: lineY,
-            x2: width - margin.right,
-            y2: lineY,
-            class: "chart-grid-line"
-        }));
-
-        const label = createSvgElement("text", {
-            x: margin.left - 12,
-            y: lineY + 5,
-            class: "chart-axis-label",
-            "text-anchor": "end"
-        });
-        label.textContent = formatThousands(Math.round(value));
-        svg.appendChild(label);
-    }
-
-    SEASONS.forEach(year => {
-        svg.appendChild(createSvgElement("line", {
-            x1: x(year),
-            y1: margin.top,
-            x2: x(year),
-            y2: height - margin.bottom,
-            class: "chart-grid-line"
-        }));
-
-        addRotatedXLabel(svg, x(year), height - margin.bottom + 24, formatSeason(year));
-    });
-
-    let currentSegment = [];
-    const drawSegment = () => {
-        if (currentSegment.length > 1) {
-            svg.appendChild(createSvgElement("polyline", {
-                points: currentSegment.map(item => `${x(item.year)},${y(item.value)}`).join(" "),
-                class: "chart-line"
-            }));
-        }
-        currentSegment = [];
-    };
-
-    ratings.forEach(item => {
-        if (item.value === null || item.value === undefined) {
-            drawSegment();
-        } else {
-            currentSegment.push({ year: item.year, value: Number(item.value) });
-        }
-    });
-    drawSegment();
-
-    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
-    const tooltipBackground = createSvgElement("rect", {
-        width: 82,
-        height: 30,
-        rx: 6
-    });
-    const tooltipText = createSvgElement("text", {
-        x: 41,
-        y: 20,
-        "text-anchor": "middle"
-    });
-    tooltip.append(tooltipBackground, tooltipText);
-    svg.appendChild(tooltip);
-
-    const showPointValue = (item, point) => {
-        const pointX = x(item.year);
-        const pointY = y(Number(item.value));
-        const tooltipY = pointY < 60 ? pointY + 14 : pointY - 42;
-        const tooltipX = Math.min(Math.max(pointX - 41, 0), width - 82);
-        tooltip.setAttribute("transform", `translate(${tooltipX} ${tooltipY})`);
-        tooltipText.textContent = `STR ${formatThousands(item.value)}`;
-        tooltip.classList.add("is-visible");
-        point.classList.add("is-active");
-    };
-
-    const hidePointValue = point => {
-        tooltip.classList.remove("is-visible");
-        point.classList.remove("is-active");
-    };
-
-    const pointsByYear = new Map();
-
-    availableRatings.forEach(item => {
-        const point = createSvgElement("circle", {
-            cx: x(item.year),
-            cy: y(Number(item.value)),
-            r: 6,
-            class: "chart-point",
-            tabindex: 0
-        });
-        point.setAttribute(
-            "aria-label",
-            `${formatSeason(item.year)}: STR ${formatThousands(item.value)}`
-        );
-        bindHoverEvents(
-            point,
-            () => showPointValue(item, point),
-            () => hidePointValue(point)
-        );
-        svg.appendChild(point);
-        pointsByYear.set(item.year, point);
-    });
-
-    const seasonSpacing = plotWidth / Math.max(1, SEASONS.length - 1);
-    availableRatings.forEach(item => {
-        const center = x(item.year);
-        const left = Math.max(margin.left, center - seasonSpacing / 2);
-        const right = Math.min(width - margin.right, center + seasonSpacing / 2);
-        const point = pointsByYear.get(item.year);
-        const hoverColumn = createSvgElement("rect", {
-            x: left,
-            y: margin.top,
-            width: right - left,
-            height: plotHeight,
-            class: "chart-hover-column",
-            tabindex: 0,
-            "aria-label": `${formatSeason(item.year)}: STR ${formatThousands(item.value)}`
-        });
-        bindHoverEvents(
-            hoverColumn,
-            () => showPointValue(item, point),
-            () => hidePointValue(point)
-        );
-        svg.appendChild(hoverColumn);
-    });
-
-    svg.appendChild(tooltip);
-
-    container.appendChild(svg);
 }
 
 async function showPlayerDetail(playerId) {

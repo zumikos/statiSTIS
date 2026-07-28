@@ -19,7 +19,10 @@ Web je nezávislý statistický projekt a není oficiální stránkou České as
 ## Struktura projektu
 
 - HTML stránky jsou v kořenové složce.
-- Sdílené nastavení a pomocné funkce jsou v `js/config.js`.
+- Konstanty a přepisované názvy jsou v `js/config.js`.
+- Obecné formátování, načítání CSV a stránkování výsledků jsou v `js/utils.js`.
+- Sdílené vykreslování grafů je v `js/charts.js`.
+- Ovládání filtrů a tabulek DataTables je v `js/tables.js`.
 - Logika jednotlivých stránek je v souborech ve složce `js/`.
 - Vzhled webu je definován v `css/style.css`.
 - Zdrojové žebříčky ve formátu XLSX naleznete ve složce `source/`.

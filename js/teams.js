@@ -6,9 +6,6 @@ const teamSearchStatus = document.getElementById("team-search-status");
 const teamResults = document.getElementById("team-results");
 
 let teamsPromise;
-let currentTeamMatches = [];
-let visibleTeamCount = 0;
-const TEAM_RESULTS_PER_PAGE = 50;
 
 function loadTeams() {
     if (!teamsPromise) {
@@ -57,42 +54,25 @@ function teamMatchPriority(name, query) {
     return normalizedName.includes(normalizedQuery) ? 5 : null;
 }
 
-function renderTeamResults() {
-    teamResults.replaceChildren();
-    const list = document.createElement("div");
-    list.className = "search-results-list";
-
-    currentTeamMatches.slice(0, visibleTeamCount).forEach(team => {
-        const link = document.createElement("a");
-        link.className = "search-result";
-        link.href = `oddily.html?oddil=${encodeURIComponent(team.name)}`;
-        const name = document.createElement("strong");
-        name.textContent = team.name;
-        const details = document.createElement("span");
-        details.textContent = `${team.association ? `Svaz: ${team.association}, ` : ""}Hráčů: ${
-            team.playerCount.toLocaleString("cs-CZ")
-        }`;
-        link.append(name, details);
-        list.appendChild(link);
-    });
-    teamResults.appendChild(list);
-
-    if (visibleTeamCount < currentTeamMatches.length) {
-        const remaining = currentTeamMatches.length - visibleTeamCount;
-        const showMore = createShowMoreButton(remaining, TEAM_RESULTS_PER_PAGE, () => {
-            visibleTeamCount = Math.min(
-                visibleTeamCount + TEAM_RESULTS_PER_PAGE,
-                currentTeamMatches.length
-            );
-            renderTeamResults();
-        });
-        teamResults.appendChild(showMore);
-    }
+function teamLink(team) {
+    const link = document.createElement("a");
+    link.className = "search-result";
+    link.href = `oddily.html?oddil=${encodeURIComponent(team.name)}`;
+    const name = document.createElement("strong");
+    name.textContent = team.name;
+    const details = document.createElement("span");
+    details.textContent = `${team.association ? `Svaz: ${team.association}, ` : ""}Hráčů: ${
+        team.playerCount.toLocaleString("cs-CZ")
+    }`;
+    link.append(name, details);
+    return link;
 }
+
+const teamResultList = createPaginatedResultList(teamResults, teamLink);
 
 async function searchTeams(query) {
     const enteredQuery = normalizeText(query);
-    teamResults.replaceChildren();
+    teamResultList.clear();
     if (enteredQuery.length < 2) {
         teamSearchStatus.textContent = "Zadejte alespoň dva znaky.";
         return;
@@ -109,12 +89,10 @@ async function searchTeams(query) {
             )
             .map(result => result.team);
 
-        currentTeamMatches = matches;
-        visibleTeamCount = Math.min(TEAM_RESULTS_PER_PAGE, matches.length);
         teamSearchStatus.textContent = matches.length
             ? `Nalezeno oddílů: ${matches.length}`
             : "Žádný oddíl nebyl nalezen.";
-        if (matches.length) renderTeamResults();
+        teamResultList.show(matches);
     } catch (error) {
         teamSearchStatus.textContent = "Seznam oddílů se nepodařilo načíst. Zkuste stránku obnovit.";
     }
