@@ -64,7 +64,7 @@ nav a{
 }
 
 main{
-    max-width:1200px;
+    max-width:1400px;
     margin:auto;
     padding:30px;
 }
@@ -117,15 +117,24 @@ tr:nth-child(even){
 table.dataTable tbody td {
     line-height: 1.25;
     height: 3rem;
+    padding:6px;
     vertical-align: middle;
     white-space: nowrap;
+}
+
+table.dataTable thead th {
+    padding:6px 20px 6px 5px;
+    box-sizing:border-box;
 }
 
 .dt-scroll-head table.dataTable thead th {
     height:3.5rem !important;
     min-height:3.5rem !important;
     vertical-align:middle !important;
-    box-sizing:border-box;
+}
+
+table.dataTable thead .dt-column-order {
+    right:4px !important;
 }
 
 .dt-scroll-head .dt-column-title {
@@ -277,6 +286,12 @@ table.dataTable tbody td {
 .compact-table {
     margin-bottom: 1rem;
     table-layout: fixed;
+    min-width:36rem;
+}
+
+.compact-table-scroll {
+    max-width:100%;
+    overflow-x:auto;
 }
 
 .compact-table th,
@@ -286,7 +301,8 @@ table.dataTable tbody td {
     height: 1rem;
     line-height: 1.25;
     vertical-align: middle;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 .compact-cell-content {
@@ -306,8 +322,16 @@ table.dataTable tbody td {
 
 .compact-table th:first-child,
 .compact-table td:first-child {
-    width: 5%;
-    text-align: right;
+    width: 6%;
+    white-space:nowrap;
+}
+
+.compact-table th:first-child {
+    text-align:center;
+}
+
+.compact-table td:first-child {
+    text-align:right;
 }
 
 .compact-table th:nth-child(2),
@@ -317,13 +341,21 @@ table.dataTable tbody td {
 
 .compact-table th:nth-child(3),
 .compact-table td:nth-child(3) {
-    width: 48%;
+    width: 46%;
 }
 
 .compact-table th:last-child,
 .compact-table td:last-child {
-    width: 11%;
+    width: 12%;
     text-align: center;
+}
+
+.compact-table th:last-child {
+    white-space:pre-line;
+}
+
+.compact-table td:last-child {
+    white-space:nowrap;
 }
 
 .button {
@@ -651,6 +683,7 @@ table.dataTable tbody td {
 
 #player-history {
     table-layout:fixed;
+    min-width:760px;
 }
 
 #player-history th,
@@ -658,6 +691,7 @@ table.dataTable tbody td {
     width:14.5%;
     text-align:right;
     font-variant-numeric:tabular-nums;
+    white-space:nowrap;
 }
 
 #player-history th:first-child,
@@ -667,9 +701,10 @@ table.dataTable tbody td {
 }
 
 #player-history th {
+    height:3.5rem;
     text-align:center;
     white-space:normal;
-    overflow-wrap:normal;
+    overflow-wrap:break-word;
 }
 
 .dt-container,
@@ -680,6 +715,10 @@ table.dataTable tbody td {
 }
 
 @media (max-width: 600px) {
+    main {
+        padding:16px;
+    }
+
     .search-result {
         flex-direction: column;
         gap: 0.25rem;

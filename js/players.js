@@ -173,10 +173,10 @@ function renderPlayerHistory(player) {
             const row = document.createElement("tr");
             const values = [
                 formatSeason(year),
-                player[`${year} STR`],
+                formatThousands(player[`${year} STR`]),
                 player[`${year} pořadí`],
                 formatPercentile(player[`${year} pořadí`], player[`${year} počet hráčů`]),
-                formatValue(player[`${year} STR změna`], true),
+                formatThousands(player[`${year} STR změna`], true),
                 formatValue(player[`${year} Pořadí skokani`]),
                 formatPercentile(
                     player[`${year} Pořadí skokani`],
@@ -248,7 +248,7 @@ function renderPlayerChart(player) {
             class: "chart-axis-label",
             "text-anchor": "end"
         });
-        label.textContent = Math.round(value);
+        label.textContent = formatThousands(Math.round(value));
         svg.appendChild(label);
     }
 
@@ -304,7 +304,7 @@ function renderPlayerChart(player) {
         const tooltipY = pointY < 60 ? pointY + 14 : pointY - 42;
         const tooltipX = Math.min(Math.max(pointX - 41, 0), width - 82);
         tooltip.setAttribute("transform", `translate(${tooltipX} ${tooltipY})`);
-        tooltipText.textContent = `STR ${item.value}`;
+        tooltipText.textContent = `STR ${formatThousands(item.value)}`;
         tooltip.classList.add("is-visible");
         point.classList.add("is-active");
     };
@@ -324,7 +324,10 @@ function renderPlayerChart(player) {
             class: "chart-point",
             tabindex: 0
         });
-        point.setAttribute("aria-label", `${formatSeason(item.year)}: STR ${item.value}`);
+        point.setAttribute(
+            "aria-label",
+            `${formatSeason(item.year)}: STR ${formatThousands(item.value)}`
+        );
         bindHoverEvents(
             point,
             () => showPointValue(item, point),
@@ -347,7 +350,7 @@ function renderPlayerChart(player) {
             height: plotHeight,
             class: "chart-hover-column",
             tabindex: 0,
-            "aria-label": `${formatSeason(item.year)}: STR ${item.value}`
+            "aria-label": `${formatSeason(item.year)}: STR ${formatThousands(item.value)}`
         });
         bindHoverEvents(
             hoverColumn,

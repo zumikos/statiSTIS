@@ -2,9 +2,7 @@ function formatTopTableValue(row, column) {
     const value = row[column];
     if (column === "Hráč") return formatPlayerName(value);
     if (column === "Oddíl") return formatTeamName(value);
-    if (["STR", "STR změna"].includes(column) && Number.isFinite(Number(value))) {
-        return Number(value).toLocaleString("cs-CZ");
-    }
+    if (["STR", "STR změna"].includes(column)) return formatThousands(value);
     return value;
 }
 

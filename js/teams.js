@@ -135,7 +135,7 @@ function showTeamDetail(teamName) {
         { data: "Hráč", title: "Hráč", width: "12rem" },
         { data: "Rok narození", title: "Rok narození", width: "1%" },
         { data: "Pohlaví", title: "Pohlaví", width: "1%" },
-        { data: "STR", title: "STR", width: "1%" }
+        { data: "STR", title: "STR", width: "1%", render: renderThousands }
     ];
 
     createStatisticsTable({

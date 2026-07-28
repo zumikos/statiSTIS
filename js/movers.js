@@ -6,15 +6,15 @@ const selectedGroup = getSelectedPlayerGroup();
 const MOVERS_COLUMNS = [
     { data: "Pořadí", title: "Pořadí", width: "1%" },
     { data: "ID", title: "ID", width: "1%" },
-    { data: "Hráč", title: "Hráč", width: "10rem" },
-    { data: "Rok narození", title: "Rok narození", width: "1%" },
-    { data: "Kategorie", title: "Kategorie", width: "1%" },
-    { data: "Pohlaví", title: "Pohlaví", width: "1%" },
-    { data: "Oddíl", title: "Oddíl", width: "12rem" },
+    { data: "Hráč", title: "Hráč", width: "9rem" },
+    { data: "Rok narození", title: "Rok<br>narození", width: "1%" },
+    { data: "Kategorie", title: "Kate&shy;gorie", width: "1%" },
+    { data: "Pohlaví", title: "Po&shy;hlaví", width: "1%" },
+    { data: "Oddíl", title: "Oddíl", width: "10rem" },
     { data: "Kraj", title: "Svaz", width: "1%" },
-    { data: "STR loňské", title: "STR loňské", width: "1%" },
-    { data: "STR letošní", title: "STR letošní", width: "1%" },
-    { data: "STR změna", title: "STR změna", width: "1%" }
+    { data: "STR loňské", title: "STR<br>loňské", width: "1%", render: renderThousands },
+    { data: "STR letošní", title: "STR<br>letošní", width: "1%", render: renderThousands },
+    { data: "STR změna", title: "STR<br>změna", width: "1%", render: renderThousands }
 ];
 
 setupSeasonSelect(moverSeasons, selectedSeason, "skokani.html");

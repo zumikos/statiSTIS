@@ -123,6 +123,18 @@ function formatAssociationName(name) {
         .trim();
 }
 
+function formatThousands(value, signed = false) {
+    if (value === null || value === undefined || value === "") return "—";
+    const number = Number(value);
+    if (!Number.isFinite(number)) return String(value);
+    const formatted = number.toLocaleString("cs-CZ");
+    return signed && number > 0 ? `+${formatted}` : formatted;
+}
+
+function renderThousands(value, type) {
+    return type === "display" ? formatThousands(value) : value;
+}
+
 function getPlayerAgeCategory(birthYear, season) {
     const year = Number(birthYear);
     if (!Number.isFinite(year)) return "—";
