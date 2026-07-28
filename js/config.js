@@ -20,6 +20,12 @@ const PLAYER_NAME_OVERRIDES = {
     "LIAO Ting-Yao": "Liao Ting-Yao"
 };
 
+const REGION_NAME_OVERRIDES = {
+    "KSST Vysočina": "Kraj Vysočina",
+    "Pražský SST": "Hlavní město Praha",
+    "KSST Kralovéhradecký": "Královéhradecký kraj"
+};
+
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
 const TEAM_NAME_OVERRIDES = {
     "DDM Uherský Ostroh, příspěvková": "DDM Uherský Ostroh",
@@ -100,6 +106,17 @@ function formatSeason(year) {
 
 function formatPlayerName(name) {
     return PLAYER_NAME_OVERRIDES[name] || name;
+}
+
+function formatRegionName(name) {
+    if (!name) return "";
+    if (REGION_NAME_OVERRIDES[name]) return REGION_NAME_OVERRIDES[name];
+
+    const region = String(name)
+        .replace(/^KSST\s+/i, "")
+        .replace(/\s+SST$/i, "")
+        .trim();
+    return region ? `${region} kraj` : "";
 }
 
 function formatTeamName(name) {

@@ -1,0 +1,44 @@
+# statiSTIS
+
+Statistiky z českého stolního tenisu.
+
+## O projektu
+
+Motivací k tomuto projektu bylo vytvořit první vlastní webové stránky a navázat na web elost.cz Radka Kučery, aby byly znovu snadno dostupné statistiky, jako jsou skokani sezóny.
+
+Web spojuje veřejně dostupná data z žebříčků systému STIS a zobrazuje z nich vytvořené statistiky v tabulkách a grafech. Nabízí zejména:
+
+- největší skokany a skokanky sezóny;
+- žebříčky hráčů podle sezóny a pohlaví;
+- vyhledávání hráčů a jejich vývoj STR po konci každé aktivní sezóny;
+- vyhledávání oddílů a oddílové žebříčky;
+- souhrnné grafy o počtu hráčů, rozložení STR a krajích.
+
+Web je nezávislý statistický projekt a není oficiální stránkou České asociace stolního tenisu.
+
+## Struktura projektu
+
+- HTML stránky jsou v kořenové složce.
+- Sdílené nastavení a pomocné funkce jsou v `js/config.js`.
+- Logika jednotlivých stránek je v souborech ve složce `js/`.
+- Vzhled webu je definován v `css/style.css`.
+- Zdrojové žebříčky ve formátu XLSX naleznete ve složce `source/`.
+- Python skripty ve složce `code/` zpracují zdrojová data a vytvoří soubory ve složce `csv/`.
+
+## Aktualizace dat
+
+Po přidání zdrojových souborů pojmenovaných podle koncového roku sezóny, například `2026.xlsx`, se data vytvoří příkazem:
+
+```powershell
+.\.venv\Scripts\python.exe code\update.py
+```
+
+Výchozí sezóny webu jsou uvedeny v konstantě `SEASONS` v `js/config.js`. Minimální počáteční STR pro žebříček skokanů nastavuje `MOVERS_STR_MIN` v `code/update.py`; názvy odpovídajících CSV souborů používaných webem musí mít stejnou hodnotu.
+
+## Publikování
+
+Projekt je statický web určený pro GitHub Pages. Nevyžaduje serverovou databázi ani backend.
+
+## Zdroj dat
+
+Data vycházejí z veřejně dostupných žebříčků systému STIS.

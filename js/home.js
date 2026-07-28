@@ -308,7 +308,7 @@ function regionStatistics(data) {
     const ratingsByRegion = new Map();
 
     data.forEach(row => {
-        const region = String(row["Kraj"] || "").trim();
+        const region = formatRegionName(row["Kraj"]);
         const rating = Number(row["STR"]);
         if (!region || !Number.isFinite(rating)) return;
         if (!ratingsByRegion.has(region)) ratingsByRegion.set(region, []);
@@ -326,11 +326,8 @@ function regionStatistics(data) {
 }
 
 function niceAxisMaximum(maximum) {
-    const roughStep = maximum / 5;
-    const magnitude = 10 ** Math.floor(Math.log10(roughStep));
-    const normalizedStep = roughStep / magnitude;
-    const step = (normalizedStep <= 1 ? 1 : normalizedStep <= 2 ? 2 :
-        normalizedStep <= 5 ? 5 : 10) * magnitude;
+    const magnitude = 10 ** Math.floor(Math.log10(maximum));
+    const step = magnitude / 5;
     return Math.ceil(maximum / step) * step;
 }
 
@@ -361,8 +358,8 @@ function renderRegionBarChart(containerId, data, valueKey, yTitle) {
         "aria-label": yTitle
     });
 
-    for (let index = 0; index <= 5; index += 1) {
-        const value = yMaximum * index / 5;
+    for (let index = 0; index <= 4; index += 1) {
+        const value = yMaximum * index / 4;
         const lineY = y(value);
         svg.appendChild(createSvgElement("line", {
             x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,

@@ -16,10 +16,25 @@ function loadTeams() {
             const teams = new Map();
             rows.filter(row => row.ID !== undefined).forEach(row => {
                 const name = formatTeamName(row["Oddíl"]);
-                if (!teams.has(name)) teams.set(name, { name, playerCount: 0 });
-                teams.get(name).playerCount += 1;
+                if (!teams.has(name)) {
+                    teams.set(name, {
+                        name,
+                        playerCount: 0,
+                        regions: new Set()
+                    });
+                }
+                const team = teams.get(name);
+                team.playerCount += 1;
+                const region = formatRegionName(row["Kraj"]);
+                if (region) team.regions.add(region);
             });
-            return [...teams.values()];
+            return [...teams.values()].map(team => ({
+                name: team.name,
+                playerCount: team.playerCount,
+                region: [...team.regions]
+                    .sort((first, second) => first.localeCompare(second, "cs"))
+                    .join(", ")
+            }));
         });
     }
     return teamsPromise;
@@ -54,7 +69,9 @@ function renderTeamResults() {
         const name = document.createElement("strong");
         name.textContent = team.name;
         const details = document.createElement("span");
-        details.textContent = `Hráčů: ${team.playerCount.toLocaleString("cs-CZ")}`;
+        details.textContent = `${team.region ? `${team.region}, ` : ""}Hráčů: ${
+            team.playerCount.toLocaleString("cs-CZ")
+        }`;
         link.append(name, details);
         list.appendChild(link);
     });

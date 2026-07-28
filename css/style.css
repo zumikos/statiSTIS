@@ -644,6 +644,10 @@ table.dataTable tbody td {
     font-size:0.9rem;
 }
 
+.chart-stats-placeholder {
+    visibility:hidden;
+}
+
 #player-history {
     table-layout:fixed;
 }
