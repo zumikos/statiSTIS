@@ -2,6 +2,7 @@ const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 202
 const DEFAULT_SEASON = Math.max(...SEASONS);
 const SITE_NAME = "statiSTIS";
 const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
+const MOVERS_STR_MIN_VALUES = [800, 1600, 2000];
 const PLAYER_SEXES = [
     { value: "all", label: "Všichni" },
     { value: "M", label: "Muži" },

@@ -15,11 +15,7 @@ function createPlayerTableSearch() {
     return { control, input };
 }
 
-function createPageLengthControl(initialLength) {
-    const control = document.createElement("div");
-    control.className = "page-length-control";
-    control.append("Zobrazit ");
-
+function createOptionDropdown(values, initialValue, onSelect) {
     const dropdown = document.createElement("div");
     dropdown.className = "page-length-dropdown";
     const toggle = document.createElement("button");
@@ -33,56 +29,98 @@ function createPageLengthControl(initialLength) {
     menu.setAttribute("role", "listbox");
     menu.hidden = true;
 
-    let table;
     const closeMenu = () => {
         menu.hidden = true;
         toggle.setAttribute("aria-expanded", "false");
     };
-    const setLength = length => {
-        toggle.textContent = length.toLocaleString("cs-CZ");
+    const setValue = value => {
+        toggle.textContent = value.toLocaleString("cs-CZ");
         menu.querySelectorAll("button").forEach(option => {
-            option.setAttribute("aria-selected", String(Number(option.dataset.value) === length));
+            option.setAttribute("aria-selected", String(Number(option.dataset.value) === value));
         });
     };
 
-    TABLE_PAGE_LENGTHS.forEach(length => {
+    values.forEach(value => {
         const option = document.createElement("button");
         option.type = "button";
         option.className = "page-length-option";
-        option.dataset.value = length;
+        option.dataset.value = value;
         option.setAttribute("role", "option");
-        option.textContent = length.toLocaleString("cs-CZ");
+        option.textContent = value.toLocaleString("cs-CZ");
         option.addEventListener("click", () => {
-            setLength(length);
-            table?.page.len(length).draw();
+            setValue(value);
+            onSelect(value);
             closeMenu();
             toggle.focus();
         });
         menu.appendChild(option);
     });
 
-    setLength(initialLength);
+    setValue(initialValue);
     toggle.addEventListener("click", () => {
         const willOpen = menu.hidden;
         menu.hidden = !willOpen;
         toggle.setAttribute("aria-expanded", String(willOpen));
     });
-    control.addEventListener("keydown", event => {
+    dropdown.addEventListener("keydown", event => {
         if (event.key === "Escape") {
             closeMenu();
             toggle.focus();
         }
     });
     document.addEventListener("click", event => {
-        if (!control.contains(event.target)) closeMenu();
+        if (!dropdown.contains(event.target)) closeMenu();
     });
 
     dropdown.append(toggle, menu);
+    return dropdown;
+}
+
+function createPageLengthControl(initialLength) {
+    const control = document.createElement("div");
+    control.className = "page-length-control";
+    control.append("Zobrazit ");
+
+    let table;
+    const dropdown = createOptionDropdown(
+        TABLE_PAGE_LENGTHS,
+        initialLength,
+        length => table?.page.len(length).draw()
+    );
     control.append(dropdown, " záznamů na stránku");
     return {
         control,
         connect: dataTable => { table = dataTable; }
     };
+}
+
+function getSelectedMoversStrMin() {
+    const requestedValue = Number(
+        new URLSearchParams(window.location.search).get("strmin")
+    );
+    return MOVERS_STR_MIN_VALUES.includes(requestedValue)
+        ? requestedValue
+        : MOVERS_STR_MIN_VALUES[0];
+}
+
+function setupMoversStrMinControl(selectedValue, pageUrl) {
+    const container = document.getElementById("movers-str-control");
+    const dropdown = createOptionDropdown(
+        MOVERS_STR_MIN_VALUES,
+        selectedValue,
+        value => {
+            const parameters = new URLSearchParams(window.location.search);
+            if (value === MOVERS_STR_MIN_VALUES[0]) {
+                parameters.delete("strmin");
+            } else {
+                parameters.set("strmin", value);
+            }
+            location.href = `${pageUrl}?${parameters}`;
+        }
+    );
+    dropdown.querySelector(".page-length-toggle")
+        .setAttribute("aria-label", "Minimální STR");
+    container.appendChild(dropdown);
 }
 
 function setupSeasonSelect(availableSeasons, selectedSeason, pageUrl) {

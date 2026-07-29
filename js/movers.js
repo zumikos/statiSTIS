@@ -2,6 +2,7 @@ const moverSeasons = SEASONS.slice(1);
 const selectedSeason = getSelectedSeason(moverSeasons);
 const selectedGroup = getSelectedPlayerGroup();
 const selectedAssociation = getSelectedAssociation();
+const selectedStrMin = getSelectedMoversStrMin();
 
 // Sloupce a jejich šířky lze upravit přímo zde.
 const MOVERS_COLUMNS = [
@@ -19,11 +20,12 @@ const MOVERS_COLUMNS = [
 ];
 
 setupSeasonSelect(moverSeasons, selectedSeason, "skokani.html");
+setupMoversStrMinControl(selectedStrMin, "skokani.html");
 setupPlayerGroupSelection(selectedGroup, "skokani.html", selectedSeason);
 setupAssociationSelection(selectedAssociation, "skokani.html", selectedSeason);
 createStatisticsTable({
     tableId: "movers",
-    csvFile: `csv/movers_${selectedSeason - 1}_${selectedSeason}_STR800.csv`,
+    csvFile: `csv/movers_${selectedSeason - 1}_${selectedSeason}_STR${selectedStrMin}.csv`,
     columns: MOVERS_COLUMNS,
     rowFilter: row =>
         playerMatchesGroup(row, selectedGroup, selectedSeason) &&

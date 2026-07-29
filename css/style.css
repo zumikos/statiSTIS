@@ -36,11 +36,6 @@ body{
     transition:background-color 0.2s, color 0.2s;
 }
 
-html,
-body {
-    overflow-x:hidden;
-}
-
 header{
     background:var(--blue-dark);
     color:white;
@@ -177,6 +172,8 @@ table.dataTable thead .dt-column-order {
 
 .page-length-dropdown {
     position:relative;
+    display:inline-block;
+    vertical-align:middle;
 }
 
 .page-length-toggle {
@@ -265,6 +262,12 @@ table.dataTable thead .dt-column-order {
 .ranking-filter-label {
     min-width:5rem;
     font-weight:bold;
+}
+
+.movers-str-filter {
+    white-space:nowrap;
+    font-size:1rem;
+    font-weight:normal;
 }
 
 .sex-button {
@@ -557,14 +560,10 @@ table.dataTable thead .dt-column-order {
 }
 
 .back-link::before {
-    content:"←";
-    display:inline-grid;
-    place-items:center;
-    width:1.65rem;
-    height:1.65rem;
-    border-radius:50%;
-    background:var(--surface-hover);
-    font-size:1.15rem;
+    content:"↩";
+    display:inline-block;
+    font-size:1.5rem;
+    font-weight:bold;
     line-height:1;
     transition:transform 0.15s;
 }
@@ -767,6 +766,14 @@ table.dataTable thead .dt-column-order {
 }
 
 @media (max-width: 600px) {
+    header {
+        position:sticky;
+        left:0;
+        width:100vw;
+        box-sizing:border-box;
+        z-index:10;
+    }
+
     main {
         padding:16px;
     }
