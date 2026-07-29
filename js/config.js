@@ -8,6 +8,7 @@ const PLAYER_SEXES = [
     { value: "Z", label: "Ženy" }
 ];
 const YOUTH_AGES = [21, 19, 17, 15, 13];
+const DISPLAY_CATEGORY_AGES = [...YOUTH_AGES, 11];
 const PLAYER_GROUPS = [
     ...PLAYER_SEXES.map(sex => ({
         value: sex.value,
@@ -19,6 +20,23 @@ const PLAYER_GROUPS = [
         { value: `U${age}M`, label: `U${age}M`, sex: "M", age },
         { value: `U${age}Z`, label: `U${age}Ž`, sex: "Z", age }
     ])
+];
+const ASSOCIATIONS = [
+    { value: "all", label: "Všechny", name: null },
+    { value: "A", label: "A", name: "Pražský" },
+    { value: "S", label: "S", name: "Středočeský" },
+    { value: "C", label: "C", name: "Jihočeský" },
+    { value: "P", label: "P", name: "Plzeňský" },
+    { value: "K", label: "K", name: "Karlovarský" },
+    { value: "U", label: "U", name: "Ústecký" },
+    { value: "L", label: "L", name: "Liberecký" },
+    { value: "H", label: "H", name: "Kralovéhradecký" },
+    { value: "E", label: "E", name: "Pardubický" },
+    { value: "J", label: "J", name: "Vysočina" },
+    { value: "B", label: "B", name: "Jihomoravský" },
+    { value: "M", label: "M", name: "Olomoucký" },
+    { value: "T", label: "T", name: "Moravskoslezský" },
+    { value: "Z", label: "Z", name: "Zlínský" }
 ];
 const TABLE_LANGUAGE = {
     thousands: " ",

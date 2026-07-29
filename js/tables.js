@@ -105,14 +105,19 @@ function renderFilterButtons({
     items,
     selectedValue,
     pageUrl,
-    parametersFor
+    parametersFor,
+    containerId = "sex-selection"
 }) {
-    const container = document.getElementById("sex-selection");
+    const container = document.getElementById(containerId);
     items.forEach(item => {
         const link = document.createElement("a");
         link.href = `${pageUrl}?${parametersFor(item)}`;
         link.className = "sex-button";
         link.textContent = item.label;
+        if (item.name) {
+            link.title = item.name;
+            link.setAttribute("aria-label", `${item.label} – ${item.name}`);
+        }
         if (item.value === selectedValue) {
             link.classList.add("is-active");
             link.setAttribute("aria-current", "page");
@@ -156,12 +161,43 @@ function setupPlayerGroupSelection(selectedGroup, pageUrl, selectedSeason) {
         selectedValue: selectedGroup.value,
         pageUrl,
         parametersFor: group => {
-            const parameters = new URLSearchParams({ sezona: selectedSeason });
+            const parameters = new URLSearchParams(window.location.search);
+            parameters.set("sezona", selectedSeason);
+            parameters.delete("pohlavi");
+            parameters.delete("kategorie");
             if (group.sex) parameters.set("pohlavi", group.sex);
             if (group.age) parameters.set("kategorie", `U${group.age}`);
             return parameters;
         }
     });
+}
+
+function getSelectedAssociation() {
+    const requestedAssociation = new URLSearchParams(window.location.search).get("svaz");
+    return ASSOCIATIONS.find(association => association.value === requestedAssociation) ||
+        ASSOCIATIONS[0];
+}
+
+function setupAssociationSelection(selectedAssociation, pageUrl, selectedSeason) {
+    renderFilterButtons({
+        items: ASSOCIATIONS,
+        selectedValue: selectedAssociation.value,
+        pageUrl,
+        containerId: "association-selection",
+        parametersFor: association => {
+            const parameters = new URLSearchParams(window.location.search);
+            parameters.set("sezona", selectedSeason);
+            parameters.delete("svaz");
+            if (association.value !== "all") {
+                parameters.set("svaz", association.value);
+            }
+            return parameters;
+        }
+    });
+}
+
+function playerMatchesAssociation(row, association) {
+    return !association.name || formatAssociationName(row["Kraj"]) === association.name;
 }
 
 function playerMatchesGroup(row, group, season) {

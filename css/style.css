@@ -36,6 +36,11 @@ body{
     transition:background-color 0.2s, color 0.2s;
 }
 
+html,
+body {
+    overflow-x:hidden;
+}
+
 header{
     background:var(--blue-dark);
     color:white;
@@ -240,6 +245,26 @@ table.dataTable thead .dt-column-order {
     flex-wrap:wrap;
     gap:0.5rem;
     margin:0 0 1.25rem;
+}
+
+.ranking-filter .sex-selection {
+    margin:0;
+}
+
+.ranking-filter {
+    display:flex;
+    align-items:baseline;
+    gap:0.75rem;
+    margin:0 0 0.75rem;
+}
+
+.ranking-filter:last-of-type {
+    margin-bottom:1.25rem;
+}
+
+.ranking-filter-label {
+    min-width:5rem;
+    font-weight:bold;
 }
 
 .sex-button {
@@ -522,8 +547,35 @@ table.dataTable thead .dt-column-order {
 }
 
 .back-link {
-    display: inline-block;
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
     margin-bottom: 1rem;
+    color:var(--blue);
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.back-link::before {
+    content:"←";
+    display:inline-grid;
+    place-items:center;
+    width:1.65rem;
+    height:1.65rem;
+    border-radius:50%;
+    background:var(--surface-hover);
+    font-size:1.15rem;
+    line-height:1;
+    transition:transform 0.15s;
+}
+
+.back-link:visited {
+    color:var(--blue);
+}
+
+.back-link:hover::before,
+.back-link:focus-visible::before {
+    transform:translateX(-0.2rem);
 }
 
 .table-scroll {

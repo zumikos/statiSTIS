@@ -1,5 +1,6 @@
 const selectedSeason = getSelectedSeason();
 const selectedGroup = getSelectedPlayerGroup();
+const selectedAssociation = getSelectedAssociation();
 
 // Sloupce a jejich šířky lze upravit přímo zde.
 const RANKING_COLUMNS = [
@@ -16,12 +17,17 @@ const RANKING_COLUMNS = [
 
 setupSeasonSelect(SEASONS, selectedSeason, "zebricky.html");
 setupPlayerGroupSelection(selectedGroup, "zebricky.html", selectedSeason);
+setupAssociationSelection(selectedAssociation, "zebricky.html", selectedSeason);
 createStatisticsTable({
     tableId: "ranking",
     csvFile: `csv/ranking_${selectedSeason}.csv`,
     columns: RANKING_COLUMNS,
-    rowFilter: row => playerMatchesGroup(row, selectedGroup, selectedSeason),
-    rankField: selectedGroup.value === "all" ? null : "STR",
+    rowFilter: row =>
+        playerMatchesGroup(row, selectedGroup, selectedSeason) &&
+        playerMatchesAssociation(row, selectedAssociation),
+    rankField: selectedGroup.value === "all" && selectedAssociation.value === "all"
+        ? null
+        : "STR",
     categorySeason: selectedSeason,
     order: [[0, "asc"]],
     columnDefs: [

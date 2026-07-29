@@ -44,10 +44,10 @@ function renderThousands(value, type) {
 function getPlayerAgeCategory(birthYear, season) {
     const year = Number(birthYear);
     if (!Number.isFinite(year)) return "—";
-    if (year < season - 21) return "Dospělí";
+    if (year < season - 21) return "dospělí";
 
-    const categoryAge = YOUTH_AGES.find(age => year <= season - age + 1);
-    return categoryAge ? `U${categoryAge}` : "U13";
+    const categoryAge = DISPLAY_CATEGORY_AGES.find(age => year <= season - age + 1);
+    return categoryAge ? `U${categoryAge}` : "U11";
 }
 
 function formatTeamName(name) {

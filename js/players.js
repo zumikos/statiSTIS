@@ -232,8 +232,10 @@ async function showPlayerDetail(playerId) {
         document.getElementById("player-name").textContent = player["Hráč"];
         const genderLabels = { M: "muži", Z: "ženy" };
         const gender = genderLabels[player["Pohlaví"]] || formatValue(player["Pohlaví"]);
+        const category = getPlayerAgeCategory(player["Rok narození"], DEFAULT_SEASON);
         document.getElementById("player-info").textContent =
-            `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, Pohlaví: ${gender}`;
+            `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, ` +
+            `Pohlaví: ${gender}, Kategorie: ${category}`;
         renderPlayerHistory(player);
         renderPlayerChart(player);
     } catch (error) {
