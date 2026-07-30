@@ -25,6 +25,7 @@ Web je nezávislý statistický projekt a není oficiální stránkou České as
 - Ovládání filtrů a tabulek DataTables je v `js/tables.js`.
 - Logika jednotlivých stránek je v souborech ve složce `js/`.
 - Vzhled webu je definován v `css/style.css`.
+- Obrázky a logo webu jsou ve složce `images/`.
 - Zdrojové žebříčky ve formátu XLSX naleznete ve složce `source/`.
 - Python skripty ve složce `code/` zpracují zdrojová data a vytvoří soubory ve složce `csv/`.
 
@@ -36,7 +37,7 @@ Po přidání zdrojových souborů pojmenovaných podle koncového roku sezóny,
 .\.venv\Scripts\python.exe code\update.py
 ```
 
-Výchozí sezóny webu jsou uvedeny v konstantě `SEASONS` v `js/config.js`. Minimální počáteční STR pro žebříček skokanů nastavuje `MOVERS_STR_MIN` v `code/update.py`; názvy odpovídajících CSV souborů používaných webem musí mít stejnou hodnotu.
+Výchozí sezóny webu a hodnoty nabízené ve výběru minimálního STR jsou uvedeny v konstantách `SEASONS` a `MOVERS_STR_MIN_VALUES` v `js/config.js`.
 
 ## Publikování
 
