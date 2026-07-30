@@ -53,11 +53,15 @@ function renderInteractiveLineChart({
     formatTooltip = item => formatThousands(item.value),
     formatPointAria = item => `${xLabel(item.x)}: ${formatThousands(item.value)}`,
     tooltipWidth = 82,
+    reverseY = false,
     emptyMessage = "Graf neobsahuje žádná data."
 }) {
     container.replaceChildren();
-    const valuesByX = new Map(data.map(item => [item.x, item.value]));
-    const series = xValues.map(xValue => ({ x: xValue, value: valuesByX.get(xValue) }));
+    const dataByX = new Map(data.map(item => [item.x, item]));
+    const series = xValues.map(xValue => dataByX.get(xValue) ?? {
+        x: xValue,
+        value: undefined
+    });
     const available = series.filter(item =>
         item.value !== null && item.value !== undefined && Number.isFinite(Number(item.value))
     );
@@ -70,8 +74,11 @@ function renderInteractiveLineChart({
     const plotHeight = height - margin.top - margin.bottom;
     const x = value => margin.left +
         ((value - xValues[0]) / (xValues[xValues.length - 1] - xValues[0])) * plotWidth;
-    const y = value => margin.top +
-        ((maxValue - Number(value)) / (maxValue - minValue)) * plotHeight;
+    const y = value => margin.top + (
+        reverseY
+            ? (Number(value) - minValue) / (maxValue - minValue)
+            : (maxValue - Number(value)) / (maxValue - minValue)
+    ) * plotHeight;
     const svg = createSvgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
         role: "img",
@@ -178,13 +185,26 @@ function renderInteractiveLineChart({
         });
         const show = () => {
             const pointY = y(item.value);
+            const tooltipLines = [].concat(formatTooltip(item));
+            const tooltipHeight = 12 + tooltipLines.length * 18;
             const tooltipX = Math.min(
                 Math.max(center - tooltipWidth / 2, 0),
                 width - tooltipWidth
             );
-            const tooltipY = pointY < 60 ? pointY + 14 : pointY - 42;
+            const tooltipY = pointY < tooltipHeight + 18
+                ? pointY + 14
+                : pointY - tooltipHeight - 12;
             tooltip.setAttribute("transform", `translate(${tooltipX} ${tooltipY})`);
-            tooltipText.textContent = formatTooltip(item);
+            tooltipBackground.setAttribute("height", tooltipHeight);
+            tooltipText.replaceChildren();
+            tooltipLines.forEach((line, index) => {
+                const tspan = createSvgElement("tspan", {
+                    x: tooltipWidth / 2,
+                    y: 20 + index * 18
+                });
+                tspan.textContent = line;
+                tooltipText.appendChild(tspan);
+            });
             tooltip.classList.add("is-visible");
             point.classList.add("is-active");
         };

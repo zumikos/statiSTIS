@@ -170,7 +170,7 @@ function renderPlayerHistory(player) {
     table.append(thead, tbody);
 }
 
-function renderPlayerChart(player) {
+function renderPlayerStrChart(player) {
     const container = document.getElementById("player-str-chart");
     const ratings = SEASONS.map(year => ({
         x: year,
@@ -213,6 +213,62 @@ function renderPlayerChart(player) {
     });
 }
 
+function renderPlayerRankChart(player) {
+    const container = document.getElementById("player-rank-chart");
+    const ranks = SEASONS.map(year => ({
+        x: year,
+        value: player[`${year} pořadí`],
+        percentile: formatPercentile(
+            player[`${year} pořadí`],
+            player[`${year} počet hráčů`]
+        )
+    }));
+    const availableRanks = ranks.filter(item =>
+        item.value !== null &&
+        item.value !== undefined &&
+        Number.isFinite(Number(item.value))
+    );
+
+    if (availableRanks.length === 0) {
+        container.textContent = "Pro tohoto hráče nejsou dostupná data pořadí.";
+        return;
+    }
+
+    const highestRank = Math.max(...availableRanks.map(item => Number(item.value)));
+    const maxValue = Math.max(2, highestRank);
+    const yTicks = Array.from(
+        new Set(Array.from(
+            { length: 5 },
+            (_, step) => Math.round(1 + ((maxValue - 1) * step) / 4)
+        ))
+    );
+
+    renderInteractiveLineChart({
+        container,
+        data: ranks,
+        xValues: SEASONS,
+        width: 1000,
+        height: 420,
+        margin: { top: 25, right: 25, bottom: 75, left: 80 },
+        minValue: 1,
+        maxValue,
+        yTicks,
+        reverseY: true,
+        ariaLabel: `Vývoj pořadí hráče ${player["Hráč"]}`,
+        xLabel: formatSeason,
+        formatYLabel: value => formatThousands(value),
+        formatTooltip: item => [
+            `Pořadí ${formatThousands(item.value)}`,
+            `Percentil ${item.percentile}`
+        ],
+        formatPointAria: item =>
+            `${formatSeason(item.x)}: pořadí ${formatThousands(item.value)}, ` +
+            `percentil ${item.percentile}`,
+        tooltipWidth: 150,
+        emptyMessage: "Pro tohoto hráče nejsou dostupná data pořadí."
+    });
+}
+
 async function showPlayerDetail(playerId) {
     searchView.hidden = true;
     detailView.hidden = false;
@@ -237,7 +293,8 @@ async function showPlayerDetail(playerId) {
             `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, ` +
             `Pohlaví: ${gender}, Kategorie: ${category}`;
         renderPlayerHistory(player);
-        renderPlayerChart(player);
+        renderPlayerStrChart(player);
+        renderPlayerRankChart(player);
     } catch (error) {
         document.getElementById("player-name").textContent = "Data se nepodařilo načíst";
         document.getElementById("player-info").textContent = "Zkuste stránku obnovit.";
