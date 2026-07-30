@@ -4,7 +4,7 @@ Statistiky z českého stolního tenisu.
 
 ## O projektu
 
-Motivací k tomuto projektu bylo vytvořit první vlastní webové stránky a navázat na web elost.cz Radka Kučery, aby byly znovu snadno dostupné statistiky, jako jsou skokani sezóny.
+Motivací k tomuto projektu bylo zkusit si vytvořit první webové stránky a navázat na web elost.cz, aby byly znovu zpřístupněny statistiky jako skokani sezóny.
 
 Web spojuje veřejně dostupná data z žebříčků systému STIS a zobrazuje z nich vytvořené statistiky v tabulkách a grafech. Nabízí zejména:
 
