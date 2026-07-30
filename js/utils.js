@@ -41,6 +41,20 @@ function renderThousands(value, type) {
     return type === "display" ? formatThousands(value) : value;
 }
 
+function createPlayerProfileLink(playerId, playerName) {
+    const link = document.createElement("a");
+    link.className = "player-profile-link";
+    link.href = `hraci.html?ID=${encodeURIComponent(playerId)}`;
+    link.textContent = playerName;
+    return link;
+}
+
+function renderPlayerProfileLink(playerName, type, row) {
+    return type === "display"
+        ? createPlayerProfileLink(row.ID, playerName)
+        : playerName;
+}
+
 function getPlayerAgeCategory(birthYear, season) {
     const year = Number(birthYear);
     if (!Number.isFinite(year)) return "—";

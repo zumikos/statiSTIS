@@ -36,7 +36,12 @@ function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
             const td = document.createElement("td");
             const content = document.createElement("span");
             content.className = "compact-cell-content";
-            content.textContent = formatTopTableValue(row, column.key);
+            const value = formatTopTableValue(row, column.key);
+            if (column.key === "Hráč") {
+                content.appendChild(createPlayerProfileLink(row.ID, value));
+            } else {
+                content.textContent = value;
+            }
             td.appendChild(content);
             tr.appendChild(td);
         });
