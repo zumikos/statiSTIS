@@ -300,6 +300,7 @@ table.dataTable thead .dt-column-order {
 }
 
 .card {
+    min-width:0;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -318,6 +319,7 @@ table.dataTable thead .dt-column-order {
 }
 
 .compact-table-scroll {
+    width:100%;
     max-width:100%;
     overflow-x:auto;
 }
@@ -766,14 +768,6 @@ table.dataTable thead .dt-column-order {
 }
 
 @media (max-width: 600px) {
-    header {
-        position:sticky;
-        left:0;
-        width:100vw;
-        box-sizing:border-box;
-        z-index:10;
-    }
-
     main {
         padding:16px;
     }
