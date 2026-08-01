@@ -39,6 +39,8 @@ function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
             const value = formatTopTableValue(row, column.key);
             if (column.key === "Hráč") {
                 content.appendChild(createPlayerProfileLink(row.ID, value));
+            } else if (column.key === "Oddíl") {
+                content.appendChild(createTeamProfileLink(value));
             } else {
                 content.textContent = value;
             }

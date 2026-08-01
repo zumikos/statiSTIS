@@ -55,6 +55,14 @@ function renderPlayerProfileLink(playerName, type, row) {
         : playerName;
 }
 
+function createTeamProfileLink(teamName) {
+    const link = document.createElement("a");
+    link.className = "team-profile-link";
+    link.href = `oddily.html?oddil=${encodeURIComponent(teamName)}`;
+    link.textContent = teamName;
+    return link;
+}
+
 function getPlayerAgeCategory(birthYear, season) {
     const year = Number(birthYear);
     if (!Number.isFinite(year)) return "—";

@@ -235,13 +235,9 @@ function renderPlayerRankChart(player) {
     }
 
     const highestRank = Math.max(...availableRanks.map(item => Number(item.value)));
-    const maxValue = Math.max(2, highestRank);
-    const yTicks = Array.from(
-        new Set(Array.from(
-            { length: 5 },
-            (_, step) => Math.round(1 + ((maxValue - 1) * step) / 4)
-        ))
-    );
+    const tickStep = Math.max(1, Math.ceil((highestRank - 1) / 4));
+    const yTicks = Array.from({ length: 5 }, (_, step) => 1 + tickStep * step);
+    const maxValue = yTicks[yTicks.length - 1];
 
     renderInteractiveLineChart({
         container,

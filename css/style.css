@@ -414,18 +414,22 @@ table.dataTable thead .dt-column-order {
     background: var(--blue-dark);
 }
 
-.player-profile-link {
+.player-profile-link,
+.team-profile-link {
     color:var(--blue);
     font-weight:600;
     text-decoration:none;
 }
 
-.player-profile-link:visited {
+.player-profile-link:visited,
+.team-profile-link:visited {
     color:var(--blue);
 }
 
 .player-profile-link:hover,
-.player-profile-link:focus-visible {
+.player-profile-link:focus-visible,
+.team-profile-link:hover,
+.team-profile-link:focus-visible {
     text-decoration:underline;
 }
 
