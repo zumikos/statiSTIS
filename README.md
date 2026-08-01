@@ -6,13 +6,12 @@ Statistiky z českého stolního tenisu.
 
 Motivací k tomuto projektu bylo zkusit si vytvořit první webové stránky a navázat na web elost.cz, aby byly znovu zpřístupněny statistiky jako skokani sezóny.
 
-Web spojuje veřejně dostupná data z žebříčků systému STIS a zobrazuje z nich vytvořené statistiky v tabulkách a grafech. Nabízí zejména:
+Web spojuje veřejně dostupná data z žebříčků ze všech sezón systému STIS a nabízí zejména:
 
-- největší skokany a skokanky sezón, a to i pro jednotlivé mládežnické kategorie;
+- seznam největších skokanů a skokanek sezón, a to i pro jednotlivé mládežnické kategorie;
 - žebříčky hráčů podle sezóny, pohlaví, kraje a kategorie (U21, U19, U17, U15 a U13);
 - vyhledávání hráčů a jejich vývoj STR po konci každé aktivní sezóny;
-- vyhledávání oddílů a oddílové žebříčky;
-- souhrnné grafy o počtu hráčů, rozložení STR.
+- vyhledávání oddílů a oddílové žebříčky.
 
 Web je nezávislý statistický projekt a není oficiální stránkou České asociace stolního tenisu.
 
