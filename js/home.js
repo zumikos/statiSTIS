@@ -371,6 +371,8 @@ loadCsv("csv/player_count.csv")
     });
 
 const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
+document.getElementById("last-updated").textContent =
+    `Stránka naposledy aktualizována ${LAST_UPDATED_DATE}`;
 document.getElementById("home-men-ranking-season").textContent = homeSeasonLabel;
 document.getElementById("home-men-movers-season").textContent = homeSeasonLabel;
 document.getElementById("home-women-ranking-season").textContent = homeSeasonLabel;

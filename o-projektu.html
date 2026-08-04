@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>statiSTIS – O projektu</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+</head>
+
+<body>
+
+<header>
+    <h1>
+        <a class="site-title" href="index.html">
+            <img class="site-logo" src="images/logo.png" alt="">
+            <span>statiSTIS</span>
+        </a>
+    </h1>
+
+    <nav>
+        <a href="index.html">Domů</a>
+        <a href="skokani.html">Skokani</a>
+        <a href="zebricky.html">Žebříčky</a>
+        <a href="hraci.html">Hráči</a>
+        <a href="oddily.html">Oddíly</a>
+        <a href="o-projektu.html" aria-current="page">O projektu</a>
+    </nav>
+</header>
+
+<main class="about-page">
+    <section class="hero">
+        <h2>O projektu</h2>
+        <p>statiSTIS zpřístupňuje statistiky z českého stolního tenisu od roku 2011 do současnosti v přehledných tabulkách a grafech</p>
+    </section>
+
+    <section class="about-section">
+        <h3>Proč statiSTIS vznikl</h3>
+        <p>
+            Motivací k projektu bylo zkusit si vytvořit první webové stránky a navázat na web elost.cz, 
+            aby zak mohly být znovu zpřístupněny statistiky jako skokani sezóny. Web je určen všem, 
+            které zajímá dlouhodobý vývoj českého stolního tenisu.
+        </p>
+    </section>
+
+    <section class="about-section">
+        <h3>Co na webu najdete</h3>
+        <ul>
+            <li>žebříčky hráčů podle sezóny, pohlaví, kategorie a krajského svazu</li>
+            <li>největší skokany a skokanky jednotlivých sezón</li>
+            <li>profily hráčů s vývojem STR, pořadí a dalšími historickými statistikami</li>
+            <li>vyhledávání oddílů a jejich aktuální žebříčky</li>
+            <li>souhrnné grafy o hráčích, STR a krajských svazech</li>
+        </ul>
+    </section>
+
+    <section class="about-section">
+        <h3>Data a metodika</h3>
+        <p>
+            Základem jsou veřejně dostupné žebříčky systému STIS. Zdrojová data z jednotlivých sezón jsou
+            sloučena a následně zpracována do tabulek a grafů. Web není živým výsledkovým servisem; zobrazuje
+            stav zachycený v použitých sezónních žebříčcích.
+        </p>
+        <ul>
+            <li><strong>STR</strong> je hodnota na bázi systému Elo převzatá ze zdrojového žebříčku.</li>
+            <li><strong>STR změna</strong> je rozdíl mezi STR na konci dvou po sobě jdoucích sezón.</li>
+            <li><strong>Skokani sezóny</strong> jsou hráči seřazení podle této změny. Výběr minimálního loňského STR omezuje případy, 
+                kdy velký skok vznikl pouze při malém množství zápasů.</li>
+            <li><strong>Pořadí a percentily</strong> na profilu hráče jsou počítány v žebříčku pro příslušné pohlaví.</li>
+            <li>Mládežnický výběr zahrnuje i mladší hráče, kteří věkový limit dané kategorie splňují.</li>
+        </ul>
+        <p>
+            Přestože jsou data zpracovávána automaticky, mohou obsahovat chyby nebo rozdílné zápisy jmen a oddílů
+            již ze zdrojových souborů.
+        </p>
+    </section>
+
+    <section class="about-section">
+        <h3>Nezávislý projekt</h3>
+        <p>
+            statiSTIS je nezávislý statistický projekt a není oficiální stránkou České asociace stolního tenisu.
+            Zdrojový kód je veřejně dostupný na <a href="https://github.com/zumikos/statiSTIS">GitHubu</a>. 
+            Nápady na vylepšení i nalezené chyby můžete nahlásit na <a href="mailto:info@statistis.cz">info@statistis.cz</a>
+            nebo prostřednictvím <a href="https://github.com/zumikos/statiSTIS/issues">GitHub Issues</a>. 
+        </p>
+    </section>
+
+    <p>Autorem projektu je Daniel Skopec.</p>
+    
+
+</main>
+
+</body>
+</html>

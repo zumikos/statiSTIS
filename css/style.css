@@ -303,6 +303,24 @@ table.dataTable thead .dt-column-order {
 
 .hero {
     margin-bottom: 2rem;
+    text-align:center;
+}
+
+.about-page {
+    max-width:60rem;
+}
+
+.about-section {
+    margin-bottom:2rem;
+}
+
+.about-section h3 {
+    margin-bottom:0.5rem;
+}
+
+.about-section p,
+.about-section li {
+    line-height:1.6;
 }
 
 .grid.two-columns {
@@ -797,6 +815,13 @@ table.dataTable thead .dt-column-order {
 .dt-container .dt-info,
 .dt-container .dt-paging-button {
     color:var(--text) !important;
+}
+
+.last-updated {
+    margin:2rem 0 0;
+    color:var(--text-muted);
+    font-size:0.9rem;
+    text-align:center;
 }
 
 @media (max-width: 600px) {
