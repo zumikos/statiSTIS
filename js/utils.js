@@ -99,6 +99,70 @@ function normalizeText(value, removeDiacritics = false) {
     return text;
 }
 
+let playersPromise;
+
+function loadPlayers() {
+    if (!playersPromise) {
+        playersPromise = loadCsv("csv/players.csv")
+            .then(data => data
+                .filter(player => player.ID !== undefined)
+                .map(player => ({
+                    ...player,
+                    "Hráč": formatPlayerName(player["Hráč"])
+                }))
+            );
+    }
+
+    return playersPromise;
+}
+
+function playerMatchPriority(player, queryText) {
+    if (String(player.ID) === queryText) return -1;
+
+    const name = String(player["Hráč"] ?? "").trim();
+    const surname = name.split(/\s+/)[0] || "";
+    const queryWords = queryText.split(/\s+/).filter(Boolean);
+    const reversedQuery = queryWords.length > 1 ? [...queryWords].reverse().join(" ") : queryText;
+    const nameLower = name.toLocaleLowerCase("cs");
+    const surnameLower = surname.toLocaleLowerCase("cs");
+    const queryLower = queryText.toLocaleLowerCase("cs");
+    const reversedLower = reversedQuery.toLocaleLowerCase("cs");
+    const normalizedName = normalizeText(name, true);
+    const normalizedSurname = normalizeText(surname, true);
+    const normalizedQuery = normalizeText(queryText, true);
+    const normalizedReversed = normalizeText(reversedQuery, true);
+
+    if (surname === queryText) return 0;
+    if (surnameLower === queryLower) return 1;
+    if (name === queryText || name === reversedQuery) return 2;
+    if (nameLower === queryLower || nameLower === reversedLower) return 3;
+    if (name.startsWith(queryText) || name.startsWith(reversedQuery)) return 4;
+    if (nameLower.startsWith(queryLower) || nameLower.startsWith(reversedLower)) return 5;
+    if (name.includes(queryText) || name.includes(reversedQuery)) return 6;
+    if (nameLower.includes(queryLower) || nameLower.includes(reversedLower)) return 7;
+    if (normalizedSurname === normalizedQuery) return 8;
+    if (normalizedName === normalizedQuery || normalizedName === normalizedReversed) return 9;
+    if (normalizedName.startsWith(normalizedQuery) || normalizedName.startsWith(normalizedReversed)) return 10;
+    if (normalizedName.includes(normalizedQuery) || normalizedName.includes(normalizedReversed)) return 11;
+
+    return null;
+}
+
+async function findPlayers(query) {
+    const queryText = String(query).trim();
+    const players = await loadPlayers();
+    return players
+        .map(player => ({ player, matchPriority: playerMatchPriority(player, queryText) }))
+        .filter(result => result.matchPriority !== null)
+        .sort((first, second) =>
+            first.matchPriority - second.matchPriority ||
+            String(first.player["Hráč"]).localeCompare(String(second.player["Hráč"]), "cs", {
+                sensitivity: "variant"
+            })
+        )
+        .map(result => result.player);
+}
+
 function createShowMoreButton(remaining, batchSize, onClick) {
     const button = document.createElement("button");
     button.type = "button";

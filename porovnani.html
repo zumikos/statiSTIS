@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>statiSTIS – Porovnání hráčů</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
+</head>
+
+<body>
+<header>
+    <h1>
+        <a class="site-title" href="index.html">
+            <img class="site-logo" src="images/logo.png" alt="">
+            <span>statiSTIS</span>
+        </a>
+    </h1>
+    <nav>
+        <a href="index.html">Domů</a>
+        <a href="skokani.html">Skokani</a>
+        <a href="zebricky.html">Žebříčky</a>
+        <a href="hraci.html">Hráči</a>
+        <a href="porovnani.html" aria-current="page">Porovnání</a>
+        <a href="oddily.html">Oddíly</a>
+        <a href="o-projektu.html">O projektu</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero comparison-intro">
+        <h2>Porovnání hráčů</h2>
+        <p>Vyberte dva hráče a porovnejte jejich STR a pořadí v jednotlivých sezónách.</p>
+    </section>
+
+    <section class="comparison-pickers" aria-label="Výběr hráčů">
+        <article class="card comparison-picker" data-slot="0">
+            <h3>První hráč</h3>
+            <form class="entity-search comparison-search" role="search">
+                <label class="visually-hidden" for="comparison-player-1">Jméno nebo ID prvního hráče</label>
+                <input id="comparison-player-1" type="search" placeholder="Zadejte jméno nebo ID" autocomplete="off">
+                <button type="submit" aria-label="Vyhledat prvního hráče" title="Vyhledat">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                        <path d="M15.5 15.5 21 21"></path>
+                    </svg>
+                </button>
+            </form>
+            <p class="status-message comparison-status" aria-live="polite"></p>
+            <div class="comparison-results"></div>
+            <div class="comparison-selected" hidden></div>
+        </article>
+
+        <article class="card comparison-picker" data-slot="1">
+            <h3>Druhý hráč</h3>
+            <form class="entity-search comparison-search" role="search">
+                <label class="visually-hidden" for="comparison-player-2">Jméno nebo ID druhého hráče</label>
+                <input id="comparison-player-2" type="search" placeholder="Zadejte jméno nebo ID" autocomplete="off">
+                <button type="submit" aria-label="Vyhledat druhého hráče" title="Vyhledat">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                        <path d="M15.5 15.5 21 21"></path>
+                    </svg>
+                </button>
+            </form>
+            <p class="status-message comparison-status" aria-live="polite"></p>
+            <div class="comparison-results"></div>
+            <div class="comparison-selected" hidden></div>
+        </article>
+    </section>
+
+    <section id="comparison-charts" hidden>
+        <div id="comparison-legend" class="comparison-legend" aria-label="Legenda grafů"></div>
+        <section class="player-chart-section">
+            <h3>Vývoj STR</h3>
+            <div id="comparison-str-chart" class="player-str-chart"></div>
+        </section>
+        <section class="player-chart-section">
+            <h3>Vývoj pořadí v ČR</h3>
+            <p class="chart-note">Pořadí je počítáno v žebříčku pro příslušné pohlaví.</p>
+            <div id="comparison-rank-chart" class="player-str-chart"></div>
+        </section>
+    </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/comparison.js"></script>
+</body>
+</html>
