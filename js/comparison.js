@@ -132,30 +132,59 @@ function comparisonBounds(series, reverseY) {
     };
 }
 
-function addComparisonLegend(svg, series, width) {
-    const itemWidth = Math.min(430, (width - 160) / series.length);
-    const startX = (width - itemWidth * series.length) / 2;
+function addComparisonLegend(svg, series, width, height, margin, xScale, yScale) {
+    const legendWidth = 260;
+    const legendHeight = 62;
+    const inset = 12;
+    const candidates = [
+        { x: width - margin.right - legendWidth - inset, y: margin.top + inset },
+        { x: margin.left + inset, y: margin.top + inset },
+        {
+            x: width - margin.right - legendWidth - inset,
+            y: height - margin.bottom - legendHeight - inset
+        },
+        { x: margin.left + inset, y: height - margin.bottom - legendHeight - inset }
+    ];
+    const plottedPoints = series.flatMap(item => item.data)
+        .filter(point => point.value !== null && point.value !== undefined && point.value !== "")
+        .map(point => ({ x: xScale(point.x), y: yScale(point.value) }));
+    const penalty = candidate => plottedPoints.filter(point =>
+        point.x >= candidate.x - 15 && point.x <= candidate.x + legendWidth + 15 &&
+        point.y >= candidate.y - 15 && point.y <= candidate.y + legendHeight + 15
+    ).length;
+    const position = candidates.reduce((best, candidate) =>
+        penalty(candidate) < penalty(best) ? candidate : best
+    );
+
+    svg.appendChild(createSvgElement("rect", {
+        x: position.x,
+        y: position.y,
+        width: legendWidth,
+        height: legendHeight,
+        rx: 6,
+        class: "comparison-legend-background"
+    }));
     series.forEach((item, index) => {
-        const x = startX + index * itemWidth;
+        const itemY = position.y + 19 + index * 25;
         svg.appendChild(createSvgElement("line", {
-            x1: x,
-            y1: 23,
-            x2: x + 30,
-            y2: 23,
+            x1: position.x + 12,
+            y1: itemY,
+            x2: position.x + 42,
+            y2: itemY,
             stroke: item.color,
             class: "comparison-legend-line"
         }));
         svg.appendChild(createSvgElement("circle", {
-            cx: x + 15,
-            cy: 23,
+            cx: position.x + 27,
+            cy: itemY,
             r: 5,
             fill: "var(--surface)",
             stroke: item.color,
             class: "comparison-legend-point"
         }));
         const label = createSvgElement("text", {
-            x: x + 40,
-            y: 28,
+            x: position.x + 52,
+            y: itemY + 5,
             class: "chart-axis-label comparison-legend-label"
         });
         label.textContent = item.player["Hráč"];
@@ -181,7 +210,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
 
     const width = 1000;
     const height = 480;
-    const margin = { top: 55, right: 25, bottom: 110, left: 80 };
+    const margin = { top: 25, right: 25, bottom: 110, left: 80 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
     const bounds = comparisonBounds(series, reverseY);
@@ -195,8 +224,6 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
         role: "img",
         "aria-label": `${valueLabel}: porovnání hráčů ${series.map(item => item.player["Hráč"]).join(" a ")}`
     });
-    addComparisonLegend(svg, series, width);
-
     bounds.ticks.forEach(value => {
         const lineY = y(value);
         svg.appendChild(createSvgElement("line", {
@@ -241,6 +268,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
             const circle = createSvgElement("circle", {
                 cx: x(point.x), cy: y(point.value), r: 6,
                 class: "comparison-chart-point", stroke: item.color,
+                style: `--series-color:${item.color}`,
                 tabindex: 0,
                 "aria-label": `${item.player["Hráč"]}, ${formatSeason(point.x)}: ${valueLabel} ${formatThousands(point.value)}`
             });
@@ -296,6 +324,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
         bindHoverEvents(hoverColumn, show, hide);
         svg.appendChild(hoverColumn);
     });
+    addComparisonLegend(svg, series, width, height, margin, x, y);
     svg.appendChild(tooltip);
     addChartAxisTitle(svg, "Sezóna", {
         x: margin.left + plotWidth / 2, y: height - 8, "text-anchor": "middle"

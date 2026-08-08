@@ -735,15 +735,25 @@ table.dataTable thead .dt-column-order {
 .comparison-legend-line {
     stroke-width:4;
     stroke-linecap:round;
+    pointer-events:none;
 }
 
 .comparison-legend-point {
     stroke-width:3;
+    pointer-events:none;
 }
 
 .comparison-legend-label {
     fill:var(--text);
     font-weight:bold;
+    pointer-events:none;
+}
+
+.comparison-legend-background {
+    fill:var(--surface);
+    fill-opacity:0.9;
+    stroke:var(--border);
+    pointer-events:none;
 }
 
 .comparison-chart-point {
@@ -754,7 +764,7 @@ table.dataTable thead .dt-column-order {
 .comparison-chart-point:hover,
 .comparison-chart-point:focus,
 .comparison-chart-point.is-active {
-    fill:var(--surface);
+    fill:var(--series-color);
     stroke-width:7;
     outline:none;
 }
