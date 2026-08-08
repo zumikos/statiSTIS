@@ -691,6 +691,11 @@ table.dataTable thead .dt-column-order {
     margin-top:0.75rem;
 }
 
+.comparison-search[hidden],
+.comparison-selected[hidden] {
+    display:none !important;
+}
+
 .comparison-result {
     width:100%;
     font:inherit;
@@ -704,6 +709,7 @@ table.dataTable thead .dt-column-order {
     justify-content:space-between;
     gap:1rem;
     min-height:2.5rem;
+    margin-top:0.5rem;
 }
 
 .comparison-selected div {
@@ -719,31 +725,25 @@ table.dataTable thead .dt-column-order {
     flex:none;
 }
 
-.comparison-legend {
-    display:flex;
-    flex-wrap:wrap;
-    gap:1.25rem;
-    margin-top:2rem;
-    font-weight:bold;
-}
-
-.comparison-legend span {
-    display:inline-flex;
-    align-items:center;
-    gap:0.45rem;
-}
-
-.comparison-legend i {
-    width:1rem;
-    height:1rem;
-    border-radius:50%;
-}
-
 .comparison-chart-line {
     fill:none;
     stroke-width:4;
     stroke-linecap:round;
     stroke-linejoin:round;
+}
+
+.comparison-legend-line {
+    stroke-width:4;
+    stroke-linecap:round;
+}
+
+.comparison-legend-point {
+    stroke-width:3;
+}
+
+.comparison-legend-label {
+    fill:var(--text);
+    font-weight:bold;
 }
 
 .comparison-chart-point {

@@ -81,7 +81,7 @@ function selectPlayer(slot, player, updateUrl = true) {
     selected.replaceChildren();
     const text = document.createElement("div");
     const name = document.createElement("strong");
-    name.textContent = player["Hráč"];
+    name.appendChild(createPlayerProfileLink(player.ID, player["Hráč"]));
     const details = document.createElement("span");
     details.textContent = `ID: ${player.ID}, ročník: ${player["Rok narození"] || "neuveden"}`;
     text.append(name, details);
@@ -111,6 +111,7 @@ function clearPlayer(slot) {
 
 function comparisonBounds(series, reverseY) {
     const values = series.flatMap(item => item.data)
+        .filter(item => item.value !== null && item.value !== undefined && item.value !== "")
         .map(item => Number(item.value))
         .filter(Number.isFinite);
     if (reverseY) {
@@ -131,6 +132,37 @@ function comparisonBounds(series, reverseY) {
     };
 }
 
+function addComparisonLegend(svg, series, width) {
+    const itemWidth = Math.min(430, (width - 160) / series.length);
+    const startX = (width - itemWidth * series.length) / 2;
+    series.forEach((item, index) => {
+        const x = startX + index * itemWidth;
+        svg.appendChild(createSvgElement("line", {
+            x1: x,
+            y1: 23,
+            x2: x + 30,
+            y2: 23,
+            stroke: item.color,
+            class: "comparison-legend-line"
+        }));
+        svg.appendChild(createSvgElement("circle", {
+            cx: x + 15,
+            cy: 23,
+            r: 5,
+            fill: "var(--surface)",
+            stroke: item.color,
+            class: "comparison-legend-point"
+        }));
+        const label = createSvgElement("text", {
+            x: x + 40,
+            y: 28,
+            class: "chart-axis-label comparison-legend-label"
+        });
+        label.textContent = item.player["Hráč"];
+        svg.appendChild(label);
+    });
+}
+
 function renderComparisonLineChart({ containerId, field, reverseY, valueLabel }) {
     const container = document.getElementById(containerId);
     const series = selectedPlayers.filter(Boolean).map((player, index) => ({
@@ -148,8 +180,8 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
     }
 
     const width = 1000;
-    const height = 440;
-    const margin = { top: 25, right: 25, bottom: 80, left: 80 };
+    const height = 480;
+    const margin = { top: 55, right: 25, bottom: 110, left: 80 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
     const bounds = comparisonBounds(series, reverseY);
@@ -163,6 +195,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
         role: "img",
         "aria-label": `${valueLabel}: porovnání hráčů ${series.map(item => item.player["Hráč"]).join(" a ")}`
     });
+    addComparisonLegend(svg, series, width);
 
     bounds.ticks.forEach(value => {
         const lineY = y(value);
@@ -281,15 +314,6 @@ function renderComparison() {
         return;
     }
     charts.hidden = false;
-    const legend = document.getElementById("comparison-legend");
-    legend.replaceChildren();
-    selectedPlayers.forEach((player, index) => {
-        const item = document.createElement("span");
-        const swatch = document.createElement("i");
-        swatch.style.backgroundColor = COMPARISON_COLORS[index];
-        item.append(swatch, document.createTextNode(player["Hráč"]));
-        legend.appendChild(item);
-    });
     renderComparisonLineChart({
         containerId: "comparison-str-chart", field: "STR", reverseY: false, valueLabel: "STR"
     });
