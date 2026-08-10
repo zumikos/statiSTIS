@@ -48,7 +48,7 @@
                     <span id="home-men-movers-info" class="info-tooltip-text" role="tooltip">Skokani sezóny jsou hráči s největším progresem v sezóně. Minimální loňské STR musí být 800,
             aby se vyloučily případy, kdy se kvůli malému počtu zápasů STR za jeden zápas změní například z hodnoty 1 na 1 000.</span>
                 </span>
-                <span id="home-men-movers-season"></span>
+                <span class="home-season"></span>
             </h3>
             <div class="compact-table-scroll">
                 <table id="home-men-movers" class="compact-table"></table>
@@ -64,7 +64,7 @@
                     <span id="home-women-movers-info" class="info-tooltip-text" role="tooltip">Skokanky sezóny jsou hráčky s největším progresem v sezóně. Minimální loňské STR musí být 800,
             aby se vyloučily případy, kdy se kvůli malému počtu zápasů STR za jeden zápas změní například z hodnoty 1 na 1 000.</span>
                 </span>
-                <span id="home-women-movers-season"></span>
+                <span class="home-season"></span>
             </h3>
             <div class="compact-table-scroll">
                 <table id="home-women-movers" class="compact-table"></table>
@@ -76,7 +76,7 @@
 
     <section class="grid two-columns">
         <article class="card">
-            <h3>Top 10 hráči <span id="home-men-ranking-season"></span></h3>
+            <h3>Top 10 hráči <span class="home-season"></span></h3>
             <div class="compact-table-scroll">
                 <table id="home-men-ranking" class="compact-table"></table>
             </div>
@@ -84,7 +84,7 @@
         </article>
 
         <article class="card">
-            <h3>Top 10 hráčky <span id="home-women-ranking-season"></span></h3>
+            <h3>Top 10 hráčky <span class="home-season"></span></h3>
             <div class="compact-table-scroll">
                 <table id="home-women-ranking" class="compact-table"></table>
             </div>
@@ -102,9 +102,9 @@
         </article>
 
         <article class="card">
-            <h3>Rozložení STR v sezóně <span id="home-histogram-season"></span></h3>
-            <p id="home-histogram-stats" class="chart-stats"></p>
-            <div id="home-histogram" class="home-chart"></div>
+            <h3>Medián věku aktivních hráčů podle roku narození</h3>
+            <p class="chart-stats">věk = koncový rok sezóny − rok narození</p>
+            <div id="home-median-age" class="home-chart"></div>
         </article>
 
     </section>
@@ -112,13 +112,28 @@
     <section class="grid two-columns">
 
         <article class="card">
-            <h3>Počet hráčů v krajských svazech <span id="home-association-count-season"></span></h3>
+            <h3>Počet aktivních hráčů v krajských svazech v sezóně <span class="home-season"></span></h3>
             <div id="home-association-count" class="home-chart"></div>
         </article>
 
         <article class="card">
-            <h3>Medián STR v krajských svazech <span id="home-association-median-season"></span></h3>
+            <h3>Medián STR aktivních hráčů v krajských svazech v sezóně <span class="home-season"></span></h3>
             <div id="home-association-median" class="home-chart"></div>
+        </article>
+
+    </section>
+
+    <section class="grid two-columns">
+
+        <article class="card">
+            <h3>Rozložení STR v sezóně <span class="home-season"></span></h3>
+            <p id="home-histogram-stats" class="chart-stats"></p>
+            <div id="home-histogram" class="home-chart"></div>
+        </article>
+
+        <article class="card">
+            <h3>Rozložení roků narození v sezóně <span class="home-season"></span></h3>
+            <div id="home-birth-year-pyramid" class="home-chart"></div>
         </article>
 
     </section>

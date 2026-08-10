@@ -845,6 +845,35 @@ table.dataTable thead .dt-column-order {
     fill:#64b5f6;
 }
 
+.home-pyramid-men {
+    fill:var(--blue);
+}
+
+.home-pyramid-women {
+    fill:#e76f00;
+}
+
+.home-pyramid-men.is-active,
+.home-pyramid-women.is-active {
+    fill:#64b5f6;
+}
+
+.home-pyramid-axis {
+    stroke:var(--text-muted);
+    stroke-width:1.5;
+}
+
+.home-pyramid-legend {
+    fill:var(--text);
+    font-weight:bold;
+}
+
+.home-pyramid-legend-background {
+    fill:var(--surface);
+    fill-opacity:0.9;
+    stroke:var(--border);
+}
+
 .chart-value-tooltip {
     opacity:0;
     visibility:hidden;

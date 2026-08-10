@@ -231,13 +231,217 @@ function associationStatistics(data) {
     });
 }
 
+function median(values) {
+    const sorted = [...values].sort((first, second) => first - second);
+    const middle = Math.floor(sorted.length / 2);
+    return sorted.length % 2
+        ? sorted[middle]
+        : (sorted[middle - 1] + sorted[middle]) / 2;
+}
+
+function renderMedianAgeChart(players) {
+    const data = SEASONS.map(year => {
+        const ages = players
+            .filter(player => {
+                const rating = player[`${year} STR`];
+                return rating !== null && rating !== undefined && rating !== "" && Number.isFinite(Number(rating));
+            })
+            .map(player => year - Number(player["Rok narození"]))
+            .filter(Number.isFinite);
+        return { x: year, value: median(ages) };
+    }).filter(item => Number.isFinite(item.value));
+
+    if (data.length === 0) {
+        document.getElementById("home-median-age").textContent = "Graf se nepodařilo načíst.";
+        return;
+    }
+
+    const minimum = Math.floor(Math.min(...data.map(item => item.value)) - 2);
+    const maximum = Math.ceil(Math.max(...data.map(item => item.value)) + 2);
+    renderInteractiveLineChart({
+        container: document.getElementById("home-median-age"),
+        data,
+        xValues: SEASONS,
+        width: 650,
+        height: 420,
+        margin: { top: 25, right: 20, bottom: 95, left: 75 },
+        minValue: minimum,
+        maxValue: maximum,
+        yTicks: Array.from({ length: 5 }, (_, index) => minimum + (maximum - minimum) * index / 4),
+        ariaLabel: "Vývoj mediánu věku podle roku narození",
+        xLabel: year => formatSeason(year),
+        xLabelOffset: 16,
+        xTitle: "Sezóna",
+        yTitle: "Medián věku",
+        tooltipWidth: 180,
+        formatTooltip: item => `Medián: ${Math.round(item.value)} let`,
+        formatPointAria: item =>
+            `${formatSeason(item.x)}: medián věku ${Math.round(item.value)} let`
+    });
+}
+
+function renderBirthYearPyramid(data) {
+    const container = document.getElementById("home-birth-year-pyramid");
+    container.replaceChildren();
+    const rows = data.filter(row => Number.isFinite(Number(row["Rok narození"])));
+    if (rows.length === 0) {
+        container.textContent = "Graf neobsahuje žádná data.";
+        return;
+    }
+
+    const birthYears = rows.map(row => Number(row["Rok narození"]));
+    const firstYear = Math.floor(Math.min(...birthYears) / 5) * 5;
+    const lastYear = Math.floor(Math.max(...birthYears) / 5) * 5;
+    const groups = Array.from({ length: (lastYear - firstYear) / 5 + 1 }, (_, index) => ({
+        start: firstYear + index * 5,
+        men: 0,
+        women: 0
+    }));
+    rows.forEach(row => {
+        const group = groups[Math.floor((Number(row["Rok narození"]) - firstYear) / 5)];
+        if (row["Pohlaví"] === "M") group.men += 1;
+        if (row["Pohlaví"] === "Z" || row["Pohlaví"] === "Ž") group.women += 1;
+    });
+
+    const width = 650;
+    const height = 420;
+    const margin = { top: 24, right: 40, bottom: 65, left: 125 };
+    const plotWidth = width - margin.left - margin.right;
+    const plotHeight = height - margin.top - margin.bottom;
+    const center = margin.left + plotWidth / 2;
+    const halfWidth = plotWidth / 2;
+    const menMaximum = 2200;
+    const womenMaximum = 400;
+    const xMen = value => value / menMaximum * halfWidth;
+    const xWomen = value => value / womenMaximum * halfWidth;
+    const rowHeight = plotHeight / groups.length;
+    const svg = createSvgElement("svg", {
+        viewBox: `0 0 ${width} ${height}`,
+        role: "img",
+        "aria-label": "Rozložení hráčů podle roku narození a pohlaví"
+    });
+
+    [[menMaximum, xMen, -1], [womenMaximum, xWomen, 1]].forEach(([maximum, scale, direction]) => {
+        [0, maximum / 2, maximum].forEach(value => {
+            const lineX = center + direction * scale(value);
+            svg.appendChild(createSvgElement("line", {
+                x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
+                class: "chart-grid-line"
+            }));
+            if (value > 0) {
+                const label = createSvgElement("text", {
+                    x: lineX, y: height - margin.bottom + 20, "text-anchor": "middle",
+                    class: "chart-axis-label"
+                });
+                label.textContent = formatThousands(Math.round(value));
+                svg.appendChild(label);
+            }
+        });
+    });
+    const bars = new Map();
+    groups.forEach((group, index) => {
+        const top = margin.top + index * rowHeight;
+        const middle = top + rowHeight / 2;
+        svg.appendChild(createSvgElement("line", {
+            x1: margin.left, y1: top, x2: width - margin.right, y2: top,
+            class: "chart-grid-line"
+        }));
+        const label = createSvgElement("text", {
+            x: margin.left - 8, y: middle + 3, "text-anchor": "end",
+            class: "chart-axis-label home-pyramid-year-label"
+        });
+        label.textContent = `${group.start}–${group.start + 4}`;
+        const menBar = createSvgElement("rect", {
+            x: center - xMen(group.men), y: top + 1, width: xMen(group.men), height: Math.max(1, rowHeight - 2),
+            class: "home-pyramid-men"
+        });
+        const womenBar = createSvgElement("rect", {
+            x: center, y: top + 1, width: xWomen(group.women), height: Math.max(1, rowHeight - 2),
+            class: "home-pyramid-women"
+        });
+        svg.append(menBar, womenBar, label);
+        bars.set(group.start, { menBar, womenBar });
+    });
+    svg.appendChild(createSvgElement("line", {
+        x1: center, y1: margin.top, x2: center, y2: height - margin.bottom,
+        class: "home-pyramid-axis"
+    }));
+    const legendX = width - margin.right - 104;
+    svg.appendChild(createSvgElement("rect", {
+        x: legendX - 10, y: margin.top + 5, width: 114, height: 50, rx: 6,
+        class: "home-pyramid-legend-background"
+    }));
+    [["Muži", "home-pyramid-men"], ["Ženy", "home-pyramid-women"]]
+        .forEach(([text, className], index) => {
+            const legendY = margin.top + 20 + index * 20;
+            svg.appendChild(createSvgElement("rect", {
+                x: legendX, y: legendY - 6, width: 14, height: 12, rx: 2, class: className
+            }));
+            const legend = createSvgElement("text", {
+                x: legendX + 22, y: legendY + 5, class: "chart-axis-label home-pyramid-legend"
+            });
+            legend.textContent = text;
+            svg.appendChild(legend);
+        });
+
+    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
+    const tooltipBackground = createSvgElement("rect", { width: 175, height: 66, rx: 6 });
+    const yearText = createSvgElement("text", { x: 10, y: 19 });
+    const menText = createSvgElement("text", { x: 10, y: 39 });
+    const womenText = createSvgElement("text", { x: 10, y: 59 });
+    tooltip.append(tooltipBackground, yearText, menText, womenText);
+    groups.forEach((group, index) => {
+        const top = margin.top + index * rowHeight;
+        const barsForGroup = bars.get(group.start);
+        const hoverRow = createSvgElement("rect", {
+            x: margin.left, y: top, width: plotWidth, height: rowHeight,
+            class: "chart-histogram-hover", tabindex: 0,
+            "aria-label": `Ročník ${group.start} až ${group.start + 4}: muži ${group.men}, ženy ${group.women}`
+        });
+        const show = () => {
+            tooltip.setAttribute("transform", `translate(${Math.max(0, center - 87)} ${margin.top + 8})`);
+            yearText.textContent = `Ročník: ${group.start}–${group.start + 4}`;
+            menText.textContent = `Muži: ${formatThousands(group.men)}`;
+            womenText.textContent = `Ženy: ${formatThousands(group.women)}`;
+            tooltip.classList.add("is-visible");
+            barsForGroup.menBar.classList.add("is-active");
+            barsForGroup.womenBar.classList.add("is-active");
+        };
+        const hide = () => {
+            tooltip.classList.remove("is-visible");
+            barsForGroup.menBar.classList.remove("is-active");
+            barsForGroup.womenBar.classList.remove("is-active");
+        };
+        bindHoverEvents(hoverRow, show, hide);
+        svg.appendChild(hoverRow);
+    });
+    svg.appendChild(tooltip);
+    [
+        [center - halfWidth / 2, "Muži"],
+        [center + halfWidth / 2, "Ženy"]
+    ].forEach(([labelX, text]) => {
+        const label = createSvgElement("text", {
+            x: labelX, y: height - 10, "text-anchor": "middle", class: "chart-axis-label"
+        });
+        label.textContent = text;
+        svg.appendChild(label);
+    });
+    const yTitle = createSvgElement("text", {
+        x: 18, y: margin.top + plotHeight / 2, "text-anchor": "middle",
+        transform: `rotate(-90 18 ${margin.top + plotHeight / 2})`, class: "chart-axis-label"
+    });
+    yTitle.textContent = "Rok narození";
+    svg.appendChild(yTitle);
+    container.appendChild(svg);
+}
+
 function niceAxisMaximum(maximum) {
     const magnitude = 10 ** Math.floor(Math.log10(maximum));
     const step = magnitude / 5;
     return Math.ceil(maximum / step) * step;
 }
 
-function renderAssociationBarChart(containerId, data, valueKey, yTitle) {
+function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {}) {
     const container = document.getElementById(containerId);
     container.replaceChildren();
 
@@ -255,8 +459,9 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle) {
     const margin = { top: 24, right: 18, bottom: 175, left: 76 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
-    const yMaximum = niceAxisMaximum(Math.max(...sortedData.map(item => item[valueKey])));
-    const y = value => margin.top + plotHeight * (1 - value / yMaximum);
+    const yMinimum = axis.minValue ?? 0;
+    const yMaximum = axis.maxValue ?? niceAxisMaximum(Math.max(...sortedData.map(item => item[valueKey])));
+    const y = value => margin.top + plotHeight * (yMaximum - value) / (yMaximum - yMinimum);
     const columnWidth = plotWidth / sortedData.length;
     const barWidth = Math.max(8, columnWidth * 0.68);
     const svg = createSvgElement("svg", {
@@ -266,7 +471,7 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle) {
     });
 
     for (let index = 0; index <= 4; index += 1) {
-        const value = yMaximum * index / 4;
+        const value = yMinimum + (yMaximum - yMinimum) * index / 4;
         const lineY = y(value);
         svg.appendChild(createSvgElement("line", {
             x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
@@ -373,13 +578,10 @@ loadCsv("csv/player_count.csv")
 const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
 document.getElementById("last-updated").textContent =
     `Stránka naposledy aktualizována ${LAST_UPDATED_DATE}`;
-document.getElementById("home-men-ranking-season").textContent = homeSeasonLabel;
-document.getElementById("home-men-movers-season").textContent = homeSeasonLabel;
-document.getElementById("home-women-ranking-season").textContent = homeSeasonLabel;
-document.getElementById("home-women-movers-season").textContent = homeSeasonLabel;
-document.getElementById("home-histogram-season").textContent = homeSeasonLabel;
-document.getElementById("home-association-count-season").textContent = homeSeasonLabel;
-document.getElementById("home-association-median-season").textContent = homeSeasonLabel;
+const homeSeasonElements = document.querySelectorAll(".home-season");
+homeSeasonElements.forEach(element => {
+    element.textContent = homeSeasonLabel;
+});
 document.getElementById("home-women-ranking-link").href =
     `zebricky.html?sezona=${DEFAULT_SEASON}&pohlavi=Z`;
 document.getElementById("home-women-movers-link").href =
@@ -407,7 +609,11 @@ loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
         renderHistogram(data);
         const associations = associationStatistics(data);
         renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů");
-        renderAssociationBarChart("home-association-median", associations, "median", "Medián STR");
+        renderAssociationBarChart("home-association-median", associations, "median", "Medián STR", {
+            minValue: 1100,
+            maxValue: 1500
+        });
+        renderBirthYearPyramid(data);
         const men = filterAndRankRows(data, row => row["Pohlaví"] === "M", "STR");
         renderTopTable(men, "home-men-ranking", rankingColumns);
         const women = filterAndRankRows(data, row => row["Pohlaví"] === "Z", "STR");
@@ -420,9 +626,18 @@ loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
             "Graf se nepodařilo načíst.";
         document.getElementById("home-association-median").textContent =
             "Graf se nepodařilo načíst.";
+        document.getElementById("home-birth-year-pyramid").textContent =
+            "Graf se nepodařilo načíst.";
         const message = "Data se nepodařilo načíst. Zkuste stránku obnovit.";
         showTableError("home-men-ranking", message);
         showTableError("home-women-ranking", message);
+    });
+
+loadCsv("csv/players.csv")
+    .then(renderMedianAgeChart)
+    .catch(() => {
+        document.getElementById("home-median-age").textContent =
+            "Graf se nepodařilo načíst.";
     });
 
 loadCsv(`csv/movers_${DEFAULT_SEASON - 1}_${DEFAULT_SEASON}_STR800.csv`)
