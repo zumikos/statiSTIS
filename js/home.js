@@ -385,7 +385,8 @@ function renderBirthYearPyramid(data) {
         });
 
     const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
-    const tooltipBackground = createSvgElement("rect", { width: 175, height: 66, rx: 6 });
+    const tooltipHeight = 66;
+    const tooltipBackground = createSvgElement("rect", { width: 175, height: tooltipHeight, rx: 6 });
     const yearText = createSvgElement("text", { x: 10, y: 19 });
     const menText = createSvgElement("text", { x: 10, y: 39 });
     const womenText = createSvgElement("text", { x: 10, y: 59 });
@@ -399,7 +400,11 @@ function renderBirthYearPyramid(data) {
             "aria-label": `Ročník ${group.start} až ${group.start + 4}: muži ${group.men}, ženy ${group.women}`
         });
         const show = () => {
-            tooltip.setAttribute("transform", `translate(${Math.max(0, center - 87)} ${margin.top + 8})`);
+            const tooltipY = Math.min(
+                Math.max(top + (rowHeight - tooltipHeight) / 2, margin.top),
+                height - margin.bottom - tooltipHeight
+            );
+            tooltip.setAttribute("transform", `translate(${Math.max(0, center - 87)} ${tooltipY})`);
             yearText.textContent = `Ročník: ${group.start}–${group.start + 4}`;
             menText.textContent = `Muži: ${formatThousands(group.men)}`;
             womenText.textContent = `Ženy: ${formatThousands(group.women)}`;
@@ -604,30 +609,71 @@ const moverColumns = [
     { key: "STR změna", label: "STR\nzměna" }
 ];
 
-loadCsv(`csv/ranking_${DEFAULT_SEASON}.csv`)
-    .then(data => {
-        renderHistogram(data);
-        const associations = associationStatistics(data);
-        renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů");
-        renderAssociationBarChart("home-association-median", associations, "median", "Medián STR", {
-            minValue: 1100,
-            maxValue: 1500
+const rankingSeasonPromises = new Map();
+
+function loadRankingSeason(season) {
+    if (!rankingSeasonPromises.has(season)) {
+        rankingSeasonPromises.set(season, loadCsv(`csv/ranking_${season}.csv`));
+    }
+    return rankingSeasonPromises.get(season);
+}
+
+function renderHomeSeasonCharts(data) {
+    renderHistogram(data);
+    const associations = associationStatistics(data);
+    renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů");
+    renderAssociationBarChart("home-association-median", associations, "median", "Medián STR", {
+        minValue: 1100,
+        maxValue: 1500
+    });
+    renderBirthYearPyramid(data);
+}
+
+function showHomeSeasonChartErrors() {
+    ["home-histogram", "home-association-count", "home-association-median", "home-birth-year-pyramid"]
+        .forEach(id => {
+            document.getElementById(id).textContent = "Graf se nepodařilo načíst.";
         });
-        renderBirthYearPyramid(data);
+    document.getElementById("home-histogram-stats").textContent = "";
+}
+
+const homeChartSeasonSelects = document.querySelectorAll(".home-chart-season");
+let requestedHomeChartSeason = DEFAULT_SEASON;
+
+function selectHomeChartSeason(season) {
+    requestedHomeChartSeason = season;
+    homeChartSeasonSelects.forEach(select => {
+        select.value = season;
+    });
+    loadRankingSeason(season)
+        .then(data => {
+            if (season === requestedHomeChartSeason) renderHomeSeasonCharts(data);
+        })
+        .catch(() => {
+            if (season === requestedHomeChartSeason) showHomeSeasonChartErrors();
+        });
+}
+
+homeChartSeasonSelects.forEach(select => {
+    SEASONS.slice().reverse().forEach(season => {
+        const option = document.createElement("option");
+        option.value = season;
+        option.textContent = formatSeason(season);
+        select.appendChild(option);
+    });
+    select.value = DEFAULT_SEASON;
+    select.addEventListener("change", () => selectHomeChartSeason(Number(select.value)));
+});
+selectHomeChartSeason(DEFAULT_SEASON);
+
+loadRankingSeason(DEFAULT_SEASON)
+    .then(data => {
         const men = filterAndRankRows(data, row => row["Pohlaví"] === "M", "STR");
         renderTopTable(men, "home-men-ranking", rankingColumns);
         const women = filterAndRankRows(data, row => row["Pohlaví"] === "Z", "STR");
         renderTopTable(women, "home-women-ranking", rankingColumns);
     })
     .catch(() => {
-        document.getElementById("home-histogram").textContent =
-            "Graf se nepodařilo načíst.";
-        document.getElementById("home-association-count").textContent =
-            "Graf se nepodařilo načíst.";
-        document.getElementById("home-association-median").textContent =
-            "Graf se nepodařilo načíst.";
-        document.getElementById("home-birth-year-pyramid").textContent =
-            "Graf se nepodařilo načíst.";
         const message = "Data se nepodařilo načíst. Zkuste stránku obnovit.";
         showTableError("home-men-ranking", message);
         showTableError("home-women-ranking", message);

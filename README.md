@@ -8,11 +8,13 @@ Motivací k tomuto projektu bylo zkusit si vytvořit první webové stránky a n
 
 Web spojuje veřejně dostupná data z žebříčků ze všech sezón systému STIS a nabízí zejména:
 
-- seznam největších skokanů a skokanek sezón, a to i pro jednotlivé mládežnické kategorie;
+- seznam největších skokanů a skokanek podle sezóny, pohlaví, krajského svazu a minimálního výchozího STR;
 - žebříčky hráčů podle sezóny, pohlaví, kraje a kategorie (U21, U19, U17, U15 a U13);
 - vyhledávání hráčů a jejich vývoj STR po konci každé aktivní sezóny;
 - porovnání vývoje STR a pořadí dvou hráčů;
 - vyhledávání oddílů a oddílové žebříčky.
+
+Mládežnické kategorie v žebříčcích jsou věkové limity, nikoli navzájem oddělené skupiny. Například výběr U19 proto zahrnuje také mladší hráče, kteří limit U19 splňují.
 
 Web je nezávislý statistický projekt a není oficiální stránkou České asociace stolního tenisu.
 
