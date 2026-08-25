@@ -622,10 +622,7 @@ function renderHomeSeasonCharts(data) {
     renderHistogram(data);
     const associations = associationStatistics(data);
     renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů");
-    renderAssociationBarChart("home-association-median", associations, "median", "Medián STR", {
-        minValue: 1100,
-        maxValue: 1500
-    });
+    renderAssociationBarChart("home-association-median", associations, "median", "Medián STR");
     renderBirthYearPyramid(data);
 }
 
