@@ -1,7 +1,7 @@
 const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const DEFAULT_SEASON = Math.max(...SEASONS);
 const SITE_NAME = "statiSTIS";
-const LAST_UPDATED_DATE = "25. 08. 2026";
+const LAST_UPDATED_DATE = "30. 08. 2026";
 const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
 const MOVERS_STR_MIN_VALUES = [800, 1200, 1600, 2000];
 const PLAYER_SEXES = [
@@ -79,6 +79,7 @@ const TEAM_NAME_REPLACEMENTS = [
     [/^Sportovní klub policie\b/i, "SKP"],
     [/^Klub stolního tenisu\b/i, "KST"],
     [/^Městský sportovní klub\b/i, "MSK"],
+    [/^Vysokoškolský sportovní klub\b/i, "VSK"],
     [/^Sportovní klub\b/i, "SK"],
     [/^Tělovýchovná jednota\b/i, "TJ"],
     [/^Tělocvična jednota\b/i, "TJ"],

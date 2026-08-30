@@ -346,6 +346,10 @@ table.dataTable thead .dt-column-order {
     margin-top: 0;
 }
 
+.home-table-title {
+    text-align:center;
+}
+
 .compact-table {
     margin-bottom: 1rem;
     table-layout: fixed;
@@ -424,10 +428,14 @@ table.dataTable thead .dt-column-order {
 
 .button {
     display: inline-block;
+    flex:none;
     padding: 6px 12px;
+    border:0;
     background: var(--blue);
     color: white;
     border-radius: 6px;
+    font:inherit;
+    cursor:pointer;
     text-decoration: none;
 }
 
@@ -724,8 +732,24 @@ table.dataTable thead .dt-column-order {
     color:var(--text-muted);
 }
 
-.comparison-change-player {
-    flex:none;
+.comparison-win-table th,
+.comparison-win-table td {
+    width:50%;
+    text-align:center;
+}
+
+.comparison-win-table td strong,
+.comparison-win-table td span {
+    display:block;
+}
+
+.comparison-win-table td strong {
+    font-size:1.4rem;
+}
+
+.comparison-win-table td span {
+    margin-top:0.3rem;
+    color:var(--text-muted);
 }
 
 .comparison-chart-line {

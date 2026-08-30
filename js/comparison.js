@@ -87,7 +87,7 @@ function selectPlayer(slot, player, updateUrl = true) {
     text.append(name, details);
     const changeButton = document.createElement("button");
     changeButton.type = "button";
-    changeButton.className = "button comparison-change-player";
+    changeButton.className = "button";
     changeButton.textContent = "Změnit";
     changeButton.addEventListener("click", () => clearPlayer(slot));
     selected.append(text, changeButton);
@@ -336,6 +336,37 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
     container.appendChild(svg);
 }
 
+function latestPlayerRating(player) {
+    for (const season of [...SEASONS].reverse()) {
+        const value = player[`${season} STR`];
+        if (value === null || value === undefined || value === "") continue;
+        const rating = Number(value);
+        if (Number.isFinite(rating)) return { rating, season };
+    }
+    return null;
+}
+
+function renderWinProbability() {
+    const ratings = selectedPlayers.map(latestPlayerRating);
+    const firstProbability = ratings.every(Boolean)
+        ? 1 / (1 + 10 ** ((ratings[1].rating - ratings[0].rating) / 400))
+        : null;
+    const probabilities = [firstProbability, firstProbability === null ? null : 1 - firstProbability];
+
+    selectedPlayers.forEach((player, index) => {
+        document.getElementById(`comparison-win-name-${index}`).textContent = player["Hráč"];
+        document.getElementById(`comparison-win-value-${index}`).textContent = probabilities[index] === null
+            ? "—"
+            : `${(probabilities[index] * 100).toLocaleString("cs-CZ", {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1
+            })} %`;
+        document.getElementById(`comparison-win-rating-${index}`).textContent = ratings[index]
+            ? `STR ${formatThousands(ratings[index].rating)} (${formatSeason(ratings[index].season)})`
+            : "STR není k dispozici";
+    });
+}
+
 function renderComparison() {
     const charts = document.getElementById("comparison-charts");
     if (selectedPlayers.some(player => !player)) {
@@ -349,6 +380,7 @@ function renderComparison() {
     renderComparisonLineChart({
         containerId: "comparison-rank-chart", field: "pořadí", reverseY: true, valueLabel: "Pořadí"
     });
+    renderWinProbability();
 }
 
 pickerElements.forEach((picker, slot) => {
