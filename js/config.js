@@ -55,7 +55,7 @@ const PLAYER_NAME_OVERRIDES = {
 
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
 const TEAM_NAME_OVERRIDES = {
-    "DDM Uherský Ostroh, příspěvková": "DDM Uherský Ostroh",
+    "Dům dětí a mládeže Uherský Ostroh, příspěvková": "DDM Uherský Ostroh",
     "Dům dětí a mládeže Cvikováček, příspěvková organiz": "DDM Cvikováček",
     "Klub přátel školy při Střední průmyslové škole Zengrova 1, Ostrava-Vítkovice, z.s.": "Klub přátel školy při SPŠ Zengrova 1, Ostrava-Vítkovice",
     "Městský sportovní klub Břeclav stolní tenis, pobočný spolek": "MSK Břeclav",
@@ -69,9 +69,9 @@ const TEAM_NAME_OVERRIDES = {
     "Stolní tenis club Slaný, z.s.": "STC Slaný",
     "Stolní tenis Sever Žatec z.s.": "ST Sever Žatec",
     "TJ ABC Braník, z. s. oddíl stolního tenisu": "TJ ABC Braník",
-    "TJ Rapid Lásenice, spolek.": "TJ Rapid Lásenice",
+    "Tělovýchovná jednota Rapid Lásenice, spolek.": "TJ Rapid Lásenice",
     "TT Club Ostrava, z.s.": "TTC Ostrava",
-    "TTC Praha - klub stolního tenisu": "TTC Praha",
+    "TTC Praha - klub stolního tenisu, z.s.": "TTC Praha",
     "zapsaný spolek Stolní tenis Střekov": "Stolní tenis Střekov",
 };
 

@@ -153,16 +153,22 @@ function renderPlayerStrChart(player) {
     });
 }
 
-function renderPlayerRankChart(player) {
-    const container = document.getElementById("player-rank-chart");
+function renderPlayerPositionChart(player, {
+    containerId,
+    rankColumn,
+    totalColumn,
+    ariaLabel,
+    emptyMessage
+}) {
+    const container = document.getElementById(containerId);
     const ranks = SEASONS.map(year => ({
         x: year,
-        value: player[`${year} pořadí`],
+        value: player[`${year} ${rankColumn}`],
         percentile: formatPercentile(
-            player[`${year} pořadí`],
-            player[`${year} počet hráčů`]
+            player[`${year} ${rankColumn}`],
+            player[`${year} ${totalColumn}`]
         ),
-        totalPlayers: player[`${year} počet hráčů`]
+        totalPlayers: player[`${year} ${totalColumn}`]
     }));
     const availableRanks = ranks.filter(item =>
         item.value !== null &&
@@ -171,7 +177,7 @@ function renderPlayerRankChart(player) {
     );
 
     if (availableRanks.length === 0) {
-        container.textContent = "Pro tohoto hráče nejsou dostupná data pořadí.";
+        container.textContent = emptyMessage;
         return;
     }
 
@@ -195,7 +201,7 @@ function renderPlayerRankChart(player) {
         maxValue,
         yTicks,
         reverseY: true,
-        ariaLabel: `Vývoj pořadí hráče ${player["Hráč"]}`,
+        ariaLabel,
         xLabel: formatSeason,
         xTitle: "Sezóna",
         yTitle: "Pořadí",
@@ -212,7 +218,27 @@ function renderPlayerRankChart(player) {
             `${formatSeason(item.x)}: pořadí ${formatThousands(item.value)}, ` +
             `percentil ${item.percentile}`,
         tooltipWidth: 150,
+        emptyMessage
+    });
+}
+
+function renderPlayerRankChart(player) {
+    renderPlayerPositionChart(player, {
+        containerId: "player-rank-chart",
+        rankColumn: "pořadí",
+        totalColumn: "počet hráčů",
+        ariaLabel: `Vývoj pořadí hráče ${player["Hráč"]}`,
         emptyMessage: "Pro tohoto hráče nejsou dostupná data pořadí."
+    });
+}
+
+function renderPlayerMoversRankChart(player) {
+    renderPlayerPositionChart(player, {
+        containerId: "player-movers-rank-chart",
+        rankColumn: "Pořadí skokani",
+        totalColumn: "počet skokanů",
+        ariaLabel: `Vývoj pořadí skokanů hráče ${player["Hráč"]}`,
+        emptyMessage: "Pro tohoto hráče nejsou dostupná data pořadí skokanů."
     });
 }
 
@@ -245,6 +271,7 @@ async function showPlayerDetail(playerId) {
         renderPlayerHistory(player);
         renderPlayerStrChart(player);
         renderPlayerRankChart(player);
+        renderPlayerMoversRankChart(player);
     } catch (error) {
         document.getElementById("player-name").textContent = "Data se nepodařilo načíst";
         document.getElementById("player-info").textContent = "Zkuste stránku obnovit.";
