@@ -282,9 +282,13 @@ async function createStatisticsTable({
             bottomEnd: "paging"
         };
         if (pageLength) layout.top2End = () => pageLength.control;
+        const linkRenderers = {
+            "Hráč": renderPlayerProfileLink,
+            "Oddíl": renderTeamProfileLink
+        };
         const renderedColumns = columns.map(column =>
-            column.data === "Hráč" && !column.render
-                ? { ...column, render: renderPlayerProfileLink }
+            !column.render && linkRenderers[column.data]
+                ? { ...column, render: linkRenderers[column.data] }
                 : column
         );
         const table = new DataTable(`#${tableId}`, {

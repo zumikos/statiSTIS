@@ -13,7 +13,8 @@ def export_players(master, output_dir):
                 "ID",
                 "Hráč",
                 "Rok narození",
-                "Pohlaví"
+                "Pohlaví",
+                "Oddíl"
             ]
         ]
     )

@@ -63,6 +63,10 @@ function createTeamProfileLink(teamName) {
     return link;
 }
 
+function renderTeamProfileLink(teamName, type) {
+    return type === "display" ? createTeamProfileLink(teamName) : teamName;
+}
+
 function getPlayerAgeCategory(birthYear, season) {
     const year = Number(birthYear);
     if (!Number.isFinite(year)) return "—";

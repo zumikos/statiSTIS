@@ -133,7 +133,7 @@ function renderPlayerStrChart(player) {
         xValues: SEASONS,
         width: 1000,
         height: 420,
-        margin: { top: 25, right: 25, bottom: 75, left: 70 },
+        margin: { top: 25, right: 25, bottom: 90, left: 70 },
         minValue,
         maxValue,
         yTicks: Array.from(
@@ -142,6 +142,8 @@ function renderPlayerStrChart(player) {
         ),
         ariaLabel: `Vývoj STR hráče ${player["Hráč"]}`,
         xLabel: formatSeason,
+        xTitle: "Sezóna",
+        yTitle: "STR",
         formatYLabel: value => formatThousands(Math.round(value)),
         formatTooltip: item => `STR ${formatThousands(item.value)}`,
         formatPointAria: item =>
@@ -159,7 +161,8 @@ function renderPlayerRankChart(player) {
         percentile: formatPercentile(
             player[`${year} pořadí`],
             player[`${year} počet hráčů`]
-        )
+        ),
+        totalPlayers: player[`${year} počet hráčů`]
     }));
     const availableRanks = ranks.filter(item =>
         item.value !== null &&
@@ -176,6 +179,10 @@ function renderPlayerRankChart(player) {
     const tickStep = Math.max(1, Math.ceil((highestRank - 1) / 4));
     const yTicks = Array.from({ length: 5 }, (_, step) => 1 + tickStep * step);
     const maxValue = yTicks[yTicks.length - 1];
+    const latestTotalPlayers = [...availableRanks]
+        .reverse()
+        .map(item => Number(item.totalPlayers))
+        .find(Number.isFinite);
 
     renderInteractiveLineChart({
         container,
@@ -183,13 +190,19 @@ function renderPlayerRankChart(player) {
         xValues: SEASONS,
         width: 1000,
         height: 420,
-        margin: { top: 25, right: 25, bottom: 75, left: 80 },
+        margin: { top: 25, right: 80, bottom: 90, left: 80 },
         minValue: 1,
         maxValue,
         yTicks,
         reverseY: true,
         ariaLabel: `Vývoj pořadí hráče ${player["Hráč"]}`,
         xLabel: formatSeason,
+        xTitle: "Sezóna",
+        yTitle: "Pořadí",
+        rightYTitle: "Percentil",
+        formatRightYLabel: latestTotalPlayers
+            ? value => formatPercentile(value, latestTotalPlayers)
+            : null,
         formatYLabel: value => formatThousands(value),
         formatTooltip: item => [
             `Pořadí ${formatThousands(item.value)}`,
@@ -223,9 +236,12 @@ async function showPlayerDetail(playerId) {
         const genderLabels = { M: "muži", Z: "ženy" };
         const gender = genderLabels[player["Pohlaví"]] || formatValue(player["Pohlaví"]);
         const category = getPlayerAgeCategory(player["Rok narození"], DEFAULT_SEASON);
-        document.getElementById("player-info").textContent =
+        const playerInfo = document.getElementById("player-info");
+        playerInfo.textContent =
             `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, ` +
-            `Pohlaví: ${gender}, Kategorie: ${category}`;
+            `Pohlaví: ${gender}, Kategorie: ${category}, Oddíl: `;
+        const teamName = formatTeamName(player["Oddíl"]);
+        playerInfo.append(teamName ? createTeamProfileLink(teamName) : "—");
         renderPlayerHistory(player);
         renderPlayerStrChart(player);
         renderPlayerRankChart(player);

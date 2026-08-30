@@ -49,6 +49,8 @@ function renderInteractiveLineChart({
     xLabelOffset = 10,
     xTitle = "",
     yTitle = "",
+    rightYTitle = "",
+    formatRightYLabel = null,
     formatYLabel = formatThousands,
     formatTooltip = item => formatThousands(item.value),
     formatPointAria = item => `${xLabel(item.x)}: ${formatThousands(item.value)}`,
@@ -102,6 +104,17 @@ function renderInteractiveLineChart({
         });
         label.textContent = formatYLabel(value);
         svg.appendChild(label);
+
+        if (formatRightYLabel) {
+            const rightLabel = createSvgElement("text", {
+                x: width - margin.right + 10,
+                y: lineY + 5,
+                "text-anchor": "start",
+                class: "chart-axis-label"
+            });
+            rightLabel.textContent = formatRightYLabel(value);
+            svg.appendChild(rightLabel);
+        }
     });
 
     xValues.forEach(value => {
@@ -228,6 +241,12 @@ function renderInteractiveLineChart({
         y: margin.top + plotHeight / 2,
         "text-anchor": "middle",
         transform: `rotate(-90 18 ${margin.top + plotHeight / 2})`
+    });
+    addChartAxisTitle(svg, rightYTitle, {
+        x: width - 18,
+        y: margin.top + plotHeight / 2,
+        "text-anchor": "middle",
+        transform: `rotate(90 ${width - 18} ${margin.top + plotHeight / 2})`
     });
 
     container.appendChild(svg);
