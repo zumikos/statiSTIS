@@ -32,26 +32,28 @@
 
 <main>
     <section id="team-search-view">
-        <h2>Oddíly</h2>
-        <p>Zobrazte si aktuální oddílový žebříček.</p>
-        <form id="team-search-form" class="entity-search" role="search">
-            <label class="visually-hidden" for="team-search-input">Název oddílu</label>
-            <input id="team-search-input" type="search" placeholder="Zadejte název oddílu" autocomplete="off">
-            <button type="submit" aria-label="Vyhledat" title="Vyhledat">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="10.5" cy="10.5" r="6.5"></circle>
-                    <path d="M15.5 15.5 21 21"></path>
-                </svg>
-            </button>
-        </form>
-        <p id="team-search-status" class="status-message" aria-live="polite"></p>
-        <div id="team-results"></div>
+        <h2>
+            Žebříček oddílů <select id="team-overview-season" class="season-select" aria-label="Sezóna"></select>
+            <span class="info-tooltip">
+                <button type="button" class="info-button" aria-label="Metodika žebříčku oddílů" aria-describedby="team-ranking-info">i</button>
+                <span id="team-ranking-info" class="info-tooltip-text" role="tooltip">Oddíly jsou seřazeny podle průměrného STR jejich čtyř nejlepších aktivních hráčů. Pokud má oddíl méně než čtyři hráče, počítá se průměr ze všech.</span>
+            </span>
+        </h2>
+
+        <div class="ranking-filter">
+            <span class="ranking-filter-label">Svaz:</span>
+            <nav id="association-selection" class="sex-selection" aria-label="Výběr svazu"></nav>
+        </div>
+
+        <p id="team-search-status" class="status-message" aria-live="polite" hidden></p>
+
+        <table id="team-ranking-overview" class="display" style="width:100%"></table>
     </section>
 
     <section id="team-detail-view" hidden>
-        <a href="oddily.html" class="back-link">Zpět na vyhledávání</a>
+        <a id="team-back-link" href="oddily.html" class="back-link">Zpět na vyhledávání</a>
         <h2 id="team-name"></h2>
-        <p>Žebříček hráčů v sezóně <span id="team-season"></span></p>
+        <p>Žebříček hráčů v sezóně <select id="team-detail-season" class="season-select" aria-label="Sezóna"></select></p>
         <nav id="sex-selection" class="sex-selection" aria-label="Pohlaví hráčů"></nav>
         <table id="team-ranking" class="display" style="width:100%"></table>
     </section>

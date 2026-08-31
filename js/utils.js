@@ -55,10 +55,11 @@ function renderPlayerProfileLink(playerName, type, row) {
         : playerName;
 }
 
-function createTeamProfileLink(teamName) {
+function createTeamProfileLink(teamName, additionalParameters = {}) {
     const link = document.createElement("a");
     link.className = "team-profile-link";
-    link.href = `oddily.html?oddil=${encodeURIComponent(teamName)}`;
+    const parameters = new URLSearchParams({ oddil: teamName, ...additionalParameters });
+    link.href = `oddily.html?${parameters}`;
     link.textContent = teamName;
     return link;
 }

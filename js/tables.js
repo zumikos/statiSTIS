@@ -1,14 +1,14 @@
-function createPlayerTableSearch() {
+function createPlayerTableSearch(labelText = "Hledat hráče") {
     const control = document.createElement("div");
     control.className = "dt-search";
 
     const label = document.createElement("label");
-    label.textContent = "Hledat hráče: ";
+    label.textContent = `${labelText}: `;
 
     const input = document.createElement("input");
     input.type = "search";
     input.autocomplete = "off";
-    input.setAttribute("aria-label", "Hledat hráče");
+    input.setAttribute("aria-label", labelText);
 
     label.appendChild(input);
     control.appendChild(label);
@@ -123,8 +123,8 @@ function setupMoversStrMinControl(selectedValue, pageUrl) {
     container.appendChild(dropdown);
 }
 
-function setupSeasonSelect(availableSeasons, selectedSeason, pageUrl) {
-    const seasonSelect = document.getElementById("season");
+function setupSeasonSelect(availableSeasons, selectedSeason, pageUrl, selectId = "season") {
+    const seasonSelect = document.getElementById(selectId);
     availableSeasons.slice().reverse().forEach(year => {
         const option = document.createElement("option");
         option.value = year;

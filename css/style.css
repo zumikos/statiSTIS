@@ -102,6 +102,7 @@ tr:nth-child(even){
 }
 
 #season,
+.season-select,
 .home-chart-season,
 .dt-search input {
     font-size: 1rem;
@@ -117,11 +118,13 @@ tr:nth-child(even){
 }
 
 #season,
+.season-select,
 .home-chart-season {
     padding: 4px 4px;
 }
 
 #season:focus,
+.season-select:focus,
 .home-chart-season:focus,
 .dt-search input:focus,
 .entity-search input:focus {
@@ -139,7 +142,8 @@ table.dataTable tbody td {
 }
 
 table.dataTable thead th {
-    padding:6px 20px 6px 5px;
+    position:relative;
+    padding:6px 30px 6px 5px !important;
     box-sizing:border-box;
 }
 
@@ -150,10 +154,14 @@ table.dataTable thead th {
 }
 
 table.dataTable thead .dt-column-order {
+    position:absolute !important;
+    left:auto !important;
     right:4px !important;
+    width:12px !important;
 }
 
-.dt-scroll-head .dt-column-title {
+table.dataTable thead .dt-column-title {
+    display:block;
     white-space:normal;
 }
 
