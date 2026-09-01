@@ -588,11 +588,11 @@ homeSeasonElements.forEach(element => {
     element.textContent = homeSeasonLabel;
 });
 document.getElementById("home-women-ranking-link").href =
-    `zebricky.html?sezona=${DEFAULT_SEASON}&pohlavi=Z`;
+    `hraci.html?sezona=${DEFAULT_SEASON}&pohlavi=Z`;
 document.getElementById("home-women-movers-link").href =
     `skokani.html?sezona=${DEFAULT_SEASON}&pohlavi=Z`;
 document.getElementById("home-men-ranking-link").href =
-    `zebricky.html?sezona=${DEFAULT_SEASON}&pohlavi=M`;
+    `hraci.html?sezona=${DEFAULT_SEASON}&pohlavi=M`;
 document.getElementById("home-men-movers-link").href =
     `skokani.html?sezona=${DEFAULT_SEASON}&pohlavi=M`;
 

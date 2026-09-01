@@ -10,7 +10,7 @@ Web spojuje veřejně dostupná data z žebříčků ze všech sezón systému S
 
 - seznam největších skokanů a skokanek podle sezóny, pohlaví, krajského svazu a minimálního výchozího STR;
 - žebříčky hráčů podle sezóny, pohlaví, kraje a kategorie (U21, U19, U17, U15 a U13);
-- vyhledávání hráčů a jejich vývoj STR po konci každé aktivní sezóny;
+- vyhledávání hráčů a jejich vývoj STR v jednotlivých sezónách;
 - porovnání vývoje STR a pořadí dvou hráčů;
 - vyhledávání oddílů a oddílové žebříčky.
 
@@ -39,7 +39,10 @@ Po přidání zdrojových souborů pojmenovaných podle koncového roku sezóny,
 .\.venv\Scripts\python.exe code\update.py
 ```
 
+Pozor na rozdílné značení: STIS používá v URL počáteční rok (`rocnik-2026` znamená sezónu 2026/27), zatímco zdrojové soubory tohoto projektu používají rok koncový (`2027.xlsx`).
+
 Výchozí sezóny webu a hodnoty nabízené ve výběru minimálního STR jsou uvedeny v konstantách `SEASONS` a `MOVERS_STR_MIN_VALUES` v `js/config.js`.
+Při měsíční výměně dat aktuální sezóny je potřeba upravit také `LATEST_RANKING_DATE`. Ve veřejném rozhraní STIS je dostupný aktuální stav probíhající sezóny a konečné žebříčky ukončených sezón; průběžné měsíční stavy je proto nutné samostatně archivovat, pokud mají zůstat zachovány.
 
 ## Publikování
 

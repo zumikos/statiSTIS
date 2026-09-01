@@ -123,12 +123,18 @@ function setupMoversStrMinControl(selectedValue, pageUrl) {
     container.appendChild(dropdown);
 }
 
-function setupSeasonSelect(availableSeasons, selectedSeason, pageUrl, selectId = "season") {
+function setupSeasonSelect(
+    availableSeasons,
+    selectedSeason,
+    pageUrl,
+    selectId = "season",
+    formatOption = formatSeason
+) {
     const seasonSelect = document.getElementById(selectId);
     availableSeasons.slice().reverse().forEach(year => {
         const option = document.createElement("option");
         option.value = year;
-        option.textContent = formatSeason(year);
+        option.textContent = formatOption(year);
         seasonSelect.appendChild(option);
     });
     seasonSelect.value = selectedSeason;

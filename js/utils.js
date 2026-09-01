@@ -17,6 +17,10 @@ function formatSeason(year) {
     return `${year - 1}/${String(year).slice(-2)}`;
 }
 
+function formatRankingDate(year) {
+    return year === DEFAULT_SEASON ? LATEST_RANKING_DATE : `01. 08. ${year}`;
+}
+
 function formatPlayerName(name) {
     return PLAYER_NAME_OVERRIDES[name] || name;
 }
@@ -44,7 +48,7 @@ function renderThousands(value, type) {
 function createPlayerProfileLink(playerId, playerName) {
     const link = document.createElement("a");
     link.className = "player-profile-link";
-    link.href = `hraci.html?ID=${encodeURIComponent(playerId)}`;
+    link.href = `hledat-hrace.html?ID=${encodeURIComponent(playerId)}`;
     link.textContent = playerName;
     return link;
 }
@@ -82,9 +86,10 @@ function formatTeamName(name) {
     if (TEAM_NAME_OVERRIDES[name]) return TEAM_NAME_OVERRIDES[name];
 
     let formattedName = String(name)
-        .replace(/^\s*z\.?\s*s\.?\s*/i, "")
-        .replace(/\s*,?\s*(?:pobočný\s+spolek|spolek|z\.?\s*s\.?|o\.?\s*s\.?)\s*$/i, "")
-        .replace(/\s+-\s+stolní tenis\s*$/i, "")
+        .replace(/^\s*(?:z\.?\s*s\.?\s*|(?:zapsaný\s+spolek|spolek)\s+)/i, "")
+        .replace(/^Oddíl stolního tenisu\s+/i, "")
+        .replace(/\s*,?\s*(?:pobočný\s+spolek|spolek|z\.?\s*s\.?|o\.?\s*s\.?|příspěvková(?:\s+organiz(?:ace)?)?)\.?\s*$/i, "")
+        .replace(/\s*,?\s*(?:z\.?\s*s\.?\s*)?(?:-\s*)?(?:(?:oddíl|klub)\s+stolního\s+tenisu|stolní\s+tenis)\s*$/i, "")
         .replace(/\s*,\s*/g, ", ")
         .replace(/\s+/g, " ")
         .trim();

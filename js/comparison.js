@@ -59,7 +59,7 @@ function updateComparisonUrl() {
         if (player) parameters.set(`ID${index + 1}`, player.ID);
     });
     const query = parameters.toString();
-    history.replaceState(null, "", `porovnani.html${query ? `?${query}` : ""}`);
+    history.replaceState(null, "", `porovnat-hrace.html${query ? `?${query}` : ""}`);
 }
 
 function selectPlayer(slot, player, updateUrl = true) {

@@ -11,6 +11,7 @@
 
 <link rel="stylesheet" href="css/style.css">
 <script src="js/theme.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
 
 </head>
 
@@ -18,85 +19,55 @@
 
 <header>
 
-<h1>
-    <a class="site-title" href="index.html">
-        <img class="site-logo" src="images/logo.png" alt="">
-        <span>statiSTIS</span>
-    </a>
-</h1>
+    <h1>
+        <a class="site-title" href="index.html">
+            <img class="site-logo" src="images/logo.png" alt="">
+            <span>statiSTIS</span>
+        </a>
+    </h1>
 
-<nav>
-
-<a href="index.html">Domů</a>
-<a href="zebricky.html">Žebříčky</a>
-<a href="skokani.html">Skokani</a>
-<a href="hraci.html">Hráči</a>
-<a href="porovnani.html">Porovnání</a>
-<a href="oddily.html">Oddíly</a>
-<a href="o-projektu.html">O projektu</a>
-
-</nav>
+    <nav>
+        <a href="index.html">Domů</a>
+        <a href="hraci.html">Hráči</a>
+        <a href="skokani.html">Skokani</a>
+        <a href="oddily.html">Oddíly</a>
+        <a href="hledat-hrace.html">Hledat hráče</a>
+        <a href="porovnat-hrace.html">Porovnat hráče</a>
+        <a href="o-projektu.html">O projektu</a>
+    </nav>
 
 </header>
 
 <main>
 
-<section id="player-search-view">
-    <h2>Hráči</h2>
-    <p>Zobrazte si individuální statistiky hráčů a jejich vývoj.</p>
+<h2>
+    Žebříček k <select id="season" aria-label="Datum žebříčku"></select>
+</h2>
 
-    <form id="player-search-form" class="entity-search" role="search">
-        <label class="visually-hidden" for="player-search-input">Jméno nebo ID</label>
-        <input id="player-search-input" type="search" placeholder="Zadejte jméno nebo ID hráče" autocomplete="off">
-        <button type="submit" aria-label="Vyhledat" title="Vyhledat">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="10.5" cy="10.5" r="6.5"></circle>
-                <path d="M15.5 15.5 21 21"></path>
-            </svg>
-        </button>
-    </form>
+<p>Žebříček aktivních hráčů podle posledního dostupného stavu. U ukončených sezón jde o konečný žebříček.</p>
 
-    <p id="player-search-status" class="status-message" aria-live="polite"></p>
-    <div id="player-results"></div>
-</section>
+<div class="ranking-filter">
+    <span class="ranking-filter-label">Kategorie:</span>
+    <nav id="sex-selection" class="sex-selection" aria-label="Výběr kategorie"></nav>
+</div>
+<div class="ranking-filter">
+    <span class="ranking-filter-label">Svaz:</span>
+    <nav id="association-selection" class="sex-selection" aria-label="Výběr svazu"></nav>
+</div>
 
-<section id="player-detail-view" hidden>
-    <a href="hraci.html" class="back-link">Zpět na vyhledávání</a>
-    <h2 id="player-name"></h2>
-    <p id="player-info"></p>
-    <section class="player-chart-section">
-        <h3>Vývoj STR</h3>
-        <div id="player-str-chart" class="player-str-chart"></div>
-    </section>
-    <section class="player-chart-section">
-        <h3>Vývoj pořadí v ČR</h3>
-        <div id="player-rank-chart" class="player-str-chart"></div>
-    </section>
-    <section class="player-chart-section">
-        <h3>Vývoj pořadí skokanů</h3>
-        <div id="player-movers-rank-chart" class="player-str-chart"></div>
-    </section>
-    <section class="player-statistics-section">
-        <h3>
-            Všechny statistiky
-            <span class="info-tooltip">
-                <button type="button" class="info-button" aria-label="Informace o pořadí a percentilech" aria-describedby="player-statistics-info">i</button>
-                <span id="player-statistics-info" class="info-tooltip-text" role="tooltip">Pořadí a percentily jsou počítány z žebříčků pro dané pohlaví.</span>
-            </span>
-        </h3>
-        <div class="table-scroll">
-            <table id="player-history"></table>
-        </div>
-    </section>
-</section>
+<table id="ranking" class="display" style="width:100%"></table>
 
 </main>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
 <script src="js/config.js"></script>
 <script src="js/utils.js"></script>
-<script src="js/charts.js"></script>
+<script src="js/tables.js"></script>
 <script src="js/players.js"></script>
 
 </body>
+
 </html>

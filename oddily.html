@@ -21,11 +21,11 @@
     </h1>
     <nav>
         <a href="index.html">Domů</a>
-<a href="zebricky.html">Žebříčky</a>
-<a href="skokani.html">Skokani</a>
         <a href="hraci.html">Hráči</a>
-        <a href="porovnani.html">Porovnání</a>
+        <a href="skokani.html">Skokani</a>
         <a href="oddily.html">Oddíly</a>
+        <a href="hledat-hrace.html">Hledat hráče</a>
+        <a href="porovnat-hrace.html">Porovnat hráče</a>
         <a href="o-projektu.html">O projektu</a>
     </nav>
 </header>
@@ -33,11 +33,13 @@
 <main>
     <section id="team-search-view">
         <h2>
-            Žebříček oddílů <select id="team-overview-season" class="season-select" aria-label="Sezóna"></select>
+            Žebříček oddílů
             <span class="info-tooltip">
                 <button type="button" class="info-button" aria-label="Metodika žebříčku oddílů" aria-describedby="team-ranking-info">i</button>
                 <span id="team-ranking-info" class="info-tooltip-text" role="tooltip">Oddíly jsou seřazeny podle průměrného STR jejich čtyř nejlepších aktivních hráčů. Pokud má oddíl méně než čtyři hráče, počítá se průměr ze všech.</span>
             </span>
+            k
+            <select id="team-overview-season" class="season-select" aria-label="Datum žebříčku"></select>
         </h2>
 
         <div class="ranking-filter">
@@ -53,7 +55,7 @@
     <section id="team-detail-view" hidden>
         <a id="team-back-link" href="oddily.html" class="back-link">Zpět na vyhledávání</a>
         <h2 id="team-name"></h2>
-        <p>Žebříček hráčů v sezóně <select id="team-detail-season" class="season-select" aria-label="Sezóna"></select></p>
+        <p>Žebříček hráčů k <select id="team-detail-season" class="season-select" aria-label="Datum žebříčku"></select></p>
         <nav id="sex-selection" class="sex-selection" aria-label="Pohlaví hráčů"></nav>
         <table id="team-ranking" class="display" style="width:100%"></table>
     </section>

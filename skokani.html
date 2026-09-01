@@ -19,24 +19,22 @@
 
 <header>
 
-<h1>
-    <a class="site-title" href="index.html">
-        <img class="site-logo" src="images/logo.png" alt="">
-        <span>statiSTIS</span>
-    </a>
-</h1>
+    <h1>
+        <a class="site-title" href="index.html">
+            <img class="site-logo" src="images/logo.png" alt="">
+            <span>statiSTIS</span>
+        </a>
+    </h1>
 
-<nav>
-
-<a href="index.html">Domů</a>
-<a href="zebricky.html">Žebříčky</a>
-<a href="skokani.html">Skokani</a>
-<a href="hraci.html">Hráči</a>
-<a href="porovnani.html">Porovnání</a>
-<a href="oddily.html">Oddíly</a>
-<a href="o-projektu.html">O projektu</a>
-
-</nav>
+    <nav>
+        <a href="index.html">Domů</a>
+        <a href="hraci.html">Hráči</a>
+        <a href="skokani.html">Skokani</a>
+        <a href="oddily.html">Oddíly</a>
+        <a href="hledat-hrace.html">Hledat hráče</a>
+        <a href="porovnat-hrace.html">Porovnat hráče</a>
+        <a href="o-projektu.html">O projektu</a>
+    </nav>
 
 </header>
 
@@ -49,7 +47,7 @@
         <span id="movers-info" class="info-tooltip-text" role="tooltip">Skokani sezóny jsou hráči s největším progresem v sezóně. Minimální loňské STR musí být 800,
             aby se vyloučily případy, kdy se kvůli malému počtu zápasů STR za jeden zápas změní například z hodnoty 1 na 1 000.</span>
     </span>
-    <select id="season"></select>
+    <select id="season" aria-label="Sezóna"></select>
     <span class="movers-str-filter">pro min. STR <span id="movers-str-control"></span></span>
 </h2>
 

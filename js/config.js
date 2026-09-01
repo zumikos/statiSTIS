@@ -1,7 +1,8 @@
 const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const DEFAULT_SEASON = Math.max(...SEASONS);
 const SITE_NAME = "statiSTIS";
-const LAST_UPDATED_DATE = "30. 08. 2026";
+const LAST_UPDATED_DATE = "01. 09. 2026";
+const LATEST_RANKING_DATE = "01. 08. 2026";
 const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
 const MOVERS_STR_MIN_VALUES = [800, 1200, 1600, 2000];
 const PLAYER_SEXES = [
@@ -55,39 +56,25 @@ const PLAYER_NAME_OVERRIDES = {
 
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
 const TEAM_NAME_OVERRIDES = {
-    "Dům dětí a mládeže Uherský Ostroh, příspěvková": "DDM Uherský Ostroh",
-    "Dům dětí a mládeže Cvikováček, příspěvková organiz": "DDM Cvikováček",
     "Klub přátel školy při Střední průmyslové škole Zengrova 1, Ostrava-Vítkovice, z.s.": "Klub přátel školy při SPŠ Zengrova 1, Ostrava-Vítkovice",
-    "Městský sportovní klub Břeclav stolní tenis, pobočný spolek": "MSK Břeclav",
     "MK Řeznovice, oddíl stolního tenisu Sportovního  klubu Řeznovice, z.s.": "MK Řeznovice",
-    "Oddíl stolního tenisu TTC MG ODRA GAS Vratimov,z.s.": "TTC MG ODRA GAS Vratimov",
-    "Spolek Dělnická tělocvičná jednota Sparta Kladno": "DTJ Sparta Kladno",
-    "Spolek Sportovního klubu Dobrá Voda u Českých Budějovic": "SK Dobrá Voda u Českých Budějovic",
-    "Spolek TJ Sokol Praha 9 - Běchovice II": "TJ Sokol Praha 9 - Běchovice II",
-    "Spolek TableTenisClub Jablonec nad Nisou": "TTC Jablonec nad Nisou",
     "Stavební fakulta SK Kotlářka El Niňo Praha": "SF SKK El Niňo Praha",
-    "Stolní tenis club Slaný, z.s.": "STC Slaný",
-    "Stolní tenis Sever Žatec z.s.": "ST Sever Žatec",
-    "TJ ABC Braník, z. s. oddíl stolního tenisu": "TJ ABC Braník",
-    "Tělovýchovná jednota Rapid Lásenice, spolek.": "TJ Rapid Lásenice",
-    "TT Club Ostrava, z.s.": "TTC Ostrava",
-    "TTC Praha - klub stolního tenisu, z.s.": "TTC Praha",
-    "zapsaný spolek Stolní tenis Střekov": "Stolní tenis Střekov",
+    "Stolní tenis Sever Žatec z.s.": "ST Sever Žatec"
 };
 
 const TEAM_NAME_REPLACEMENTS = [
     [/Sbor dobrovolných hasičů/gi, "SDH"],
     [/Dům dětí a mládeže/gi, "DDM"],
+    [/^Dělnická tělocvičná jednota\b/i, "DTJ"],
     [/^Sportovní klub stolního tenisu\b/i, "SKST"],
     [/^Sportovní klub policie\b/i, "SKP"],
+    [/^Sportovního klubu\b/i, "SK"],
     [/^Klub stolního tenisu\b/i, "KST"],
     [/^Městský sportovní klub\b/i, "MSK"],
     [/^Vysokoškolský sportovní klub\b/i, "VSK"],
     [/^Sportovní klub\b/i, "SK"],
-    [/^Tělovýchovná jednota\b/i, "TJ"],
-    [/^Tělocvična jednota\b/i, "TJ"],
-    [/^Tělocvičná jednota\b/i, "TJ"],
-    [/^Table Tennis Club\b/i, "TTC"],
-    [/^TT Club\b/i, "TTC"],
+    [/^(?:Tělovýchovná|Tělocvičná|Tělocvična) jednota\b/i, "TJ"],
+    [/^(?:Table Tennis Club|TableTenisClub|TT Club)\b/i, "TTC"],
+    [/^Stolní tenis club\b/i, "STC"],
     [/^T\.?\s*J\.?/i, "TJ"]
 ];

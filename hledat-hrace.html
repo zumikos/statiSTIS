@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>statiSTIS – Hledat hráče</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>
+    <a class="site-title" href="index.html">
+        <img class="site-logo" src="images/logo.png" alt="">
+        <span>statiSTIS</span>
+    </a>
+</h1>
+
+<nav>
+    <a href="index.html">Domů</a>
+    <a href="hraci.html">Hráči</a>
+    <a href="skokani.html">Skokani</a>
+    <a href="oddily.html">Oddíly</a>
+    <a href="hledat-hrace.html">Hledat hráče</a>
+    <a href="porovnat-hrace.html">Porovnat hráče</a>
+    <a href="o-projektu.html">O projektu</a>
+</nav>
+
+</header>
+
+<main>
+
+<section id="player-search-view">
+    <h2>Hledat hráče</h2>
+    <p>Zobrazte si individuální statistiky hráčů a jejich vývoj.</p>
+
+    <form id="player-search-form" class="entity-search" role="search">
+        <label class="visually-hidden" for="player-search-input">Jméno nebo ID</label>
+        <input id="player-search-input" type="search" placeholder="Zadejte jméno nebo ID hráče" autocomplete="off">
+        <button type="submit" aria-label="Vyhledat" title="Vyhledat">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                <path d="M15.5 15.5 21 21"></path>
+            </svg>
+        </button>
+    </form>
+
+    <p id="player-search-status" class="status-message" aria-live="polite"></p>
+    <div id="player-results"></div>
+</section>
+
+<section id="player-detail-view" hidden>
+    <a href="hledat-hrace.html" class="back-link">Zpět na vyhledávání</a>
+    <h2 id="player-name"></h2>
+    <p id="player-info"></p>
+    <section class="player-chart-section">
+        <h3>Vývoj STR</h3>
+        <div id="player-str-chart" class="player-str-chart"></div>
+    </section>
+    <section class="player-chart-section">
+        <h3>Vývoj pořadí v ČR</h3>
+        <div id="player-rank-chart" class="player-str-chart"></div>
+    </section>
+    <section class="player-chart-section">
+        <h3>Vývoj pořadí skokanů</h3>
+        <div id="player-movers-rank-chart" class="player-str-chart"></div>
+    </section>
+    <section class="player-statistics-section">
+        <h3>
+            Všechny statistiky
+            <span class="info-tooltip">
+                <button type="button" class="info-button" aria-label="Informace o pořadí a percentilech" aria-describedby="player-statistics-info">i</button>
+                <span id="player-statistics-info" class="info-tooltip-text" role="tooltip">Pořadí a percentily jsou počítány z žebříčků pro dané pohlaví.</span>
+            </span>
+        </h3>
+        <div class="table-scroll">
+            <table id="player-history"></table>
+        </div>
+    </section>
+</section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/player-search.js"></script>
+
+</body>
+</html>

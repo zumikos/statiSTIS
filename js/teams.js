@@ -78,7 +78,13 @@ async function renderTeamOverview() {
         const teams = await loadTeams();
         const pageLength = createPageLengthControl(TABLE_PAGE_LENGTHS[0]);
         const teamSearch = createPlayerTableSearch("Hledat oddíl");
-        setupSeasonSelect(SEASONS, selectedSeason, "oddily.html", "team-overview-season");
+        setupSeasonSelect(
+            SEASONS,
+            selectedSeason,
+            "oddily.html",
+            "team-overview-season",
+            formatRankingDate
+        );
         setupAssociationSelection(selectedAssociation, "oddily.html", selectedSeason);
         teamRankingTable = new DataTable("#team-ranking-overview", {
             data: teams,
@@ -136,7 +142,13 @@ function showTeamDetail(teamName) {
     teamSearchView.hidden = true;
     teamDetailView.hidden = false;
     document.getElementById("team-name").textContent = teamName;
-    setupSeasonSelect(SEASONS, selectedSeason, "oddily.html", "team-detail-season");
+    setupSeasonSelect(
+        SEASONS,
+        selectedSeason,
+        "oddily.html",
+        "team-detail-season",
+        formatRankingDate
+    );
     const backParameters = new URLSearchParams({ sezona: selectedSeason });
     if (selectedAssociation.value !== "all") backParameters.set("svaz", selectedAssociation.value);
     document.getElementById("team-back-link").href = `oddily.html?${backParameters}`;
