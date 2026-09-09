@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>statiSTIS – Rekordy</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+</head>
+
+<body>
+
+<header>
+    <h1>
+        <a class="site-title" href="index.html">
+            <img class="site-logo" src="images/logo.png" alt="">
+            <span>statiSTIS</span>
+        </a>
+    </h1>
+
+    <nav>
+        <a href="index.html">Domů</a>
+        <a href="hraci.html">Hráči</a>
+        <a href="skokani.html">Skokani</a>
+        <a href="oddily.html">Oddíly</a>
+        <a href="hledat-hrace.html">Hledat hráče</a>
+        <a href="porovnat-hrace.html">Porovnat hráče</a>
+        <a href="rekordy.html" aria-current="page">Rekordy</a>
+        <a href="o-projektu.html">O projektu</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Rekordy</h2>
+
+    <p id="records-status" role="status">Načítám rekordy…</p>
+
+    <div id="records-content" hidden>
+        <section>
+            <h2>Nejvyšší STR napříč sezónami</h2>
+            <div class="grid two-columns">
+                <article class="card">
+                    <h3 class="home-table-title">Muži</h3>
+                    <div class="compact-table-scroll"><table id="highest-str-men" class="compact-table"></table></div>
+                </article>
+                <article class="card">
+                    <h3 class="home-table-title">Ženy</h3>
+                    <div class="compact-table-scroll"><table id="highest-str-women" class="compact-table"></table></div>
+                </article>
+            </div>
+        </section>
+
+        <section>
+            <h2>Největší skokani sezóny pro STR 800+</h2>
+            <div class="grid two-columns">
+                <article class="card">
+                    <h3 class="home-table-title">Muži</h3>
+                    <div class="compact-table-scroll"><table id="movers-800-men" class="compact-table"></table></div>
+                </article>
+                <article class="card">
+                    <h3 class="home-table-title">Ženy</h3>
+                    <div class="compact-table-scroll"><table id="movers-800-women" class="compact-table"></table></div>
+                </article>
+            </div>
+        </section>
+
+        <section>
+            <h2>Největší skokani sezóny pro STR 1 200+</h2>
+            <div class="grid two-columns">
+                <article class="card">
+                    <h3 class="home-table-title">Muži</h3>
+                    <div class="compact-table-scroll"><table id="movers-1200-men" class="compact-table"></table></div>
+                </article>
+                <article class="card">
+                    <h3 class="home-table-title">Ženy</h3>
+                    <div class="compact-table-scroll"><table id="movers-1200-women" class="compact-table"></table></div>
+                </article>
+            </div>
+        </section>
+
+        <section>
+            <h2>Největší skokani sezóny pro STR 1 600+</h2>
+            <div class="grid two-columns">
+                <article class="card">
+                    <h3 class="home-table-title">Muži</h3>
+                    <div class="compact-table-scroll"><table id="movers-1600-men" class="compact-table"></table></div>
+                </article>
+                <article class="card">
+                    <h3 class="home-table-title">Ženy</h3>
+                    <div class="compact-table-scroll"><table id="movers-1600-women" class="compact-table"></table></div>
+                </article>
+            </div>
+        </section>
+
+        <section>
+            <h2>Největší skokani sezóny pro STR 2 000+</h2>
+            <div class="grid two-columns">
+                <article class="card">
+                    <h3 class="home-table-title">Muži</h3>
+                    <div class="compact-table-scroll"><table id="movers-2000-men" class="compact-table"></table></div>
+                </article>
+                <article class="card">
+                    <h3 class="home-table-title">Ženy</h3>
+                    <div class="compact-table-scroll"><table id="movers-2000-women" class="compact-table"></table></div>
+                </article>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/records.js"></script>
+
+</body>
+</html>

@@ -12,6 +12,7 @@ Web spojuje veřejně dostupná data z žebříčků ze všech sezón systému S
 - žebříčky hráčů podle sezóny, pohlaví, kraje a kategorie (U21, U19, U17, U15 a U13);
 - vyhledávání hráčů a jejich vývoj STR v jednotlivých sezónách;
 - porovnání vývoje STR a pořadí dvou hráčů;
+- historické rekordy nejvyššího STR a největších sezónních posunů;
 - vyhledávání oddílů a oddílové žebříčky.
 
 Mládežnické kategorie v žebříčcích jsou věkové limity, nikoli navzájem oddělené skupiny. Například výběr U19 proto zahrnuje také mladší hráče, kteří limit U19 splňují.
