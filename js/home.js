@@ -57,7 +57,7 @@ function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
 const PLAYER_COUNT_AXES = {
     all: { column: "Všichni", label: "všichni", minValue: 8000, maxValue: 20000, step: 2000 },
     M: { column: "Muži", label: "muži", minValue: 6000, maxValue: 18000, step: 2000 },
-    Z: { column: "Ženy", label: "ženy", minValue: 500, maxValue: 1500, step: 200 }
+    Z: { column: "Ženy", label: "ženy", minValue: 600, maxValue: 1400, step: 200 }
 };
 
 function renderPlayerCountChart(rows, selectedSex) {
