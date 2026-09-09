@@ -63,6 +63,12 @@ player_counts = (
     .rename(columns={"M": "Muži", "Z": "Ženy"})
 )
 player_counts.insert(0, "Všichni", player_counts.sum(axis="columns"))
+ages = master.assign(Věk=master["Sezóna"] - master["Rok narození"])
+player_counts["Medián věku všichni"] = ages.groupby("Sezóna")["Věk"].median()
+for sex, label in (("M", "muži"), ("Z", "ženy")):
+    player_counts[f"Medián věku {label}"] = (
+        ages[ages["Pohlaví"] == sex].groupby("Sezóna")["Věk"].median()
+    )
 player_counts = player_counts.reset_index().rename_axis(None, axis="columns")
 player_counts.to_csv(CSV_DIR / "player_count.csv", index=False, encoding="utf-8-sig")
 print("\nHotovo.")

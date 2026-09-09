@@ -60,6 +60,19 @@ const PLAYER_COUNT_AXES = {
     Z: { column: "Ženy", label: "ženy", minValue: 600, maxValue: 1400, step: 200 }
 };
 
+const MEDIAN_AGE_AXES = {
+    all: { column: "Medián věku všichni", label: "všichni", minValue: 38, maxValue: 48, step: 2 },
+    M: { column: "Medián věku muži", label: "muži", minValue: 40, maxValue: 48, step: 2 },
+    Z: { column: "Medián věku ženy", label: "ženy", minValue: 22, maxValue: 25, step: 1 }
+};
+
+function axisTicks(axis) {
+    return Array.from(
+        { length: (axis.maxValue - axis.minValue) / axis.step + 1 },
+        (_, index) => axis.minValue + index * axis.step
+    );
+}
+
 function renderPlayerCountChart(rows, selectedSex) {
     const axis = PLAYER_COUNT_AXES[selectedSex];
     const data = rows.map(row => ({
@@ -75,10 +88,7 @@ function renderPlayerCountChart(rows, selectedSex) {
         margin: { top: 25, right: 20, bottom: 95, left: 75 },
         minValue: axis.minValue,
         maxValue: axis.maxValue,
-        yTicks: Array.from(
-            { length: (axis.maxValue - axis.minValue) / axis.step + 1 },
-            (_, index) => axis.minValue + index * axis.step
-        ),
+        yTicks: axisTicks(axis),
         ariaLabel: `Vývoj počtu hráčů: ${axis.label}`,
         xLabel: year => `${formatSeason(year)}${year === 2021 ? "*" : ""}`,
         xLabelOffset: 16,
@@ -244,25 +254,12 @@ function associationStatistics(data) {
     });
 }
 
-function median(values) {
-    const sorted = [...values].sort((first, second) => first - second);
-    const middle = Math.floor(sorted.length / 2);
-    return sorted.length % 2
-        ? sorted[middle]
-        : (sorted[middle - 1] + sorted[middle]) / 2;
-}
-
-function renderMedianAgeChart(players) {
-    const data = SEASONS.map(year => {
-        const ages = players
-            .filter(player => {
-                const rating = player[`${year} STR`];
-                return rating !== null && rating !== undefined && rating !== "" && Number.isFinite(Number(rating));
-            })
-            .map(player => year - Number(player["Rok narození"]))
-            .filter(Number.isFinite);
-        return { x: year, value: median(ages) };
-    }).filter(item => Number.isFinite(item.value));
+function renderMedianAgeChart(rows, selectedSex) {
+    const axis = MEDIAN_AGE_AXES[selectedSex];
+    const data = rows.map(row => ({
+        x: row["Sezóna"],
+        value: row[axis.column]
+    })).filter(item => Number.isFinite(Number(item.value)));
 
     if (data.length === 0) {
         document.getElementById("home-median-age").textContent = "Graf se nepodařilo načíst.";
@@ -276,10 +273,10 @@ function renderMedianAgeChart(players) {
         width: 650,
         height: 420,
         margin: { top: 25, right: 20, bottom: 95, left: 75 },
-        minValue: 38,
-        maxValue: 48,
-        yTicks: [38, 40, 42, 44, 46, 48],
-        ariaLabel: "Vývoj mediánu věku podle roku narození",
+        minValue: axis.minValue,
+        maxValue: axis.maxValue,
+        yTicks: axisTicks(axis),
+        ariaLabel: `Vývoj mediánu věku podle roku narození: ${axis.label}`,
         xLabel: year => formatSeason(year),
         xLabelOffset: 16,
         xTitle: "Sezóna",
@@ -581,15 +578,28 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
     container.appendChild(svg);
 }
 
-loadCsv("csv/player_count.csv")
+const seasonSummaryPromise = loadCsv("csv/player_count.csv");
+const homeSexSelects = document.querySelectorAll(".home-sex-select");
+
+function selectHomeChartSex(data, selectedSex) {
+    homeSexSelects.forEach(select => {
+        select.value = selectedSex;
+    });
+    renderPlayerCountChart(data, selectedSex);
+    renderMedianAgeChart(data, selectedSex);
+}
+
+seasonSummaryPromise
     .then(data => {
-        const sexSelect = document.getElementById("home-player-count-sex");
-        const render = () => renderPlayerCountChart(data, sexSelect.value);
-        sexSelect.addEventListener("change", render);
-        render();
+        homeSexSelects.forEach(select => {
+            select.addEventListener("change", () => selectHomeChartSex(data, select.value));
+        });
+        selectHomeChartSex(data, "all");
     })
     .catch(() => {
         document.getElementById("home-player-count").textContent =
+            "Graf se nepodařilo načíst.";
+        document.getElementById("home-median-age").textContent =
             "Graf se nepodařilo načíst.";
     });
 
@@ -687,13 +697,6 @@ loadRankingSeason(DEFAULT_SEASON)
         const message = "Data se nepodařilo načíst. Zkuste stránku obnovit.";
         showTableError("home-men-ranking", message);
         showTableError("home-women-ranking", message);
-    });
-
-loadCsv("csv/players.csv")
-    .then(renderMedianAgeChart)
-    .catch(() => {
-        document.getElementById("home-median-age").textContent =
-            "Graf se nepodařilo načíst.";
     });
 
 loadCsv(`csv/movers_${DEFAULT_SEASON - 1}_${DEFAULT_SEASON}_STR800.csv`)

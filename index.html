@@ -94,7 +94,7 @@
         <article class="card">
             <h4>
                 Vývoj počtu hráčů
-                <select id="home-player-count-sex" class="season-select" aria-label="Pohlaví hráčů">
+                <select id="home-player-count-sex" class="season-select home-sex-select" aria-label="Pohlaví hráčů">
                     <option value="all">Všichni</option>
                     <option value="M">Muži</option>
                     <option value="Z">Ženy</option>
@@ -106,7 +106,14 @@
         </article>
 
         <article class="card">
-            <h4>Medián věku hráčů podle roku narození</h4>
+            <h4>
+                Medián věku hráčů podle roku narození
+                <select id="home-median-age-sex" class="season-select home-sex-select" aria-label="Pohlaví hráčů">
+                    <option value="all">Všichni</option>
+                    <option value="M">Muži</option>
+                    <option value="Z">Ženy</option>
+                </select>
+            </h4>
             <p class="chart-stats">věk = koncový rok sezóny − rok narození</p>
             <div id="home-median-age" class="home-chart"></div>
         </article>
