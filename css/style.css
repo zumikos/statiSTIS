@@ -350,7 +350,8 @@ table.dataTable thead .dt-column-title {
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
-.card h3 {
+.card h3,
+.card h4 {
     margin-top: 0;
 }
 
@@ -402,10 +403,6 @@ table.dataTable thead .dt-column-title {
     white-space:nowrap;
 }
 
-.compact-table th:first-child {
-    text-align:center;
-}
-
 .compact-table td:first-child {
     text-align:right;
 }
@@ -426,12 +423,27 @@ table.dataTable thead .dt-column-title {
     text-align: center;
 }
 
-.compact-table th:last-child {
-    white-space:pre-line;
-}
-
 .compact-table td:last-child {
     white-space:nowrap;
+}
+
+.compact-table.records-table th:nth-child(2),
+.compact-table.records-table td:nth-child(2) {
+    width:30%;
+}
+
+.compact-table.records-table th:nth-child(3),
+.compact-table.records-table td:nth-child(3) {
+    width:40%;
+}
+
+.compact-table.records-table th:nth-child(4),
+.compact-table.records-table td:nth-child(4) {
+    width:12%;
+}
+
+.compact-table.records-table td:nth-child(4) {
+    text-align:center;
 }
 
 .button {

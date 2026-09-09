@@ -1,107 +1,34 @@
-const RECORD_LIMIT = 3;
 const RECORD_SEXES = [
     { value: "M", suffix: "men" },
     { value: "Z", suffix: "women" }
 ];
 
+function playerCell(record) {
+    return createPlayerProfileLink(record.ID, formatPlayerName(record["Hráč"]));
+}
+
+function teamCell(record) {
+    const teamName = formatTeamName(record["Oddíl"]);
+    return teamName
+        ? createTeamProfileLink(teamName, { sezona: record["Sezóna"] })
+        : "—";
+}
+
 const STR_COLUMNS = [
-    { heading: "#", value: record => record.rank },
+    { heading: "#", value: record => record["Pořadí"] },
     { heading: "Hráč", value: playerCell },
-    { heading: "STR", value: record => formatThousands(record.rating) },
-    { heading: "Sezóna", value: record => formatSeason(record.season) }
+    { heading: "Oddíl", value: teamCell },
+    { heading: "STR", value: record => formatThousands(record.STR) },
+    { heading: "Sezóna", value: record => formatSeason(record["Sezóna"]) }
 ];
 
 const MOVER_COLUMNS = [
-    { heading: "#", value: record => record.rank },
+    { heading: "#", value: record => record["Pořadí"] },
     { heading: "Hráč", value: playerCell },
-    { heading: "STR\nzměna", value: record => formatThousands(record.change) },
-    { heading: "Sezóna", value: record => formatSeason(record.season) }
+    { heading: "Oddíl", value: teamCell },
+    { heading: "STR\nzměna", value: record => formatThousands(record["STR změna"]) },
+    { heading: "Sezóna", value: record => formatSeason(record["Sezóna"]) }
 ];
-
-function numericRating(player, season) {
-    const value = player[`${season} STR`];
-    if (value === null || value === undefined || value === "") return null;
-    const number = Number(value);
-    return Number.isFinite(number) ? number : null;
-}
-
-function playerCell(record) {
-    return createPlayerProfileLink(record.ID, record.playerName);
-}
-
-function rankedTop(records, valueKey) {
-    let previousValue;
-    let previousRank;
-
-    return records.slice(0, RECORD_LIMIT).map((record, index) => {
-        const rank = index > 0 && record[valueKey] === previousValue
-            ? previousRank
-            : index + 1;
-        previousValue = record[valueKey];
-        previousRank = rank;
-        return { ...record, rank };
-    });
-}
-
-function recordComparator(valueKey) {
-    return (first, second) =>
-        second[valueKey] - first[valueKey] ||
-        second.season - first.season ||
-        first.playerName.localeCompare(second.playerName, "cs", { sensitivity: "variant" });
-}
-
-function summarizePlayers(players) {
-    return players.map(player => {
-        const seasons = SEASONS
-            .map(season => ({ season, rating: numericRating(player, season) }))
-            .filter(record => record.rating !== null);
-        const peak = seasons.reduce((best, record) =>
-            !best || record.rating > best.rating ||
-            (record.rating === best.rating && record.season > best.season)
-                ? record
-                : best
-        , null);
-
-        return {
-            ID: player.ID,
-            playerName: player["Hráč"],
-            sex: player["Pohlaví"],
-            seasons,
-            rating: peak?.rating,
-            season: peak?.season
-        };
-    });
-}
-
-function collectMoverRecords(playerSummaries) {
-    return playerSummaries.flatMap(player => player.seasons.slice(1).flatMap(current => {
-        const previous = player.seasons.find(record => record.season === current.season - 1);
-        if (!previous) return [];
-
-        return [{
-            ID: player.ID,
-            playerName: player.playerName,
-            sex: player.sex,
-            season: current.season,
-            previousRating: previous.rating,
-            change: current.rating - previous.rating
-        }];
-    }));
-}
-
-function highestStrRecords(playerSummaries, sex) {
-    const records = playerSummaries
-        .filter(player => player.sex === sex && player.rating !== undefined)
-        .sort(recordComparator("rating"));
-    return rankedTop(records, "rating");
-}
-
-function moverRecords(allMovers, sex, strMinimum) {
-    const records = allMovers
-        .filter(record => record.sex === sex && record.previousRating >= strMinimum)
-        .sort(recordComparator("change"));
-    return rankedTop(records, "change");
-}
 
 function renderRecordTable(tableId, records, columns) {
     const table = document.getElementById(tableId);
@@ -131,21 +58,25 @@ function renderRecordTable(tableId, records, columns) {
     table.replaceChildren(head, body);
 }
 
-loadPlayers()
-    .then(players => {
-        const playerSummaries = summarizePlayers(players);
-        const allMovers = collectMoverRecords(playerSummaries);
-
+loadCsv("csv/records.csv")
+    .then(records => {
         RECORD_SEXES.forEach(sex => {
             renderRecordTable(
                 `highest-str-${sex.suffix}`,
-                highestStrRecords(playerSummaries, sex.value),
+                records.filter(record =>
+                    record.Typ === "highest_str" && record["Pohlaví"] === sex.value
+                ),
                 STR_COLUMNS
             );
+
             MOVERS_STR_MIN_VALUES.forEach(strMinimum => {
                 renderRecordTable(
                     `movers-${strMinimum}-${sex.suffix}`,
-                    moverRecords(allMovers, sex.value, strMinimum),
+                    records.filter(record =>
+                        record.Typ === "mover" &&
+                        record["Pohlaví"] === sex.value &&
+                        record["STR minimum"] === strMinimum
+                    ),
                     MOVER_COLUMNS
                 );
             });

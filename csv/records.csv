@@ -1,0 +1,31 @@
+﻿Typ,STR minimum,Pořadí,ID,Hráč,Pohlaví,Oddíl,Sezóna,STR,STR změna
+highest_str,,1,28895,Širuček Pavel,M,"HB Ostrov , z.s.",2026,2526,
+highest_str,,2,39045,Reitšpies David,M,Stavební fakulta SK Kotlářka El Niňo Praha,2026,2497,
+highest_str,,3,42375,Polanský Tomáš,M,Sportovní klub stolního tenisu Havířov z.s.,2025,2482,
+highest_str,,1,52744,Pěnkavová Kateřina,Z,SKST Hodonín z.s.,2016,2186,
+highest_str,,2,69900,Partyka Natalia,Z,SKST Hodonín z.s.,2020,2178,
+highest_str,,3,88791,Mukherjee Sagarika,Z,"TT Moravský Krumlov, z.s.",2026,2157,
+mover,800,1,73134,Drozd Daniel,M,"TT Club Ostrava, z.s.",2023,1559,689
+mover,800,2,82343,Novák Samuel Emil,M,"TSM Kladno, z.s.",2025,1617,672
+mover,800,3,75397,Černík Jan,M,TJ Jiskra Heřmanův Městec z.s.,2020,1534,633
+mover,800,1,74016,Kodet Hanka,Z,"TJ Slavoj Praha, spolek",2022,1609,506
+mover,800,2,75312,Müllerová Hana,Z,KST Slezan Opava z.s.,2022,1298,467
+mover,800,3,79019,Tonhauserová Nikola,Z,Sportovní klub stolního tenisu Chodov z. s.,2025,1372,438
+mover,1200,1,71386,Matuška Tomáš,M,"TJ Tatran Hostinné, spolek",2025,1647,425
+mover,1200,2,83224,Solfronk Adam,M,"TTC Moravská Slavia Brno, z.s.",2025,1623,417
+mover,1200,3,76165,Doušek Tomáš,M,SK Přerov,2022,1607,405
+mover,1200,1,80960,Schwarzová Ela,Z,TJ Šumavan Vimperk z.s.,2026,1586,314
+mover,1200,2,71211,Vožická Eliška,Z,"HB Ostrov , z.s.",2023,1525,309
+mover,1200,3,71686,Slámová Andrea,Z,"TSM Kladno, z.s.",2022,1557,297
+mover,1600,1,58253,Wasik Petr,M,"TJ Orion Praha, z.s.",2026,2108,325
+mover,1600,2,71593,Lebeda Lukáš,M,"TTC ELIZZA PRAHA, z.s.",2023,1933,265
+mover,1600,3,63326,Nechyba Radim,M,KST Apollo Ústí nad Labem z.s.,2022,1892,263
+mover,1600,1,74016,Kodet Hanka,Z,"TJ Slavoj Praha, spolek",2023,1842,233
+mover,1600,2,74016,Kodet Hanka,Z,Sportovní klub stolního tenisu Havířov z.s.,2025,2048,191
+mover,1600,3,63222,Pařízková Monika,Z,SKST Hodonín z.s.,2022,1844,144
+mover,2000,1,64710,Kadlec Vít,M,Tělovýchovná jednota Ostrava,2022,2210,155
+mover,2000,2,50716,Onderka František,M,Tělovýchovná jednota Ostrava,2019,2183,139
+mover,2000,3,56575,Štalzer Adam,M,Tělovýchovná jednota Ostrava,2022,2235,137
+mover,2000,1,85872,Chu Yi-Ching,Z,"TT Moravský Krumlov, z.s.",2025,2128,61
+mover,2000,2,372,Ševčíková Markéta,Z,SKST Hodonín z.s.,2025,2093,55
+mover,2000,3,85795,Michalak Aleksandra,Z,"SK Dobré, z.s.",2025,2058,51

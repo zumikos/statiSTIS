@@ -4,6 +4,7 @@ import pandas as pd
 from export_ranking import export_ranking
 from export_movers import export_movers
 from export_players import export_players
+from export_records import export_records
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -54,6 +55,7 @@ print(f"Načteno {len(master)} záznamů.\n")
 export_ranking(master, CSV_DIR, None) # export všech sezón
 export_movers(master, CSV_DIR, None, MOVERS_STR_MIN) # export všech sezón
 export_players(master, CSV_DIR) # export jednotlivých hráčů, skokani vždy od STR 800
+export_records(master, CSV_DIR)
 player_counts = master.groupby("Sezóna").size().reset_index(name="Počet hráčů")
 player_counts.to_csv(CSV_DIR / "player_count.csv", index=False, encoding="utf-8-sig")
 print("\nHotovo.")
