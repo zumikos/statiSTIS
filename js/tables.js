@@ -138,6 +138,9 @@ function setupSeasonSelect(
         seasonSelect.appendChild(option);
     });
     seasonSelect.value = selectedSeason;
+    window.addEventListener("pageshow", () => {
+        seasonSelect.value = getSelectedSeason(availableSeasons);
+    });
     seasonSelect.addEventListener("change", () => {
         const parameters = new URLSearchParams(window.location.search);
         parameters.set("sezona", seasonSelect.value);
