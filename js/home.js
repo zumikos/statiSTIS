@@ -54,24 +54,37 @@ function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
     table.append(thead, tbody);
 }
 
-function renderPlayerCountChart(data) {
-    const minValue = 8000;
-    const maxValue = 20000;
+const PLAYER_COUNT_AXES = {
+    all: { column: "Všichni", label: "všichni", minValue: 8000, maxValue: 20000, step: 2000 },
+    M: { column: "Muži", label: "muži", minValue: 6000, maxValue: 18000, step: 2000 },
+    Z: { column: "Ženy", label: "ženy", minValue: 500, maxValue: 1500, step: 200 }
+};
+
+function renderPlayerCountChart(rows, selectedSex) {
+    const axis = PLAYER_COUNT_AXES[selectedSex];
+    const data = rows.map(row => ({
+        x: row["Sezóna"],
+        value: row[axis.column]
+    }));
     renderInteractiveLineChart({
         container: document.getElementById("home-player-count"),
-        data: data.map(item => ({ x: item.year, value: item.value })),
+        data,
         xValues: SEASONS,
         width: 650,
         height: 420,
         margin: { top: 25, right: 20, bottom: 95, left: 75 },
-        minValue,
-        maxValue,
-        yTicks: Array.from({ length: 7 }, (_, index) => minValue + index * 2000),
-        ariaLabel: "Vývoj počtu hráčů",
+        minValue: axis.minValue,
+        maxValue: axis.maxValue,
+        yTicks: Array.from(
+            { length: (axis.maxValue - axis.minValue) / axis.step + 1 },
+            (_, index) => axis.minValue + index * axis.step
+        ),
+        ariaLabel: `Vývoj počtu hráčů: ${axis.label}`,
         xLabel: year => `${formatSeason(year)}${year === 2021 ? "*" : ""}`,
         xLabelOffset: 16,
         xTitle: "Sezóna",
         yTitle: "Počet hráčů",
+        yTitleX: 12,
         tooltipWidth: 118,
         formatTooltip: item => formatThousands(item.value),
         formatPointAria: item =>
@@ -256,8 +269,6 @@ function renderMedianAgeChart(players) {
         return;
     }
 
-    const minimum = Math.floor(Math.min(...data.map(item => item.value)) - 2);
-    const maximum = Math.ceil(Math.max(...data.map(item => item.value)) + 2);
     renderInteractiveLineChart({
         container: document.getElementById("home-median-age"),
         data,
@@ -265,9 +276,9 @@ function renderMedianAgeChart(players) {
         width: 650,
         height: 420,
         margin: { top: 25, right: 20, bottom: 95, left: 75 },
-        minValue: minimum,
-        maxValue: maximum,
-        yTicks: Array.from({ length: 5 }, (_, index) => minimum + (maximum - minimum) * index / 4),
+        minValue: 38,
+        maxValue: 50,
+        yTicks: [38, 42, 44, 46, 50],
         ariaLabel: "Vývoj mediánu věku podle roku narození",
         xLabel: year => formatSeason(year),
         xLabelOffset: 16,
@@ -571,10 +582,12 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
 }
 
 loadCsv("csv/player_count.csv")
-    .then(data => renderPlayerCountChart(data.map(row => ({
-        year: row["Sezóna"],
-        value: row["Počet hráčů"]
-    }))))
+    .then(data => {
+        const sexSelect = document.getElementById("home-player-count-sex");
+        const render = () => renderPlayerCountChart(data, sexSelect.value);
+        sexSelect.addEventListener("change", render);
+        render();
+    })
     .catch(() => {
         document.getElementById("home-player-count").textContent =
             "Graf se nepodařilo načíst.";

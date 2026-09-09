@@ -49,6 +49,7 @@ function renderInteractiveLineChart({
     xLabelOffset = 10,
     xTitle = "",
     yTitle = "",
+    yTitleX = 18,
     rightYTitle = "",
     formatRightYLabel = null,
     formatYLabel = formatThousands,
@@ -237,10 +238,10 @@ function renderInteractiveLineChart({
         "text-anchor": "middle"
     });
     addChartAxisTitle(svg, yTitle, {
-        x: 18,
+        x: yTitleX,
         y: margin.top + plotHeight / 2,
         "text-anchor": "middle",
-        transform: `rotate(-90 18 ${margin.top + plotHeight / 2})`
+        transform: `rotate(-90 ${yTitleX} ${margin.top + plotHeight / 2})`
     });
     addChartAxisTitle(svg, rightYTitle, {
         x: width - 18,

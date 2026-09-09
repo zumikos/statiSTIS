@@ -92,7 +92,14 @@
     <section class="grid two-columns">
 
         <article class="card">
-            <h4>Vývoj počtu hráčů</h4>
+            <h4>
+                Vývoj počtu hráčů
+                <select id="home-player-count-sex" class="season-select" aria-label="Pohlaví hráčů">
+                    <option value="all">Všichni</option>
+                    <option value="M">Muži</option>
+                    <option value="Z">Ženy</option>
+                </select>
+            </h4>
             <p class="chart-stats chart-stats-placeholder" aria-hidden="true">&nbsp;</p>
             <div id="home-player-count" class="home-chart"></div>
             <p class="chart-note">* covid</p>

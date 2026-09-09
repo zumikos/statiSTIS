@@ -56,6 +56,13 @@ export_ranking(master, CSV_DIR, None) # export všech sezón
 export_movers(master, CSV_DIR, None, MOVERS_STR_MIN) # export všech sezón
 export_players(master, CSV_DIR) # export jednotlivých hráčů, skokani vždy od STR 800
 export_records(master, CSV_DIR)
-player_counts = master.groupby("Sezóna").size().reset_index(name="Počet hráčů")
+player_counts = (
+    master.groupby(["Sezóna", "Pohlaví"])
+    .size()
+    .unstack(fill_value=0)
+    .rename(columns={"M": "Muži", "Z": "Ženy"})
+)
+player_counts.insert(0, "Všichni", player_counts.sum(axis="columns"))
+player_counts = player_counts.reset_index().rename_axis(None, axis="columns")
 player_counts.to_csv(CSV_DIR / "player_count.csv", index=False, encoding="utf-8-sig")
 print("\nHotovo.")
