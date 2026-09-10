@@ -55,9 +55,18 @@ function formatValue(value) {
 }
 
 function formatPercentile(rank, totalPlayers) {
+    if ([rank, totalPlayers].some(value =>
+        value === null || value === undefined || value === ""
+    )) return "—";
+
     const numericRank = Number(rank);
     const numericTotal = Number(totalPlayers);
-    if (!Number.isFinite(numericRank) || !Number.isFinite(numericTotal) || numericTotal < 1) return "—";
+    if (
+        !Number.isFinite(numericRank) ||
+        !Number.isFinite(numericTotal) ||
+        numericRank < 1 ||
+        numericTotal < 1
+    ) return "—";
 
     const percentile = 100 * (numericTotal - numericRank + 1) / numericTotal;
     return `${percentile.toFixed(1).replace(".", ",")}`;
