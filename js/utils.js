@@ -41,6 +41,11 @@ function formatThousands(value, signed = false) {
     return signed && number > 0 ? `+${formatted}` : formatted;
 }
 
+function formatRank(value) {
+    const formatted = formatThousands(value);
+    return formatted === "—" ? formatted : `${formatted}.`;
+}
+
 function renderThousands(value, type) {
     return type === "display" ? formatThousands(value) : value;
 }
@@ -110,6 +115,14 @@ function normalizeText(value, removeDiacritics = false) {
 }
 
 let playersPromise;
+let seasonSummaryPromise;
+
+function loadSeasonSummary() {
+    if (!seasonSummaryPromise) {
+        seasonSummaryPromise = loadCsv("csv/player_count.csv");
+    }
+    return seasonSummaryPromise;
+}
 
 function loadPlayers() {
     if (!playersPromise) {

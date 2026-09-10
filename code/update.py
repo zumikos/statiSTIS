@@ -54,8 +54,8 @@ print(f"Načteno {len(master)} záznamů.\n")
 
 export_ranking(master, CSV_DIR, None) # export všech sezón
 export_movers(master, CSV_DIR, None, MOVERS_STR_MIN) # export všech sezón
-export_players(master, CSV_DIR) # export jednotlivých hráčů, skokani vždy od STR 800
-export_records(master, CSV_DIR)
+mover_counts = export_players(master, CSV_DIR) # export jednotlivých hráčů, skokani jen pro STR 800+
+export_records(master, CSV_DIR) # export rekordů STR a skokanů
 player_counts = (
     master.groupby(["Sezóna", "Pohlaví"])
     .size()
@@ -63,6 +63,7 @@ player_counts = (
     .rename(columns={"M": "Muži", "Z": "Ženy"})
 )
 player_counts.insert(0, "Všichni", player_counts.sum(axis="columns"))
+player_counts = player_counts.join(mover_counts)
 ages = master.assign(Věk=master["Sezóna"] - master["Rok narození"])
 player_counts["Medián věku všichni"] = ages.groupby("Sezóna")["Věk"].median()
 for sex, label in (("M", "muži"), ("Z", "ženy")):

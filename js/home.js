@@ -578,7 +578,7 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
     container.appendChild(svg);
 }
 
-const seasonSummaryPromise = loadCsv("csv/player_count.csv");
+const homeSeasonSummaryPromise = loadSeasonSummary();
 const homeSexSelects = document.querySelectorAll(".home-sex-select");
 
 function selectHomeChartSex(data, selectedSex) {
@@ -589,7 +589,7 @@ function selectHomeChartSex(data, selectedSex) {
     renderMedianAgeChart(data, selectedSex);
 }
 
-seasonSummaryPromise
+homeSeasonSummaryPromise
     .then(data => {
         homeSexSelects.forEach(select => {
             select.addEventListener("change", () => selectHomeChartSex(data, select.value));

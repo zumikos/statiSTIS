@@ -6,7 +6,7 @@ const selectedStrMin = getSelectedMoversStrMin();
 
 // Sloupce a jejich šířky lze upravit přímo zde.
 const MOVERS_COLUMNS = [
-    { data: "Pořadí", title: "Pořadí", width: "1%" },
+    { data: "Pořadí", title: "#", width: "1%" },
     { data: "ID", title: "ID", width: "1%" },
     { data: "Hráč", title: "Hráč", width: "9rem" },
     { data: "Rok narození", title: "Rok<br>narození", width: "1%" },

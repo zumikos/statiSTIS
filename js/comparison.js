@@ -214,6 +214,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
     const bounds = comparisonBounds(series, reverseY);
+    const formatChartValue = value => reverseY ? formatRank(value) : formatThousands(value);
     const x = year => margin.left +
         ((year - SEASONS[0]) / (SEASONS[SEASONS.length - 1] - SEASONS[0])) * plotWidth;
     const y = value => margin.top + (reverseY
@@ -234,7 +235,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
             x: margin.left - 10, y: lineY + 5, "text-anchor": "end",
             class: "chart-axis-label"
         });
-        label.textContent = formatThousands(Math.round(value));
+        label.textContent = formatChartValue(Math.round(value));
         svg.appendChild(label);
     });
     SEASONS.forEach(year => {
@@ -270,7 +271,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
                 class: "comparison-chart-point", stroke: item.color,
                 style: `--series-color:${item.color}`,
                 tabindex: 0,
-                "aria-label": `${item.player["Hráč"]}, ${formatSeason(point.x)}: ${valueLabel} ${formatThousands(point.value)}`
+                "aria-label": `${item.player["Hráč"]}, ${formatSeason(point.x)}: ${valueLabel} ${formatChartValue(point.value)}`
             });
             svg.appendChild(circle);
             if (!pointsByYear.has(point.x)) pointsByYear.set(point.x, []);
@@ -290,7 +291,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
         const center = x(year);
         const show = () => {
             const lines = [formatSeason(year), ...items.map(({ point, item }) =>
-                `${item.player["Hráč"]}: ${formatThousands(point.value)}`
+                `${item.player["Hráč"]}: ${formatChartValue(point.value)}`
             )];
             const tooltipHeight = 12 + lines.length * 18;
             const tooltipX = Math.min(Math.max(center - tooltipWidth / 2, 0), width - tooltipWidth);
@@ -318,7 +319,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
             class: "chart-hover-column",
             tabindex: 0,
             "aria-label": `${formatSeason(year)}: ${items.map(({ point, item }) =>
-                `${item.player["Hráč"]}, ${valueLabel} ${formatThousands(point.value)}`).join("; ")}`
+                `${item.player["Hráč"]}, ${valueLabel} ${formatChartValue(point.value)}`).join("; ")}`
         });
         items.forEach(({ circle }) => bindHoverEvents(circle, show, hide));
         bindHoverEvents(hoverColumn, show, hide);

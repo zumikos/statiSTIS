@@ -63,12 +63,29 @@ function formatPercentile(rank, totalPlayers) {
     return `${percentile.toFixed(1).replace(".", ",")}`;
 }
 
-function renderPlayerHistory(player) {
+const PLAYER_TOTAL_COLUMNS = {
+    M: { players: "Muži", movers: "Skokani muži" },
+    Z: { players: "Ženy", movers: "Skokani ženy" }
+};
+
+function calculateRatingChange(player, year) {
+    const currentValue = player[`${year} STR`];
+    const previousValue = player[`${year - 1} STR`];
+    if ([currentValue, previousValue].some(value =>
+        value === null || value === undefined || value === ""
+    )) return null;
+
+    const current = Number(currentValue);
+    const previous = Number(previousValue);
+    return Number.isFinite(current) && Number.isFinite(previous) ? current - previous : null;
+}
+
+function renderPlayerHistory(player, seasonSummaries) {
     const table = document.getElementById("player-history");
     table.replaceChildren();
 
     const headers = [
-        "Sezóna", "STR", "Pořadí", "Percentil", "Změna STR",
+        "Sezóna", "Kategorie", "Oddíl", "STR", "Pořadí", "Percentil", "Změna STR",
         "Pořadí skokani", "Percentil skokani"
     ];
     const thead = document.createElement("thead");
@@ -84,22 +101,31 @@ function renderPlayerHistory(player) {
     SEASONS.filter(year => player[`${year} STR`] !== null && player[`${year} STR`] !== undefined)
         .forEach(year => {
             const row = document.createElement("tr");
+            const teamName = formatTeamName(player[`${year} Oddíl`]);
+            const totals = seasonSummaries.get(year);
+            const totalColumns = PLAYER_TOTAL_COLUMNS[player["Pohlaví"]] || {};
             const values = [
                 formatSeason(year),
+                getPlayerAgeCategory(player["Rok narození"], year),
+                teamName ? createTeamProfileLink(teamName, { sezona: year }) : "—",
                 formatThousands(player[`${year} STR`]),
-                player[`${year} pořadí`],
-                formatPercentile(player[`${year} pořadí`], player[`${year} počet hráčů`]),
-                formatThousands(player[`${year} STR změna`], true),
-                formatValue(player[`${year} Pořadí skokani`]),
+                formatRank(player[`${year} pořadí`]),
+                formatPercentile(player[`${year} pořadí`], totals?.[totalColumns.players]),
+                formatThousands(calculateRatingChange(player, year)),
+                formatRank(player[`${year} Pořadí skokani`]),
                 formatPercentile(
                     player[`${year} Pořadí skokani`],
-                    player[`${year} počet skokanů`]
+                    totals?.[totalColumns.movers]
                 )
             ];
 
             values.forEach(value => {
                 const cell = document.createElement("td");
-                cell.textContent = formatValue(value);
+                if (value instanceof Node) {
+                    cell.appendChild(value);
+                } else {
+                    cell.textContent = formatValue(value);
+                }
                 row.appendChild(cell);
             });
             tbody.appendChild(row);
@@ -156,20 +182,22 @@ function renderPlayerStrChart(player) {
 function renderPlayerPositionChart(player, {
     containerId,
     rankColumn,
-    totalColumn,
+    totalColumnType,
+    seasonSummaries,
     ariaLabel,
     emptyMessage
 }) {
     const container = document.getElementById(containerId);
-    const ranks = SEASONS.map(year => ({
-        x: year,
-        value: player[`${year} ${rankColumn}`],
-        percentile: formatPercentile(
-            player[`${year} ${rankColumn}`],
-            player[`${year} ${totalColumn}`]
-        ),
-        totalPlayers: player[`${year} ${totalColumn}`]
-    }));
+    const totalColumn = PLAYER_TOTAL_COLUMNS[player["Pohlaví"]]?.[totalColumnType];
+    const ranks = SEASONS.map(year => {
+        const totalPlayers = seasonSummaries.get(year)?.[totalColumn];
+        return {
+            x: year,
+            value: player[`${year} ${rankColumn}`],
+            percentile: formatPercentile(player[`${year} ${rankColumn}`], totalPlayers),
+            totalPlayers
+        };
+    });
     const availableRanks = ranks.filter(item =>
         item.value !== null &&
         item.value !== undefined &&
@@ -209,34 +237,36 @@ function renderPlayerPositionChart(player, {
         formatRightYLabel: latestTotalPlayers
             ? value => formatPercentile(value, latestTotalPlayers)
             : null,
-        formatYLabel: value => formatThousands(value),
+        formatYLabel: value => formatRank(value),
         formatTooltip: item => [
-            `Pořadí ${formatThousands(item.value)}`,
+            `Pořadí ${formatRank(item.value)}`,
             `Percentil ${item.percentile}`
         ],
         formatPointAria: item =>
-            `${formatSeason(item.x)}: pořadí ${formatThousands(item.value)}, ` +
+            `${formatSeason(item.x)}: pořadí ${formatRank(item.value)}, ` +
             `percentil ${item.percentile}`,
         tooltipWidth: 150,
         emptyMessage
     });
 }
 
-function renderPlayerRankChart(player) {
+function renderPlayerRankChart(player, seasonSummaries) {
     renderPlayerPositionChart(player, {
         containerId: "player-rank-chart",
         rankColumn: "pořadí",
-        totalColumn: "počet hráčů",
+        totalColumnType: "players",
+        seasonSummaries,
         ariaLabel: `Vývoj pořadí hráče ${player["Hráč"]}`,
         emptyMessage: "Pro tohoto hráče nejsou dostupná data pořadí."
     });
 }
 
-function renderPlayerMoversRankChart(player) {
+function renderPlayerMoversRankChart(player, seasonSummaries) {
     renderPlayerPositionChart(player, {
         containerId: "player-movers-rank-chart",
         rankColumn: "Pořadí skokani",
-        totalColumn: "počet skokanů",
+        totalColumnType: "movers",
+        seasonSummaries,
         ariaLabel: `Vývoj pořadí skokanů hráče ${player["Hráč"]}`,
         emptyMessage: "Pro tohoto hráče nejsou dostupná data pořadí skokanů."
     });
@@ -248,8 +278,9 @@ async function showPlayerDetail(playerId) {
     document.getElementById("player-name").textContent = "Načítám hráče…";
 
     try {
-        const players = await loadPlayers();
+        const [players, summaryRows] = await Promise.all([loadPlayers(), loadSeasonSummary()]);
         const player = players.find(item => String(item.ID) === playerId);
+        const seasonSummaries = new Map(summaryRows.map(row => [row["Sezóna"], row]));
 
         if (!player) {
             document.getElementById("player-name").textContent = "Hráč nebyl nalezen";
@@ -268,10 +299,10 @@ async function showPlayerDetail(playerId) {
             `Pohlaví: ${gender}, Kategorie: ${category}, Oddíl: `;
         const teamName = formatTeamName(player["Oddíl"]);
         playerInfo.append(teamName ? createTeamProfileLink(teamName) : "—");
-        renderPlayerHistory(player);
+        renderPlayerHistory(player, seasonSummaries);
         renderPlayerStrChart(player);
-        renderPlayerRankChart(player);
-        renderPlayerMoversRankChart(player);
+        renderPlayerRankChart(player, seasonSummaries);
+        renderPlayerMoversRankChart(player, seasonSummaries);
     } catch (error) {
         document.getElementById("player-name").textContent = "Data se nepodařilo načíst";
         document.getElementById("player-info").textContent = "Zkuste stránku obnovit.";

@@ -1,3 +1,5 @@
+import pandas as pd
+
 from export_movers import calculate_movers
 
 PLAYER_MOVERS_STR_MIN = 800
@@ -31,9 +33,13 @@ def export_players(master, output_dir):
     rating = ratings_by_season.copy()
     rating.columns = [f"{c} STR" for c in rating.columns]
 
-    rating_change = ratings_by_season.diff(axis="columns").iloc[:, 1:]
-    rating_change.columns = [f"{c} STR změna" for c in rating_change.columns]
-    
+    teams_by_season = master.pivot(
+        index="ID",
+        columns="Sezóna",
+        values="Oddíl"
+    )
+    teams_by_season.columns = [f"{c} Oddíl" for c in teams_by_season.columns]
+
     ranked_by_sex = master.copy()
     ranked_by_sex["Pořadí"] = (
         ranked_by_sex
@@ -55,6 +61,12 @@ def export_players(master, output_dir):
 
     years = sorted(master["Sezóna"].unique())
     mover_columns = []
+    mover_counts = pd.DataFrame(
+        0,
+        index=years,
+        columns=["Skokani muži", "Skokani ženy"],
+        dtype="Int64"
+    )
 
     for current in years[1:]:
         previous = current - 1
@@ -67,35 +79,26 @@ def export_players(master, output_dir):
             PLAYER_MOVERS_STR_MIN,
             ["Pohlaví"]
         )
-        movers[f"{current} počet skokanů"] = (
-            movers.groupby("Pohlaví")["ID"].transform("size").astype("Int64")
-        )
+        counts = movers.groupby("Pohlaví").size()
+        mover_counts.loc[current, "Skokani muži"] = counts.get("M", 0)
+        mover_counts.loc[current, "Skokani ženy"] = counts.get("Z", 0)
         movers = movers.rename(columns={
             "Pořadí": f"{current} Pořadí skokani"
         })
         mover_columns.append(
-            movers.set_index("ID")[[
-                f"{current} Pořadí skokani",
-                f"{current} počet skokanů"
-            ]]
+            movers.set_index("ID")[[f"{current} Pořadí skokani"]]
         )
 
     players = (
         players
         .set_index("ID")
         .join(rating)
+        .join(teams_by_season)
         .join(rank)
-        .join(rating_change)
     )
 
     for mover_data in mover_columns:
         players = players.join(mover_data)
-
-    player_counts = master.groupby(["Sezóna", "Pohlaví"]).size()
-    for year in years:
-        players[f"{year} počet hráčů"] = players["Pohlaví"].map(
-            player_counts.loc[year]
-        ).astype("Int64")
 
     players = players.reset_index()
     
@@ -106,3 +109,4 @@ def export_players(master, output_dir):
     )
     
     print(f"✓ Uloženy statistiky hráčů ({len(players)} hráčů).")
+    return mover_counts

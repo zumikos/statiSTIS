@@ -89,7 +89,7 @@ async function renderTeamOverview() {
         teamRankingTable = new DataTable("#team-ranking-overview", {
             data: teams,
             columns: [
-                { data: "rank", title: "Pořadí", width: "1%" },
+                { data: "rank", title: "#", width: "1%" },
                 {
                     data: "name",
                     title: "Oddíl",
@@ -160,7 +160,7 @@ function showTeamDetail(teamName) {
     });
 
     const columns = [
-        { data: "Pořadí", title: "Pořadí", width: "1%" },
+        { data: "Pořadí", title: "#", width: "1%" },
         { data: "ID", title: "ID", width: "1%" },
         { data: "Hráč", title: "Hráč", width: "12rem" },
         { data: "Rok narození", title: "Rok narození", width: "1%" },

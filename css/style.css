@@ -145,6 +145,7 @@ table.dataTable thead th {
     position:relative;
     padding:6px 30px 6px 5px !important;
     box-sizing:border-box;
+    text-align:center !important;
 }
 
 .dt-scroll-head table.dataTable thead th {
@@ -962,12 +963,12 @@ table.dataTable thead .dt-column-title {
 
 #player-history {
     table-layout:fixed;
-    min-width:760px;
+    min-width:1000px;
 }
 
 #player-history th,
 #player-history td {
-    width:14.5%;
+    width:9%;
     text-align:right;
     font-variant-numeric:tabular-nums;
     white-space:nowrap;
@@ -975,8 +976,23 @@ table.dataTable thead .dt-column-title {
 
 #player-history th:first-child,
 #player-history td:first-child {
-    width:13%;
+    width:10%;
     text-align:center;
+}
+
+#player-history th:nth-child(2),
+#player-history td:nth-child(2) {
+    text-align:center;
+}
+
+#player-history th:nth-child(3),
+#player-history td:nth-child(3) {
+    width:27%;
+    white-space:normal;
+}
+
+#player-history td:nth-child(3) {
+    text-align:left;
 }
 
 #player-history th {
