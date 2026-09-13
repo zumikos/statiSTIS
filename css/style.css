@@ -471,21 +471,25 @@ table.dataTable thead .dt-column-title {
 }
 
 .player-profile-link,
-.team-profile-link {
+.team-profile-link,
+.about-page a {
     color:var(--blue);
     font-weight:600;
     text-decoration:none;
 }
 
 .player-profile-link:visited,
-.team-profile-link:visited {
+.team-profile-link:visited,
+.about-page a:visited {
     color:var(--blue);
 }
 
 .player-profile-link:hover,
 .player-profile-link:focus-visible,
 .team-profile-link:hover,
-.team-profile-link:focus-visible {
+.team-profile-link:focus-visible,
+.about-page a:hover,
+.about-page a:focus-visible {
     text-decoration:underline;
 }
 
