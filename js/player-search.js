@@ -303,11 +303,16 @@ async function showPlayerDetail(playerId) {
         const gender = genderLabels[player["Pohlaví"]] || formatValue(player["Pohlaví"]);
         const category = getPlayerAgeCategory(player["Rok narození"], DEFAULT_SEASON);
         const playerInfo = document.getElementById("player-info");
-        playerInfo.textContent =
-            `ID: ${player.ID}, Rok narození: ${formatValue(player["Rok narození"])}, ` +
-            `Pohlaví: ${gender}, Kategorie: ${category}, Oddíl: `;
         const teamName = formatTeamName(player["Oddíl"]);
-        playerInfo.append(teamName ? createTeamProfileLink(teamName) : "—");
+        const stisLink = document.createElement("a");
+        stisLink.className = "player-profile-link";
+        stisLink.href = `https://stis.ping-pong.cz/hrac-${encodeURIComponent(player.ID)}`;
+        stisLink.textContent = "STIS profil";
+        playerInfo.append(
+            "Oddíl: ", teamName ? createTeamProfileLink(teamName) : "—",
+            `, Rok narození: ${formatValue(player["Rok narození"])}, ` +
+                `Pohlaví: ${gender}, Kategorie: ${category}, `, stisLink
+        );
         renderPlayerHistory(player, seasonSummaries);
         renderPlayerStrChart(player);
         renderPlayerRankChart(player, seasonSummaries);

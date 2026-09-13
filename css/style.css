@@ -646,9 +646,9 @@ table.dataTable thead .dt-column-title {
 .back-link::before {
     content:"↩";
     display:inline-block;
-    font-size:1.5rem;
     font-weight:bold;
     line-height:1;
+    transform:scaleY(-1);
     transition:transform 0.15s;
 }
 
@@ -658,7 +658,7 @@ table.dataTable thead .dt-column-title {
 
 .back-link:hover::before,
 .back-link:focus-visible::before {
-    transform:translateX(-0.2rem);
+    transform:translateX(-0.2rem) scaleY(-1);
 }
 
 .table-scroll {
