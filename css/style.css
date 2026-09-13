@@ -65,15 +65,21 @@ header h1{
     background:rgba(255,255,255,0.96);
 }
 
-nav{
+header nav{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:0.4rem 1.25rem;
     margin-top:15px;
 }
 
-nav a{
+header nav a{
     color:white;
     text-decoration:none;
-    margin-right:20px;
     font-weight:bold;
+    line-height:1.5;
+    padding:0.2rem 0;
+    white-space:nowrap;
 }
 
 main{
@@ -1017,6 +1023,14 @@ table.dataTable thead .dt-column-title {
 }
 
 @media (max-width: 600px) {
+    header nav {
+        row-gap:0.6rem;
+    }
+
+    header nav a {
+        padding:0.3rem 0;
+    }
+
     main {
         padding:16px;
     }
