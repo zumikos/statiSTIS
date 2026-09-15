@@ -84,7 +84,7 @@ function renderInteractiveLineChart({
     ) * plotHeight;
     const svg = createSvgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
-        role: "img",
+        role: "group",
         "aria-label": ariaLabel
     });
 
@@ -175,6 +175,7 @@ function renderInteractiveLineChart({
             cy: y(item.value),
             r: 6,
             class: "chart-point",
+            role: "img",
             tabindex: 0,
             "aria-label": formatPointAria(item)
         });
@@ -194,8 +195,7 @@ function renderInteractiveLineChart({
             width: right - left,
             height: plotHeight,
             class: "chart-hover-column",
-            tabindex: 0,
-            "aria-label": formatPointAria(item)
+            "aria-hidden": "true"
         });
         const show = () => {
             const pointY = y(item.value);

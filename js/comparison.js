@@ -222,7 +222,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
         : (bounds.max - Number(value)) / (bounds.max - bounds.min)) * plotHeight;
     const svg = createSvgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
-        role: "img",
+        role: "group",
         "aria-label": `${valueLabel}: porovnání hráčů ${series.map(item => item.player["Hráč"]).join(" a ")}`
     });
     bounds.ticks.forEach(value => {
@@ -270,6 +270,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
                 cx: x(point.x), cy: y(point.value), r: 6,
                 class: "comparison-chart-point", stroke: item.color,
                 style: `--series-color:${item.color}`,
+                role: "img",
                 tabindex: 0,
                 "aria-label": `${item.player["Hráč"]}, ${formatSeason(point.x)}: ${valueLabel} ${formatChartValue(point.value)}`
             });
@@ -317,9 +318,7 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
                 Math.max(margin.left, center - spacing / 2),
             height: plotHeight,
             class: "chart-hover-column",
-            tabindex: 0,
-            "aria-label": `${formatSeason(year)}: ${items.map(({ point, item }) =>
-                `${item.player["Hráč"]}, ${valueLabel} ${formatChartValue(point.value)}`).join("; ")}`
+            "aria-hidden": "true"
         });
         items.forEach(({ circle }) => bindHoverEvents(circle, show, hide));
         bindHoverEvents(hoverColumn, show, hide);

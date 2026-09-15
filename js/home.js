@@ -143,7 +143,7 @@ function renderHistogram(data) {
     const y = value => margin.top + ((yMax - value) / yMax) * plotHeight;
     const svg = createSvgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
-        role: "img",
+        role: "group",
         "aria-label": "Rozložení STR"
     });
 
@@ -197,7 +197,8 @@ function renderHistogram(data) {
         const bar = bars.get(item.start);
         const column = createSvgElement("rect", {
             x: left, y: margin.top, width: right - left, height: plotHeight,
-            class: "chart-histogram-hover", tabindex: 0
+            class: "chart-histogram-hover", role: "img", tabindex: 0,
+            "aria-label": `STR ${item.start}–${item.end}: ${item.count.toLocaleString("cs-CZ")} hráčů`
         });
         const show = () => {
             const tooltipX = Math.min(Math.max((left + right) / 2 - 95, 0), width - 190);
@@ -325,7 +326,7 @@ function renderBirthYearPyramid(data) {
     const rowHeight = plotHeight / groups.length;
     const svg = createSvgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
-        role: "img",
+        role: "group",
         "aria-label": "Rozložení hráčů podle roku narození a pohlaví"
     });
 
@@ -404,7 +405,7 @@ function renderBirthYearPyramid(data) {
         const barsForGroup = bars.get(group.start);
         const hoverRow = createSvgElement("rect", {
             x: margin.left, y: top, width: plotWidth, height: rowHeight,
-            class: "chart-histogram-hover", tabindex: 0,
+            class: "chart-histogram-hover", role: "img", tabindex: 0,
             "aria-label": `Ročník ${group.start} až ${group.start + 4}: muži ${group.men}, ženy ${group.women}`
         });
         const show = () => {
@@ -479,7 +480,7 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
     const barWidth = Math.max(8, columnWidth * 0.68);
     const svg = createSvgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
-        role: "img",
+        role: "group",
         "aria-label": yTitle
     });
 
@@ -539,7 +540,7 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
         const bar = bars.get(item.association);
         const hoverColumn = createSvgElement("rect", {
             x: left, y: margin.top, width: columnWidth, height: plotHeight,
-            class: "chart-histogram-hover", tabindex: 0,
+            class: "chart-histogram-hover", role: "img", tabindex: 0,
             "aria-label": `${item.association}: ${Math.round(item[valueKey]).toLocaleString("cs-CZ")}`
         });
         const show = () => {
