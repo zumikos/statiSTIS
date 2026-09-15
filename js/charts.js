@@ -66,7 +66,8 @@ function renderInteractiveLineChart({
         value: undefined
     });
     const available = series.filter(item =>
-        item.value !== null && item.value !== undefined && Number.isFinite(Number(item.value))
+        item.value !== null && item.value !== undefined && item.value !== "" &&
+        Number.isFinite(Number(item.value))
     );
     if (available.length === 0) {
         container.textContent = emptyMessage;
@@ -147,7 +148,8 @@ function renderInteractiveLineChart({
         currentSegment = [];
     };
     series.forEach(item => {
-        if (item.value === null || item.value === undefined) {
+        if (item.value === null || item.value === undefined || item.value === "" ||
+            !Number.isFinite(Number(item.value))) {
             drawSegment();
         } else {
             currentSegment.push({ x: item.x, value: Number(item.value) });

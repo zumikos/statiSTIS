@@ -143,25 +143,53 @@ function renderPlayerHistory(player, seasonSummaries) {
     table.append(thead, tbody);
 }
 
+function playerChartBounds(values, isRank = false) {
+    const rawMin = Math.min(...values);
+    const rawMax = Math.max(...values);
+    const range = rawMax - rawMin;
+    const padding = Math.max(
+        isRank ? 0.5 : 5,
+        range * 0.1,
+        isRank && range === 0 ? rawMin * 0.02 : 0
+    );
+    const targetStep = (range + 2 * padding) / 4;
+    const magnitude = 10 ** Math.floor(Math.log10(targetStep));
+    const factors = !isRank && targetStep >= 10 ? [1, 2, 2.5, 5, 10] : [1, 2, 5, 10];
+    const tickStep = Math.max(isRank ? 1 : 5, factors
+        .map(factor => factor * magnitude)
+        .find(step => step >= targetStep));
+    const minValue = Math.max(isRank ? 1 : 0,
+        Math.floor((rawMin - padding) / tickStep) * tickStep);
+    const maxValue = Math.max(minValue + tickStep,
+        Math.ceil((rawMax + padding) / tickStep) * tickStep);
+    const yTicks = [minValue];
+    for (let tick = Math.floor(minValue / tickStep) * tickStep + tickStep;
+        tick < maxValue; tick += tickStep) {
+        yTicks.push(tick);
+    }
+    yTicks.push(maxValue);
+    return { minValue, maxValue, yTicks };
+}
+
 function renderPlayerStrChart(player) {
     const container = document.getElementById("player-str-chart");
     const ratings = SEASONS.map(year => ({
         x: year,
         value: player[`${year} STR`]
     }));
-    const availableRatings = ratings.filter(item => item.value !== null && item.value !== undefined);
+    const availableRatings = ratings.filter(item =>
+        item.value !== null && item.value !== undefined && item.value !== "" &&
+        Number.isFinite(Number(item.value))
+    );
 
     if (availableRatings.length === 0) {
         container.textContent = "Pro tohoto hráče nejsou dostupná data STR.";
         return;
     }
 
-    const values = availableRatings.map(item => Number(item.value));
-    const rawMin = Math.min(...values);
-    const rawMax = Math.max(...values);
-    const padding = Math.max(50, (rawMax - rawMin) * 0.15);
-    const minValue = Math.max(0, Math.floor((rawMin - padding) / 100) * 100);
-    const maxValue = Math.ceil((rawMax + padding) / 100) * 100 || 100;
+    const { minValue, maxValue, yTicks } = playerChartBounds(
+        availableRatings.map(item => Number(item.value))
+    );
     renderInteractiveLineChart({
         container,
         data: ratings,
@@ -171,10 +199,7 @@ function renderPlayerStrChart(player) {
         margin: { top: 25, right: 25, bottom: 90, left: 70 },
         minValue,
         maxValue,
-        yTicks: Array.from(
-            { length: 5 },
-            (_, step) => minValue + ((maxValue - minValue) * step) / 4
-        ),
+        yTicks,
         ariaLabel: `Vývoj STR hráče ${player["Hráč"]}`,
         xLabel: formatSeason,
         xTitle: "Sezóna",
@@ -210,6 +235,7 @@ function renderPlayerPositionChart(player, {
     const availableRanks = ranks.filter(item =>
         item.value !== null &&
         item.value !== undefined &&
+        item.value !== "" &&
         Number.isFinite(Number(item.value))
     );
 
@@ -218,10 +244,9 @@ function renderPlayerPositionChart(player, {
         return;
     }
 
-    const highestRank = Math.max(...availableRanks.map(item => Number(item.value)));
-    const tickStep = Math.max(1, Math.ceil((highestRank - 1) / 4));
-    const yTicks = Array.from({ length: 5 }, (_, step) => 1 + tickStep * step);
-    const maxValue = yTicks[yTicks.length - 1];
+    const { minValue, maxValue, yTicks } = playerChartBounds(
+        availableRanks.map(item => Number(item.value)), true
+    );
     const latestTotalPlayers = [...availableRanks]
         .reverse()
         .map(item => Number(item.totalPlayers))
@@ -234,7 +259,7 @@ function renderPlayerPositionChart(player, {
         width: 1000,
         height: 420,
         margin: { top: 25, right: 80, bottom: 90, left: 80 },
-        minValue: 1,
+        minValue,
         maxValue,
         yTicks,
         reverseY: true,
