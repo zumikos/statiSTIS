@@ -6,8 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>statiSTIS – Stránka nenalezena</title>
     <link rel="icon" type="image/png" href="images/logo-96.png">
+    <script>
+        try {
+            document.documentElement.dataset.theme = localStorage.getItem("statistis-theme") || "";
+        } catch {}
+        document.documentElement.dataset.theme ||= matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
+    </script>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/theme.js"></script>
+    <script src="js/theme.js" defer></script>
 </head>
 
 <body>
