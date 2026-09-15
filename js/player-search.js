@@ -292,6 +292,11 @@ async function showPlayerDetail(playerId) {
 
         document.title = `${SITE_NAME} – ${player["Hráč"]}`;
         document.getElementById("player-name").textContent = player["Hráč"];
+        const compareLink = document.createElement("a");
+        compareLink.className = "button";
+        compareLink.href = `porovnat-hrace.html?ID1=${encodeURIComponent(player.ID)}`;
+        compareLink.textContent = "Porovnat s jiným hráčem";
+        document.querySelector(".player-detail-heading").appendChild(compareLink);
         const genderLabels = { M: "muži", Z: "ženy" };
         const gender = genderLabels[player["Pohlaví"]] || formatValue(player["Pohlaví"]);
         const category = getPlayerAgeCategory(player["Rok narození"], DEFAULT_SEASON);

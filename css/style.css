@@ -715,6 +715,14 @@ table.dataTable thead .dt-column-title {
     margin-top:2rem;
 }
 
+.player-detail-heading {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:0.5rem 1rem;
+}
+
 .comparison-intro {
     text-align:left;
 }
