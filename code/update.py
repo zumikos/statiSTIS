@@ -2,7 +2,7 @@ from pathlib import Path
 import sys
 import pandas as pd
 from export_ranking import export_ranking
-from export_movers import export_movers
+from export_movers import export_movers, calculate_movers
 from export_players import export_players
 from export_records import export_records
 
@@ -15,6 +15,25 @@ CSV_DIR = BASE_DIR / "csv"     # csv soubory budou ve složce /csv
 CSV_DIR.mkdir(exist_ok=True)
 
 MOVERS_STR_MIN = 800
+
+def export_home_top(master):
+    """Uloží jen řádky potřebné pro čtyři tabulky na úvodní stránce."""
+    season = int(master["Sezóna"].max())
+    ranking = (
+        master[master["Sezóna"] == season]
+        .sort_values(["STR", "ID"], ascending=[False, True])
+        .groupby("Pohlaví", sort=False).head(10)
+        .assign(Typ="ranking")
+    )
+    movers = (
+        calculate_movers(master, season, MOVERS_STR_MIN)
+        .groupby("Pohlaví", sort=False).head(10)
+        .assign(Typ="movers")
+    )
+    home_top = pd.concat([ranking, movers], ignore_index=True)
+    columns = ["Typ", "Pohlaví", "ID", "Hráč", "Oddíl", "STR", "STR změna"]
+    home_top[columns].to_csv(CSV_DIR / f"home_top_{season}.csv", index=False, encoding="utf-8-sig")
+    print(f"✓ Uloženy Top 10 tabulky pro úvodní stránku ({len(home_top)} řádků).")
 
 def load_all_seasons():
     """Načtení jednotlivých sezón"""
@@ -54,6 +73,7 @@ print(f"Načteno {len(master)} záznamů.\n")
 
 export_ranking(master, CSV_DIR, None) # export všech sezón
 export_movers(master, CSV_DIR, None, MOVERS_STR_MIN) # export všech sezón
+export_home_top(master) # export tabulek Top 10 pro úvodní stránku
 mover_counts = export_players(master, CSV_DIR) # export jednotlivých hráčů, skokani jen pro STR 800+
 export_records(master, CSV_DIR) # export rekordů STR a skokanů
 player_counts = (

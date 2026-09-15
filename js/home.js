@@ -659,6 +659,7 @@ function showHomeSeasonChartErrors() {
 
 const homeChartSeasonSelects = document.querySelectorAll(".home-chart-season");
 let requestedHomeChartSeason = DEFAULT_SEASON;
+let homeSeasonChartsRequested = false;
 
 function selectHomeChartSeason(season) {
     requestedHomeChartSeason = season;
@@ -682,32 +683,38 @@ homeChartSeasonSelects.forEach(select => {
         select.appendChild(option);
     });
     select.value = DEFAULT_SEASON;
-    select.addEventListener("change", () => selectHomeChartSeason(Number(select.value)));
-});
-selectHomeChartSeason(DEFAULT_SEASON);
-
-loadRankingSeason(DEFAULT_SEASON)
-    .then(data => {
-        const men = filterAndRankRows(data, row => row["Pohlaví"] === "M", "STR");
-        renderTopTable(men, "home-men-ranking", rankingColumns);
-        const women = filterAndRankRows(data, row => row["Pohlaví"] === "Z", "STR");
-        renderTopTable(women, "home-women-ranking", rankingColumns);
-    })
-    .catch(() => {
-        const message = "Data se nepodařilo načíst. Zkuste stránku obnovit.";
-        showTableError("home-men-ranking", message);
-        showTableError("home-women-ranking", message);
+    select.addEventListener("change", () => {
+        homeSeasonChartsRequested = true;
+        selectHomeChartSeason(Number(select.value));
     });
+});
 
-loadCsv(`csv/movers_${DEFAULT_SEASON - 1}_${DEFAULT_SEASON}_STR800.csv`)
+if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(entries => {
+        if (!entries[0].isIntersecting) return;
+        observer.disconnect();
+        if (!homeSeasonChartsRequested) selectHomeChartSeason(requestedHomeChartSeason);
+    }, { rootMargin: "400px" });
+    observer.observe(document.getElementById("home-association-count"));
+} else {
+    selectHomeChartSeason(DEFAULT_SEASON);
+}
+
+loadCsv(`csv/home_top_${DEFAULT_SEASON}.csv`)
     .then(data => {
-        const men = filterAndRankRows(data, row => row["Pohlaví"] === "M", "STR změna");
-        renderTopTable(men, "home-men-movers", moverColumns);
-        const women = filterAndRankRows(data, row => row["Pohlaví"] === "Z", "STR změna");
-        renderTopTable(women, "home-women-movers", moverColumns);
+        for (const [sex, label] of [["M", "men"], ["Z", "women"]]) {
+            const ranking = filterAndRankRows(
+                data, row => row.Typ === "ranking" && row.Pohlaví === sex, "STR"
+            );
+            const movers = filterAndRankRows(
+                data, row => row.Typ === "movers" && row.Pohlaví === sex, "STR změna"
+            );
+            renderTopTable(ranking, `home-${label}-ranking`, rankingColumns);
+            renderTopTable(movers, `home-${label}-movers`, moverColumns);
+        }
     })
     .catch(() => {
         const message = "Data se nepodařilo načíst. Zkuste stránku obnovit.";
-        showTableError("home-men-movers", message);
-        showTableError("home-women-movers", message);
+        ["home-men-ranking", "home-women-ranking", "home-men-movers", "home-women-movers"]
+            .forEach(id => showTableError(id, message));
     });

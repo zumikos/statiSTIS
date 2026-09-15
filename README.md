@@ -40,6 +40,8 @@ Po přidání zdrojových souborů pojmenovaných podle koncového roku sezóny,
 .\.venv\Scripts\python.exe code\update.py
 ```
 
+Skript vytvoří také malý `csv/home_top_<rok>.csv` pro čtyři úvodní Top 10 tabulky. Úplný žebříček se na úvodní stránce načítá až při přiblížení k sezónním grafům.
+
 Pozor na rozdílné značení: STIS používá v URL počáteční rok (`rocnik-2026` znamená sezónu 2026/27), zatímco zdrojové soubory tohoto projektu používají rok koncový (`2027.xlsx`).
 
 Výchozí sezóny webu a hodnoty nabízené ve výběru minimálního STR jsou uvedeny v konstantách `SEASONS` a `MOVERS_STR_MIN_VALUES` v `js/config.js`.
