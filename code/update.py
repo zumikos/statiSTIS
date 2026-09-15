@@ -2,7 +2,7 @@ from pathlib import Path
 import sys
 import pandas as pd
 from export_ranking import export_ranking
-from export_movers import export_movers, calculate_movers
+from export_movers import MOVERS_STR_MINIMUMS, export_movers, calculate_movers
 from export_players import export_players
 from export_records import export_records
 
@@ -14,9 +14,6 @@ DATA_DIR = BASE_DIR / "source" # zdroje dat jsou ve složce /source
 CSV_DIR = BASE_DIR / "csv"     # csv soubory budou ve složce /csv
 CSV_DIR.mkdir(exist_ok=True)
 
-MOVERS_STR_MIN = 800
-MOVERS_STR_MIN_VALUES = (MOVERS_STR_MIN, 1200, 1600, 2000)
-
 def export_home_top(master):
     """Uloží jen řádky potřebné pro čtyři tabulky na úvodní stránce."""
     season = int(master["Sezóna"].max())
@@ -27,7 +24,7 @@ def export_home_top(master):
         .assign(Typ="ranking")
     )
     movers = (
-        calculate_movers(master, season, MOVERS_STR_MIN)
+        calculate_movers(master, season)
         .groupby("Pohlaví", sort=False).head(10)
         .assign(Typ="movers")
     )
@@ -72,9 +69,9 @@ def load_all_seasons():
 master = load_all_seasons()
 print(f"Načteno {len(master)} záznamů.\n")
 
-export_ranking(master, CSV_DIR, None) # export všech sezón
-for str_min in MOVERS_STR_MIN_VALUES:
-    export_movers(master, CSV_DIR, None, str_min) # export všech sezón i všech hranic STR
+export_ranking(master, CSV_DIR, None) # export žebříčků STR
+for str_min in MOVERS_STR_MINIMUMS:
+    export_movers(master, CSV_DIR, None, str_min) # export žebříčků skokanů
 export_home_top(master) # export tabulek Top 10 pro úvodní stránku
 mover_counts = export_players(master, CSV_DIR) # export jednotlivých hráčů, skokani jen pro STR 800+
 export_records(master, CSV_DIR) # export rekordů STR a skokanů

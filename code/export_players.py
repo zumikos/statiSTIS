@@ -2,8 +2,6 @@ import pandas as pd
 
 from export_movers import calculate_movers
 
-PLAYER_MOVERS_STR_MIN = 800
-
 
 def export_players(master, output_dir):
     players = (
@@ -76,8 +74,7 @@ def export_players(master, output_dir):
         movers = calculate_movers(
             master,
             current,
-            PLAYER_MOVERS_STR_MIN,
-            ["Pohlaví"]
+            rank_groups=["Pohlaví"]
         )
         counts = movers.groupby("Pohlaví").size()
         mover_counts.loc[current, "Skokani muži"] = counts.get("M", 0)

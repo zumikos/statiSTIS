@@ -4,6 +4,11 @@ function createSvgElement(name, attributes = {}) {
     return element;
 }
 
+function hasChartValue(value) {
+    return value !== null && value !== undefined && value !== "" &&
+        Number.isFinite(Number(value));
+}
+
 function addRotatedXLabel(svg, x, y, text, offset = 10) {
     const labelX = x + offset;
     const label = createSvgElement("text", {
@@ -65,10 +70,7 @@ function renderInteractiveLineChart({
         x: xValue,
         value: undefined
     });
-    const available = series.filter(item =>
-        item.value !== null && item.value !== undefined && item.value !== "" &&
-        Number.isFinite(Number(item.value))
-    );
+    const available = series.filter(item => hasChartValue(item.value));
     if (available.length === 0) {
         container.textContent = emptyMessage;
         return;
@@ -148,8 +150,7 @@ function renderInteractiveLineChart({
         currentSegment = [];
     };
     series.forEach(item => {
-        if (item.value === null || item.value === undefined || item.value === "" ||
-            !Number.isFinite(Number(item.value))) {
+        if (!hasChartValue(item.value)) {
             drawSegment();
         } else {
             currentSegment.push({ x: item.x, value: Number(item.value) });

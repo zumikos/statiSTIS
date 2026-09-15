@@ -1,4 +1,7 @@
-def calculate_movers(master, current, str_min=800, rank_groups=None):
+MOVERS_STR_MINIMUMS = (800, 1200, 1600, 2000)
+
+
+def calculate_movers(master, current, str_min=MOVERS_STR_MINIMUMS[0], rank_groups=None):
     previous = current - 1
     previous_ratings = (
         master[master["Sezóna"] == previous][["ID", "STR"]]
@@ -28,7 +31,7 @@ def calculate_movers(master, current, str_min=800, rank_groups=None):
     return movers
 
 
-def export_movers(master, output_dir, season=None, str_min=800):
+def export_movers(master, output_dir, season=None, str_min=MOVERS_STR_MINIMUMS[0]):
     """Vytvoří žebříčky skokanů STR pro všechny dostupné sezóny nebo pro zadanou sezónu."""
 
     years = sorted(master["Sezóna"].unique())

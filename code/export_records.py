@@ -1,10 +1,9 @@
 import pandas as pd
 
-from export_movers import calculate_movers
+from export_movers import MOVERS_STR_MINIMUMS, calculate_movers
 
 
 RECORD_LIMIT = 3
-RECORD_STR_MINIMUMS = (800, 1200, 1600, 2000)
 RECORD_COLUMNS = [
     "Typ", "STR minimum", "Pořadí", "ID", "Hráč", "Pohlaví",
     "Oddíl", "Sezóna", "STR", "STR změna"
@@ -50,7 +49,7 @@ def export_records(master, output_dir):
     records = [career_highs]
     if mover_frames:
         all_movers = pd.concat(mover_frames, ignore_index=True)
-        for str_minimum in RECORD_STR_MINIMUMS:
+        for str_minimum in MOVERS_STR_MINIMUMS:
             movers = all_movers[all_movers["STR loňské"] >= str_minimum].copy()
             movers = top_by_sex(movers, "STR změna")
             movers["Typ"] = "mover"

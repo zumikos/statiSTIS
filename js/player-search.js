@@ -55,9 +55,7 @@ function formatValue(value) {
 }
 
 function formatPercentile(rank, totalPlayers) {
-    if ([rank, totalPlayers].some(value =>
-        value === null || value === undefined || value === ""
-    )) return "—";
+    if (!hasChartValue(rank) || !hasChartValue(totalPlayers)) return "—";
 
     const numericRank = Number(rank);
     const numericTotal = Number(totalPlayers);
@@ -107,7 +105,7 @@ function renderPlayerHistory(player, seasonSummaries) {
     thead.appendChild(headerRow);
 
     const tbody = document.createElement("tbody");
-    SEASONS.filter(year => player[`${year} STR`] !== null && player[`${year} STR`] !== undefined)
+    SEASONS.filter(year => hasChartValue(player[`${year} STR`]))
         .forEach(year => {
             const row = document.createElement("tr");
             const teamName = formatTeamName(player[`${year} Oddíl`]);
@@ -177,10 +175,7 @@ function renderPlayerStrChart(player) {
         x: year,
         value: player[`${year} STR`]
     }));
-    const availableRatings = ratings.filter(item =>
-        item.value !== null && item.value !== undefined && item.value !== "" &&
-        Number.isFinite(Number(item.value))
-    );
+    const availableRatings = ratings.filter(item => hasChartValue(item.value));
 
     if (availableRatings.length === 0) {
         container.textContent = "Pro tohoto hráče nejsou dostupná data STR.";
@@ -232,12 +227,7 @@ function renderPlayerPositionChart(player, {
             totalPlayers
         };
     });
-    const availableRanks = ranks.filter(item =>
-        item.value !== null &&
-        item.value !== undefined &&
-        item.value !== "" &&
-        Number.isFinite(Number(item.value))
-    );
+    const availableRanks = ranks.filter(item => hasChartValue(item.value));
 
     if (availableRanks.length === 0) {
         container.textContent = emptyMessage;
@@ -284,28 +274,6 @@ function renderPlayerPositionChart(player, {
     });
 }
 
-function renderPlayerRankChart(player, seasonSummaries) {
-    renderPlayerPositionChart(player, {
-        containerId: "player-rank-chart",
-        rankColumn: "pořadí",
-        totalColumnType: "players",
-        seasonSummaries,
-        ariaLabel: `Vývoj pořadí hráče ${player["Hráč"]}`,
-        emptyMessage: "Pro tohoto hráče nejsou dostupná data pořadí."
-    });
-}
-
-function renderPlayerMoversRankChart(player, seasonSummaries) {
-    renderPlayerPositionChart(player, {
-        containerId: "player-movers-rank-chart",
-        rankColumn: "Pořadí skokani",
-        totalColumnType: "movers",
-        seasonSummaries,
-        ariaLabel: `Vývoj pořadí skokanů hráče ${player["Hráč"]}`,
-        emptyMessage: "Pro tohoto hráče nejsou dostupná data pořadí skokanů."
-    });
-}
-
 async function showPlayerDetail(playerId) {
     searchView.hidden = true;
     detailView.hidden = false;
@@ -340,8 +308,22 @@ async function showPlayerDetail(playerId) {
         );
         renderPlayerHistory(player, seasonSummaries);
         renderPlayerStrChart(player);
-        renderPlayerRankChart(player, seasonSummaries);
-        renderPlayerMoversRankChart(player, seasonSummaries);
+        renderPlayerPositionChart(player, {
+            containerId: "player-rank-chart",
+            rankColumn: "pořadí",
+            totalColumnType: "players",
+            seasonSummaries,
+            ariaLabel: `Vývoj pořadí hráče ${player["Hráč"]}`,
+            emptyMessage: "Pro tohoto hráče nejsou dostupná data pořadí."
+        });
+        renderPlayerPositionChart(player, {
+            containerId: "player-movers-rank-chart",
+            rankColumn: "Pořadí skokani",
+            totalColumnType: "movers",
+            seasonSummaries,
+            ariaLabel: `Vývoj pořadí skokanů hráče ${player["Hráč"]}`,
+            emptyMessage: "Pro tohoto hráče nejsou dostupná data pořadí skokanů."
+        });
     } catch (error) {
         document.getElementById("player-name").textContent = "Data se nepodařilo načíst";
         document.getElementById("player-info").textContent = "Zkuste stránku obnovit.";
