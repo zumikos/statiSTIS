@@ -28,19 +28,27 @@ function createOptionDropdown(values, initialValue, onSelect) {
     menu.className = "page-length-menu";
     menu.setAttribute("role", "listbox");
     menu.hidden = true;
+    let selectedIndex = values.indexOf(initialValue);
 
     const closeMenu = () => {
         menu.hidden = true;
         toggle.setAttribute("aria-expanded", "false");
     };
     const setValue = value => {
+        selectedIndex = values.indexOf(value);
         toggle.textContent = value.toLocaleString("cs-CZ");
         menu.querySelectorAll("button").forEach(option => {
             option.setAttribute("aria-selected", String(Number(option.dataset.value) === value));
         });
     };
+    const selectIndex = index => {
+        if (index === selectedIndex) return;
+        const value = values[index];
+        setValue(value);
+        onSelect(value);
+    };
 
-    values.forEach(value => {
+    values.forEach((value, index) => {
         const option = document.createElement("button");
         option.type = "button";
         option.className = "page-length-option";
@@ -48,8 +56,7 @@ function createOptionDropdown(values, initialValue, onSelect) {
         option.setAttribute("role", "option");
         option.textContent = value.toLocaleString("cs-CZ");
         option.addEventListener("click", () => {
-            setValue(value);
-            onSelect(value);
+            selectIndex(index);
             closeMenu();
             toggle.focus();
         });
@@ -57,15 +64,24 @@ function createOptionDropdown(values, initialValue, onSelect) {
     });
 
     setValue(initialValue);
-    toggle.addEventListener("click", () => {
+    toggle.addEventListener("click", event => {
         const willOpen = menu.hidden;
         menu.hidden = !willOpen;
         toggle.setAttribute("aria-expanded", String(willOpen));
+        if (willOpen && event.detail === 0) menu.children[selectedIndex]?.focus();
     });
     dropdown.addEventListener("keydown", event => {
         if (event.key === "Escape") {
             closeMenu();
             toggle.focus();
+        } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            event.preventDefault();
+            const direction = event.key === "ArrowDown" ? 1 : -1;
+            const focusedIndex = [...menu.children].indexOf(document.activeElement);
+            const currentIndex = focusedIndex < 0 ? selectedIndex : focusedIndex;
+            const nextIndex = Math.max(0, Math.min(values.length - 1, currentIndex + direction));
+            if (menu.hidden) selectIndex(nextIndex);
+            else menu.children[nextIndex].focus();
         }
     });
     document.addEventListener("click", event => {

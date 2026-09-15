@@ -132,6 +132,8 @@ tr:nth-child(even){
 #season:focus,
 .season-select:focus,
 .home-chart-season:focus,
+.page-length-toggle:focus,
+.page-length-toggle[aria-expanded="true"],
 .dt-search input:focus,
 .entity-search input:focus {
     outline: none;
@@ -223,11 +225,15 @@ table.dataTable thead .dt-column-title {
 }
 
 .page-length-toggle::after {
-    content:"▾";
+    content:"";
     position:absolute;
     top:50%;
-    right:0.45rem;
-    transform:translateY(-50%);
+    right:0.65rem;
+    width:0.3rem;
+    height:0.3rem;
+    border-right:1.5px solid currentColor;
+    border-bottom:1.5px solid currentColor;
+    transform:translateY(-70%) rotate(45deg);
 }
 
 .page-length-menu {
@@ -744,6 +750,20 @@ table.dataTable thead .dt-column-title {
 .comparison-search[hidden],
 .comparison-selected[hidden] {
     display:none !important;
+}
+
+.comparison-loading-message {
+    display:none;
+}
+
+.comparison-loading-first .comparison-picker[data-slot="0"] .comparison-search,
+.comparison-loading-second .comparison-picker[data-slot="1"] .comparison-search {
+    display:none;
+}
+
+.comparison-loading-first .comparison-picker[data-slot="0"] .comparison-loading-message,
+.comparison-loading-second .comparison-picker[data-slot="1"] .comparison-loading-message {
+    display:inline;
 }
 
 .comparison-result {

@@ -13,6 +13,9 @@
     } catch {}
     document.documentElement.dataset.theme ||= matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
+    const comparisonParameters = new URLSearchParams(location.search);
+    document.documentElement.classList.toggle("comparison-loading-first", Boolean(comparisonParameters.get("ID1")));
+    document.documentElement.classList.toggle("comparison-loading-second", Boolean(comparisonParameters.get("ID2")));
 </script>
 <link rel="stylesheet" href="css/style.css">
 <script src="js/theme.js" defer></script>
@@ -59,7 +62,7 @@
                     </svg>
                 </button>
             </form>
-            <p class="status-message comparison-status" aria-live="polite"></p>
+            <p class="status-message comparison-status" aria-live="polite"><span class="comparison-loading-message">Načítám hráče…</span></p>
             <div class="comparison-results"></div>
             <div class="comparison-selected" hidden></div>
         </article>
@@ -76,7 +79,7 @@
                     </svg>
                 </button>
             </form>
-            <p class="status-message comparison-status" aria-live="polite"></p>
+            <p class="status-message comparison-status" aria-live="polite"><span class="comparison-loading-message">Načítám hráče…</span></p>
             <div class="comparison-results"></div>
             <div class="comparison-selected" hidden></div>
         </article>

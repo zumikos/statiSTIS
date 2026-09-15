@@ -394,16 +394,40 @@ async function restoreComparisonFromUrl() {
     const parameters = new URLSearchParams(window.location.search);
     const ids = [parameters.get("ID1"), parameters.get("ID2")];
     if (!ids.some(Boolean)) return;
+    ids.forEach((id, slot) => {
+        if (!id) return;
+        const picker = pickerElements[slot];
+        picker.querySelector(".comparison-search").hidden = true;
+        picker.querySelector(".comparison-status").textContent = "Načítám hráče…";
+    });
     try {
         const players = await loadPlayers();
         ids.forEach((id, slot) => {
+            if (!id) return;
+            const picker = pickerElements[slot];
             const player = players.find(item => String(item.ID) === id);
-            if (player) selectPlayer(slot, player, false);
+            if (player && String(selectedPlayers[1 - slot]?.ID) !== id) {
+                selectPlayer(slot, player, false);
+            } else {
+                picker.querySelector(".comparison-search").hidden = false;
+                picker.querySelector(".comparison-status").textContent = player
+                    ? "Vyberte dva různé hráče."
+                    : "Hráč nebyl nalezen. Vyhledejte ho znovu.";
+            }
         });
         updateComparisonUrl();
     } catch (error) {
-        pickerElements[0].querySelector(".comparison-status").textContent =
-            "Vybrané hráče se nepodařilo načíst.";
+        ids.forEach((id, slot) => {
+            if (!id) return;
+            const picker = pickerElements[slot];
+            picker.querySelector(".comparison-search").hidden = false;
+            picker.querySelector(".comparison-status").textContent =
+                "Vybrané hráče se nepodařilo načíst.";
+        });
+    } finally {
+        document.documentElement.classList.remove(
+            "comparison-loading-first", "comparison-loading-second"
+        );
     }
 }
 
