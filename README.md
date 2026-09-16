@@ -9,7 +9,7 @@ Motivací k tomuto projektu bylo zkusit si vytvořit první webové stránky a n
 Web spojuje veřejně dostupná data z žebříčků ze všech sezón systému STIS a nabízí zejména:
 
 - seznam největších skokanů a skokanek podle sezóny, pohlaví, krajského svazu a minimálního výchozího STR;
-- žebříčky hráčů podle sezóny, pohlaví, kraje a kategorie (U21, U19, U17, U15 a U13);
+- žebříčky hráčů podle sezóny, pohlaví, kraje a kategorie (U21, U19, U17, U15, U13 a U11);
 - vyhledávání hráčů a jejich vývoj STR v jednotlivých sezónách;
 - porovnání vývoje STR a pořadí dvou hráčů;
 - historické rekordy nejvyššího STR a největších sezónních posunů;

@@ -10,8 +10,7 @@ const PLAYER_SEXES = [
     { value: "M", label: "Muži" },
     { value: "Z", label: "Ženy" }
 ];
-const YOUTH_AGES = [21, 19, 17, 15, 13];
-const DISPLAY_CATEGORY_AGES = [...YOUTH_AGES, 11];
+const YOUTH_AGES = [21, 19, 17, 15, 13, 11];
 const PLAYER_GROUPS = [
     ...PLAYER_SEXES.map(sex => ({
         value: sex.value,

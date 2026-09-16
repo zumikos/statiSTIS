@@ -82,7 +82,7 @@ function getPlayerAgeCategory(birthYear, season) {
     if (!Number.isFinite(year)) return "—";
     if (year < season - 21) return "dospělí";
 
-    const categoryAge = DISPLAY_CATEGORY_AGES.find(age => year <= season - age + 1);
+    const categoryAge = YOUTH_AGES.find(age => year <= season - age + 1);
     return categoryAge ? `U${categoryAge}` : "U11";
 }
 
