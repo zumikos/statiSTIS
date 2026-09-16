@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>statiSTIS – Skokani</title>
-<meta name="description" content="Skokani sezóny: sezónní změny STR a pořadí hráčů podle pohlaví, kraje a minimálního počátečního STR.">
+<meta name="description" content="Skokani sezóny: sezónní změny STR a pořadí hráčů podle pohlaví, kategorie, kraje svazu a minimálního počátečního STR.">
 <link rel="canonical" href="https://statistis.cz/skokani.html">
 <link rel="icon" type="image/png" href="images/logo-96.png">
 
@@ -54,16 +54,16 @@
     Skokani sezóny
     <span class="info-tooltip">
         <button type="button" class="info-button" aria-label="Informace o žebříčku skokanů" aria-describedby="movers-info">i</button>
-        <span id="movers-info" class="info-tooltip-text" role="tooltip">Skokani sezóny jsou hráči s největším progresem v sezóně. Minimální loňské STR musí být 800,
-            aby se vyloučily případy, kdy se kvůli malému počtu zápasů STR za jeden zápas změní například z hodnoty 1 na 1 000.</span>
+        <span id="movers-info" class="info-tooltip-text" role="tooltip">Skokani sezóny jsou hráči s největším progresem v&nbsp;sezóně. Hráč musí být aktivní ve dvou sezónách po sobě a minimální STR z minulé sezóny musí být 800,
+            aby se vyloučily případy, kdy se kvůli malému počtu zápasů STR za jeden zápas změní například z&nbsp;hodnoty 1 na 1 000.</span>
     </span>
     <select id="season" aria-label="Sezóna"></select>
     <span class="movers-str-filter">pro min. STR <span id="movers-str-control"></span></span>
 </h2>
 
 <div class="ranking-filter">
-    <span class="ranking-filter-label">Pohlaví:</span>
-    <nav id="sex-selection" class="sex-selection" aria-label="Výběr pohlaví"></nav>
+    <span class="ranking-filter-label">Kategorie:</span>
+    <nav id="sex-selection" class="sex-selection" aria-label="Výběr kategorie"></nav>
 </div>
 <div class="ranking-filter">
     <span class="ranking-filter-label">Svaz:</span>

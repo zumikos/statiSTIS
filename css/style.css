@@ -162,6 +162,11 @@ table.dataTable thead th {
     vertical-align:middle !important;
 }
 
+#movers_wrapper .dt-scroll-head table.dataTable thead th {
+    height:4.5rem !important;
+    min-height:4.5rem !important;
+}
+
 table.dataTable thead .dt-column-order {
     position:absolute !important;
     left:auto !important;

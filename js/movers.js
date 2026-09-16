@@ -1,6 +1,6 @@
 const moverSeasons = SEASONS.slice(1);
 const selectedSeason = getSelectedSeason(moverSeasons);
-const selectedSex = getSelectedSex();
+const selectedGroup = getSelectedPlayerGroup();
 const selectedAssociation = getSelectedAssociation();
 const selectedStrMin = getSelectedMoversStrMin();
 
@@ -13,26 +13,23 @@ const MOVERS_COLUMNS = [
     { data: "Pohlaví", title: "Po&shy;hlaví", width: "1%" },
     { data: "Oddíl", title: "Oddíl", width: "10rem" },
     { data: "Kraj", title: "Svaz", width: "1%" },
-    { data: "STR loňské", title: "STR<br>loňské", width: "1%", render: renderThousands },
-    { data: "STR letošní", title: "STR<br>letošní", width: "1%", render: renderThousands },
+    { data: "STR loňské", title: "STR<br>minulá<br>sezóna", width: "1%", render: renderThousands },
+    { data: "STR letošní", title: "STR<br>tato<br>sezóna", width: "1%", render: renderThousands },
     { data: "STR změna", title: "STR<br>změna", width: "1%", render: renderThousands }
 ];
 
 setupSeasonSelect(moverSeasons, selectedSeason, "skokani.html");
 setupMoversStrMinControl(selectedStrMin, "skokani.html");
-const sexFilterParameters = new URLSearchParams(window.location.search);
-sexFilterParameters.delete("pohlavi");
-sexFilterParameters.delete("kategorie");
-setupSexSelection(selectedSex, "skokani.html", selectedSeason, sexFilterParameters);
+setupPlayerGroupSelection(selectedGroup, "skokani.html", selectedSeason);
 setupAssociationSelection(selectedAssociation, "skokani.html", selectedSeason);
 createStatisticsTable({
     tableId: "movers",
     csvFile: `csv/movers_${selectedSeason - 1}_${selectedSeason}_STR${selectedStrMin}.csv`,
     columns: MOVERS_COLUMNS,
     rowFilter: row =>
-        (selectedSex === "all" || row["Pohlaví"] === selectedSex) &&
+        playerMatchesGroup(row, selectedGroup, selectedSeason) &&
         playerMatchesAssociation(row, selectedAssociation),
-    rankField: selectedSex === "all" && selectedAssociation.value === "all"
+    rankField: selectedGroup.value === "all" && selectedAssociation.value === "all"
         ? null
         : "STR změna",
     order: [[0, "asc"]],
