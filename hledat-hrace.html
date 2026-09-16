@@ -91,9 +91,23 @@
             Všechny statistiky
             <span class="info-tooltip">
                 <button type="button" class="info-button" aria-label="Informace o pořadí a percentilech" aria-describedby="player-statistics-info">i</button>
-                <span id="player-statistics-info" class="info-tooltip-text" role="tooltip">Pořadí a percentily jsou počítány z žebříčků pro dané pohlaví. Pořadí skokanů je pro STR 800+.</span>
+                <span id="player-statistics-info" class="info-tooltip-text" role="tooltip">Pořadí a percentily jsou počítány pro dané pohlaví. Lze zvolit pořadí v ČR, nebo v kraji klubu, za který hráč v&nbsp;dané sezóně hrál a pořadí v dospělých, nebo mláděžnické kategorii. Pro sezóny, kdy je hráč již v&nbsp;kategorii dospělých, nemá volba kategorie vliv. Pořadí skokanů je pro STR 800+.</span>
             </span>
         </h3>
+        <form id="player-ranking-scope" class="player-ranking-scope">
+            <span class="player-ranking-scope-title">Pořadí v</span>
+            <fieldset>
+                <legend class="visually-hidden">Územní rozsah pořadí</legend>
+                <label><input type="radio" name="area" value="national" checked> ČR</label>
+                <label><input type="radio" name="area" value="regional"> kraji</label>
+            </fieldset>
+            <span class="player-ranking-scope-connector">a</span>
+            <fieldset>
+                <legend class="visually-hidden">Věkový rozsah pořadí</legend>
+                <label><input type="radio" name="age" value="adult" checked> dospělých</label>
+                <label><input type="radio" name="age" value="youth"> mládežnické kategorii</label>
+            </fieldset>
+        </form>
         <div class="table-scroll">
             <table id="player-history"></table>
         </div>

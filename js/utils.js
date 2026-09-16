@@ -116,12 +116,28 @@ function normalizeText(value, removeDiacritics = false) {
 
 let playersPromise;
 let seasonSummaryPromise;
+let playerRankCountsPromise;
+let playerRanksPromise;
 
 function loadSeasonSummary() {
     if (!seasonSummaryPromise) {
         seasonSummaryPromise = loadCsv("csv/player_count.csv");
     }
     return seasonSummaryPromise;
+}
+
+function loadPlayerRankCounts() {
+    if (!playerRankCountsPromise) {
+        playerRankCountsPromise = loadCsv("csv/player_ranks_counts.csv");
+    }
+    return playerRankCountsPromise;
+}
+
+function loadPlayerRanks() {
+    if (!playerRanksPromise) {
+        playerRanksPromise = loadCsv("csv/player_ranks.csv");
+    }
+    return playerRanksPromise;
 }
 
 function loadPlayers() {

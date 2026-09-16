@@ -87,9 +87,40 @@ function calculateRatingChange(player, year) {
     return Number.isFinite(current) && Number.isFinite(previous) ? current - previous : null;
 }
 
-function renderPlayerHistory(player, seasonSummaries) {
+const HISTORY_RANK_SCOPES = {
+    "national-adult": {
+        rankSuffix: "pořadí", moverRankSuffix: "Pořadí skokani",
+        regional: false, youth: false
+    },
+    "regional-adult": {
+        rankSuffix: "pořadí kraj", moverRankSuffix: "Pořadí skokani kraj",
+        regional: true, youth: false
+    },
+    "national-youth": {
+        rankSuffix: "pořadí kategorie", moverRankSuffix: "Pořadí skokani kategorie",
+        regional: false, youth: true
+    },
+    "regional-youth": {
+        rankSuffix: "pořadí kraj kategorie",
+        moverRankSuffix: "Pořadí skokani kraj kategorie",
+        regional: true, youth: true
+    }
+};
+
+function playerRankCountKey(season, sex, association, category) {
+    return [season, sex, association || "", category].join("|");
+}
+
+function selectedHistoryRankScope() {
+    const form = document.getElementById("player-ranking-scope");
+    const values = new FormData(form);
+    return HISTORY_RANK_SCOPES[`${values.get("area")}-${values.get("age")}`];
+}
+
+function renderPlayerHistory(player, rankCounts) {
     const table = document.getElementById("player-history");
     table.replaceChildren();
+    const rankScope = selectedHistoryRankScope();
 
     const headers = [
         "Sezóna", "Kategorie", "Oddíl", "STR", "Pořadí", "Percentil", "Změna STR",
@@ -109,21 +140,26 @@ function renderPlayerHistory(player, seasonSummaries) {
         .forEach(year => {
             const row = document.createElement("tr");
             const teamName = formatTeamName(player[`${year} Oddíl`]);
-            const totals = seasonSummaries.get(year);
-            const totalColumns = PLAYER_TOTAL_COLUMNS[player["Pohlaví"]] || {};
+            const ageCategory = getPlayerAgeCategory(player["Rok narození"], year);
+            const rankCategory = rankScope.youth && ageCategory !== "—"
+                ? ageCategory
+                : "dospělí";
+            const association = rankScope.regional ? player[`${year} Kraj`] : "";
+            const rank = player[`${year} ${rankScope.rankSuffix}`];
+            const totals = rankCounts.get(playerRankCountKey(
+                year, player["Pohlaví"], association, rankCategory
+            ));
+            const moverRank = player[`${year} ${rankScope.moverRankSuffix}`];
             const values = [
                 formatSeason(year),
-                getPlayerAgeCategory(player["Rok narození"], year),
+                ageCategory,
                 teamName ? createTeamProfileLink(teamName, { sezona: year }) : "—",
                 formatThousands(player[`${year} STR`]),
-                formatRank(player[`${year} pořadí`]),
-                formatPercentile(player[`${year} pořadí`], totals?.[totalColumns.players]),
+                formatRank(rank),
+                formatPercentile(rank, totals?.players),
                 formatThousands(calculateRatingChange(player, year)),
-                formatRank(player[`${year} Pořadí skokani`]),
-                formatPercentile(
-                    player[`${year} Pořadí skokani`],
-                    totals?.[totalColumns.movers]
-                )
+                formatRank(moverRank),
+                formatPercentile(moverRank, totals?.movers)
             ];
 
             values.forEach(value => {
@@ -280,9 +316,17 @@ async function showPlayerDetail(playerId) {
     document.getElementById("player-name").textContent = "Načítám hráče…";
 
     try {
-        const [players, summaryRows] = await Promise.all([loadPlayers(), loadSeasonSummary()]);
-        const player = players.find(item => String(item.ID) === playerId);
+        const [players, summaryRows, rankCountRows, playerRankRows] = await Promise.all([
+            loadPlayers(), loadSeasonSummary(), loadPlayerRankCounts(), loadPlayerRanks()
+        ]);
+        const basePlayer = players.find(item => String(item.ID) === playerId);
+        const playerRanks = playerRankRows.find(item => String(item.ID) === playerId);
+        const player = basePlayer && { ...basePlayer, ...playerRanks };
         const seasonSummaries = new Map(summaryRows.map(row => [row["Sezóna"], row]));
+        const rankCounts = new Map(rankCountRows.map(row => [
+            playerRankCountKey(row["Sezóna"], row["Pohlaví"], row["Kraj"], row["Kategorie"]),
+            { players: row["Počet hráčů"], movers: row["Počet skokanů"] }
+        ]));
 
         if (!player) {
             document.getElementById("player-name").textContent = "Hráč nebyl nalezen";
@@ -311,7 +355,10 @@ async function showPlayerDetail(playerId) {
             `, Rok narození: ${formatValue(player["Rok narození"])}, ` +
                 `Pohlaví: ${gender}, Kategorie: ${category}, `, stisLink
         );
-        renderPlayerHistory(player, seasonSummaries);
+        renderPlayerHistory(player, rankCounts);
+        document.getElementById("player-ranking-scope").addEventListener("change", () => {
+            renderPlayerHistory(player, rankCounts);
+        });
         renderPlayerStrChart(player);
         renderPlayerPositionChart(player, {
             containerId: "player-rank-chart",
