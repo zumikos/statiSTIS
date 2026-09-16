@@ -16,21 +16,17 @@ function comparisonResultButton(player, slot) {
     return button;
 }
 
-function renderSearchResults(slot, players) {
-    const picker = pickerElements[slot];
-    const container = picker.querySelector(".comparison-results");
-    container.replaceChildren();
-    const list = document.createElement("div");
-    list.className = "search-results-list comparison-results-list";
-    players.slice(0, 10).forEach(player => list.appendChild(comparisonResultButton(player, slot)));
-    container.appendChild(list);
-}
+const comparisonResults = pickerElements.map((picker, slot) =>
+    createPaginatedResultList(
+        picker.querySelector(".comparison-results"),
+        player => comparisonResultButton(player, slot)
+    )
+);
 
 async function searchComparisonPlayers(slot, query) {
     const picker = pickerElements[slot];
     const status = picker.querySelector(".comparison-status");
-    const results = picker.querySelector(".comparison-results");
-    results.replaceChildren();
+    comparisonResults[slot].clear();
 
     if (normalizeText(query, true).length < 2) {
         status.textContent = "Zadejte alespoň dva znaky.";
@@ -44,10 +40,8 @@ async function searchComparisonPlayers(slot, query) {
             status.textContent = "Žádný hráč nebyl nalezen.";
             return;
         }
-        status.textContent = matches.length > 10
-            ? `Nalezeno hráčů: ${matches.length}. Zobrazeno prvních 10.`
-            : `Nalezeno hráčů: ${matches.length}`;
-        renderSearchResults(slot, matches);
+        status.textContent = `Nalezeno hráčů: ${matches.length}`;
+        comparisonResults[slot].show(matches);
     } catch (error) {
         status.textContent = "Seznam hráčů se nepodařilo načíst. Zkuste stránku obnovit.";
     }
@@ -73,7 +67,7 @@ function selectPlayer(slot, player, updateUrl = true) {
 
     selectedPlayers[slot] = player;
     picker.querySelector(".comparison-search").hidden = true;
-    picker.querySelector(".comparison-results").replaceChildren();
+    comparisonResults[slot].clear();
     status.textContent = "";
 
     const selected = picker.querySelector(".comparison-selected");
