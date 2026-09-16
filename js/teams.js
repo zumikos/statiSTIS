@@ -9,7 +9,7 @@ let teamRankingTable;
 
 function loadTeams() {
     if (!teamsPromise) {
-        teamsPromise = loadCsv(`csv/ranking_${selectedSeason}.csv`).then(rows => {
+        teamsPromise = loadCsv(`csv/ranking_${selectedSeason - 1}_${selectedSeason}.csv`).then(rows => {
             const teams = new Map();
             rows.filter(row => row.ID !== undefined).forEach(row => {
                 const name = formatTeamName(row["Oddíl"]);
@@ -170,7 +170,7 @@ function showTeamDetail(teamName) {
 
     createStatisticsTable({
         tableId: "team-ranking",
-        csvFile: `csv/ranking_${selectedSeason}.csv`,
+        csvFile: `csv/ranking_${selectedSeason - 1}_${selectedSeason}.csv`,
         columns,
         rowFilter: row =>
             formatTeamName(row["Oddíl"]) === teamName &&

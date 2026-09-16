@@ -33,7 +33,7 @@ def export_ranking(master, output_dir, season=None):
 
         ranking = ranking[columns]
 
-        file = output_dir / f"ranking_{season}.csv"
+        file = output_dir / f"ranking_{season - 1}_{season}.csv"
         ranking.to_csv(file, index=False, encoding="utf-8-sig")
 
         print(f"✓ Uložen žebříček STR {season} ({len(ranking)} hráčů).")

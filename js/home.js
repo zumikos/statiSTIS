@@ -637,7 +637,7 @@ const rankingSeasonPromises = new Map();
 
 function loadRankingSeason(season) {
     if (!rankingSeasonPromises.has(season)) {
-        rankingSeasonPromises.set(season, loadCsv(`csv/ranking_${season}.csv`));
+        rankingSeasonPromises.set(season, loadCsv(`csv/ranking_${season - 1}_${season}.csv`));
     }
     return rankingSeasonPromises.get(season);
 }
@@ -701,7 +701,7 @@ if ("IntersectionObserver" in window) {
     selectHomeChartSeason(DEFAULT_SEASON);
 }
 
-loadCsv(`csv/home_top_${DEFAULT_SEASON}.csv`)
+loadCsv(`csv/home_top_${DEFAULT_SEASON - 1}_${DEFAULT_SEASON}.csv`)
     .then(data => {
         for (const [sex, label] of [["M", "men"], ["Z", "women"]]) {
             const ranking = filterAndRankRows(

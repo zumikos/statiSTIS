@@ -20,7 +20,7 @@ setupPlayerGroupSelection(selectedGroup, "hraci.html", selectedSeason);
 setupAssociationSelection(selectedAssociation, "hraci.html", selectedSeason);
 createStatisticsTable({
     tableId: "ranking",
-    csvFile: `csv/ranking_${selectedSeason}.csv`,
+    csvFile: `csv/ranking_${selectedSeason - 1}_${selectedSeason}.csv`,
     columns: RANKING_COLUMNS,
     rowFilter: row =>
         playerMatchesGroup(row, selectedGroup, selectedSeason) &&

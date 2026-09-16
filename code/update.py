@@ -30,7 +30,7 @@ def export_home_top(master):
     )
     home_top = pd.concat([ranking, movers], ignore_index=True)
     columns = ["Typ", "Pohlaví", "ID", "Hráč", "Oddíl", "STR", "STR změna"]
-    home_top[columns].to_csv(CSV_DIR / f"home_top_{season}.csv", index=False, encoding="utf-8-sig")
+    home_top[columns].to_csv(CSV_DIR / f"home_top_{season - 1}_{season}.csv", index=False, encoding="utf-8-sig")
     print(f"✓ Uloženy Top 10 tabulky pro úvodní stránku ({len(home_top)} řádků).")
 
 def load_all_seasons():
@@ -40,7 +40,7 @@ def load_all_seasons():
 
     for file in sorted(DATA_DIR.glob("*.xlsx")):
 
-        year = int(file.stem)
+        year = int(file.stem.rsplit("_", 1)[-1])
 
         print(f"Načítám {file.name}")
 
