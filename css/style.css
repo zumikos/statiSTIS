@@ -776,7 +776,7 @@ table.dataTable thead .dt-column-title {
     display:flex;
     align-items:center;
     gap:0.75rem;
-    margin-left:15rem;
+    margin-left:auto;
 }
 
 .player-ranking-scope .player-mover-minimums {
@@ -1112,6 +1112,13 @@ table.dataTable thead .dt-column-title {
 }
 
 @media (max-width: 600px) {
+    .player-movers-scope {
+        flex-basis:100%;
+        flex-wrap:wrap;
+        margin-top:0.5rem;
+        margin-left:0;
+    }
+
     header nav {
         row-gap:0.6rem;
     }
