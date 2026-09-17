@@ -1,6 +1,6 @@
 import pandas as pd
 
-from export_movers import calculate_movers
+from export_movers import MOVERS_STR_MINIMUMS, calculate_movers
 
 
 def player_age_category(row):
@@ -148,28 +148,44 @@ def export_players(master, output_dir):
         dtype="Int64"
     )
 
-    for current in years[1:]:
-        previous = current - 1
-        if previous not in years:
-            continue
+    for str_minimum in MOVERS_STR_MINIMUMS:
+        minimum_rank_columns = []
+        for current in years[1:]:
+            previous = current - 1
+            if previous not in years:
+                continue
 
-        movers = calculate_movers(master, current)
-        movers["Sezóna"] = current
-        ranked_movers, current_mover_counts = add_group_ranks(movers, "STR změna")
-        mover_count_frames.append(current_mover_counts)
-        counts = movers.groupby("Pohlaví").size()
-        mover_sex_counts.loc[current, "Skokani muži"] = counts.get("M", 0)
-        mover_sex_counts.loc[current, "Skokani ženy"] = counts.get("Z", 0)
-        for column, suffix in (
-            ("Pořadí", "Pořadí skokani"),
-            ("Pořadí kraj", "Pořadí skokani kraj"),
-            ("Pořadí kategorie", "Pořadí skokani kategorie"),
-            ("Pořadí kraj kategorie", "Pořadí skokani kraj kategorie")
-        ):
-            output_column = f"{current} {suffix}"
-            mover_rank = ranked_movers.rename(columns={column: output_column})
-            target = mover_columns if column == "Pořadí" else mover_rank_columns
-            target.append(mover_rank.set_index("ID")[[output_column]])
+            movers = calculate_movers(master, current, str_minimum)
+            movers["Sezóna"] = current
+            ranked_movers, current_mover_counts = add_group_ranks(movers, "STR změna")
+            current_mover_counts["STR minimum"] = str_minimum
+            mover_count_frames.append(current_mover_counts)
+            if str_minimum == MOVERS_STR_MINIMUMS[0]:
+                counts = movers.groupby("Pohlaví").size()
+                mover_sex_counts.loc[current, "Skokani muži"] = counts.get("M", 0)
+                mover_sex_counts.loc[current, "Skokani ženy"] = counts.get("Z", 0)
+            for column, suffix in (
+                ("Pořadí", "Pořadí skokani"),
+                ("Pořadí kraj", "Pořadí skokani kraj"),
+                ("Pořadí kategorie", "Pořadí skokani kategorie"),
+                ("Pořadí kraj kategorie", "Pořadí skokani kraj kategorie")
+            ):
+                output_column = f"{current} {suffix}"
+                mover_rank = ranked_movers.rename(columns={column: output_column})
+                rank_column = mover_rank.set_index("ID")[[output_column]]
+                if str_minimum == MOVERS_STR_MINIMUMS[0]:
+                    target = mover_columns if column == "Pořadí" else mover_rank_columns
+                    target.append(rank_column)
+                else:
+                    minimum_rank_columns.append(rank_column)
+
+        if minimum_rank_columns:
+            minimum_ranks = pd.concat(minimum_rank_columns, axis="columns")
+            minimum_ranks.reset_index().to_csv(
+                output_dir / f"player_mover_ranks_STR{str_minimum}.csv",
+                index=False,
+                encoding="utf-8-sig"
+            )
 
     players = (
         players
@@ -195,16 +211,22 @@ def export_players(master, output_dir):
         index=False,
         encoding="utf-8-sig"
     )
-    mover_rank_counts = pd.concat(mover_count_frames, ignore_index=True)
-    rank_counts = (
-        player_rank_counts.rename(columns={"Počet": "Počet hráčů"})
-        .merge(
-            mover_rank_counts.rename(columns={"Počet": "Počet skokanů"}),
-            on=["Sezóna", "Pohlaví", "Kraj", "Kategorie"],
-            how="left"
-        )
+    count_keys = ["Sezóna", "Pohlaví", "Kraj", "Kategorie"]
+    mover_rank_counts = (
+        pd.concat(mover_count_frames, ignore_index=True)
+        .pivot(index=count_keys, columns="STR minimum", values="Počet")
+        .rename(columns=lambda value: f"Počet skokanů {value}")
+        .reset_index()
     )
-    rank_counts["Počet skokanů"] = rank_counts["Počet skokanů"].astype("Int64")
+    rank_counts = player_rank_counts.rename(columns={"Počet": "Počet hráčů"}).merge(
+        mover_rank_counts,
+        on=count_keys,
+        how="left"
+    )
+    for str_minimum in MOVERS_STR_MINIMUMS:
+        rank_counts[f"Počet skokanů {str_minimum}"] = (
+            rank_counts[f"Počet skokanů {str_minimum}"].astype("Int64")
+        )
     rank_counts.to_csv(
         output_dir / "player_ranks_counts.csv",
         index=False,

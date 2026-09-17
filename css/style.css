@@ -757,6 +757,7 @@ table.dataTable thead .dt-column-title {
 
 .player-ranking-scope-connector {
     align-self:center;
+    font-weight:bold;
     margin-inline:1rem;
 }
 
@@ -769,6 +770,20 @@ table.dataTable thead .dt-column-title {
 
 .player-ranking-scope input {
     accent-color:var(--blue);
+}
+
+.player-movers-scope {
+    display:flex;
+    align-items:center;
+    gap:0.75rem;
+    margin-left:15rem;
+}
+
+.player-ranking-scope .player-mover-minimums {
+    display:grid;
+    grid-auto-flow:column;
+    grid-template-rows:repeat(2, auto);
+    gap:0.35rem 0.75rem;
 }
 
 .comparison-intro {

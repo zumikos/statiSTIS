@@ -91,7 +91,7 @@
             Všechny statistiky
             <span class="info-tooltip">
                 <button type="button" class="info-button" aria-label="Informace o pořadí a percentilech" aria-describedby="player-statistics-info">i</button>
-                <span id="player-statistics-info" class="info-tooltip-text" role="tooltip">Pořadí a percentily jsou počítány pro dané pohlaví. Lze zvolit pořadí v ČR, nebo v kraji klubu, za který hráč v&nbsp;dané sezóně hrál a pořadí v dospělých, nebo mláděžnické kategorii. Pro sezóny, kdy je hráč již v&nbsp;kategorii dospělých, nemá volba kategorie vliv. Pořadí skokanů je pro STR 800+.</span>
+                <span id="player-statistics-info" class="info-tooltip-text" role="tooltip">Pořadí a percentily jsou počítány pro dané pohlaví. Lze zvolit pořadí v ČR, nebo v kraji klubu, za který hráč v&nbsp;dané sezóně hrál a pořadí v dospělých, nebo mládežnické kategorii. Pro sezóny, kdy je hráč již v&nbsp;kategorii dospělých, nemá volba kategorie vliv. Pro pořadí skokanů lze zvolit také minimální počáteční STR.</span>
             </span>
         </h3>
         <form id="player-ranking-scope" class="player-ranking-scope">
@@ -107,6 +107,16 @@
                 <label><input type="radio" name="age" value="adult" checked> dospělých</label>
                 <label><input type="radio" name="age" value="youth"> mládežnické kategorii</label>
             </fieldset>
+            <div class="player-movers-scope">
+                <span class="player-ranking-scope-title">Pořadí skokani pro min. STR</span>
+                <fieldset class="player-mover-minimums">
+                    <legend class="visually-hidden">Minimální STR pro pořadí skokanů</legend>
+                    <label><input type="radio" name="mover-str-min" value="800" checked> 800</label>
+                    <label><input type="radio" name="mover-str-min" value="1200"> 1 200</label>
+                    <label><input type="radio" name="mover-str-min" value="1600"> 1 600</label>
+                    <label><input type="radio" name="mover-str-min" value="2000"> 2 000</label>
+                </fieldset>
+            </div>
         </form>
         <div class="table-scroll">
             <table id="player-history"></table>

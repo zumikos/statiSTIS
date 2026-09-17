@@ -118,6 +118,7 @@ let playersPromise;
 let seasonSummaryPromise;
 let playerRankCountsPromise;
 let playerRanksPromise;
+const playerMoverRanksPromises = new Map();
 
 function loadSeasonSummary() {
     if (!seasonSummaryPromise) {
@@ -138,6 +139,18 @@ function loadPlayerRanks() {
         playerRanksPromise = loadCsv("csv/player_ranks.csv");
     }
     return playerRanksPromise;
+}
+
+function loadPlayerMoverRanks(strMinimum) {
+    if (!playerMoverRanksPromises.has(strMinimum)) {
+        playerMoverRanksPromises.set(
+            strMinimum,
+            loadCsv(`csv/player_mover_ranks_STR${strMinimum}.csv`).then(rows =>
+                new Map(rows.map(row => [String(row.ID), row]))
+            )
+        );
+    }
+    return playerMoverRanksPromises.get(strMinimum);
 }
 
 function loadPlayers() {

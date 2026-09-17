@@ -114,10 +114,13 @@ function playerRankCountKey(season, sex, association, category) {
 function selectedHistoryRankScope() {
     const form = document.getElementById("player-ranking-scope");
     const values = new FormData(form);
-    return HISTORY_RANK_SCOPES[`${values.get("area")}-${values.get("age")}`];
+    return {
+        ...HISTORY_RANK_SCOPES[`${values.get("area")}-${values.get("age")}`],
+        moverStrMinimum: Number(values.get("mover-str-min"))
+    };
 }
 
-function renderPlayerHistory(player, rankCounts) {
+function renderPlayerHistory(player, rankCounts, moverRanks = player) {
     const table = document.getElementById("player-history");
     table.replaceChildren();
     const rankScope = selectedHistoryRankScope();
@@ -149,7 +152,7 @@ function renderPlayerHistory(player, rankCounts) {
             const totals = rankCounts.get(playerRankCountKey(
                 year, player["Pohlaví"], association, rankCategory
             ));
-            const moverRank = player[`${year} ${rankScope.moverRankSuffix}`];
+            const moverRank = moverRanks[`${year} ${rankScope.moverRankSuffix}`];
             const values = [
                 formatSeason(year),
                 ageCategory,
@@ -159,7 +162,10 @@ function renderPlayerHistory(player, rankCounts) {
                 formatPercentile(rank, totals?.players),
                 formatThousands(calculateRatingChange(player, year)),
                 formatRank(moverRank),
-                formatPercentile(moverRank, totals?.movers)
+                formatPercentile(
+                    moverRank,
+                    totals?.movers[rankScope.moverStrMinimum]
+                )
             ];
 
             values.forEach(value => {
@@ -325,7 +331,12 @@ async function showPlayerDetail(playerId) {
         const seasonSummaries = new Map(summaryRows.map(row => [row["Sezóna"], row]));
         const rankCounts = new Map(rankCountRows.map(row => [
             playerRankCountKey(row["Sezóna"], row["Pohlaví"], row["Kraj"], row["Kategorie"]),
-            { players: row["Počet hráčů"], movers: row["Počet skokanů"] }
+            {
+                players: row["Počet hráčů"],
+                movers: Object.fromEntries(MOVERS_STR_MIN_VALUES.map(strMinimum => [
+                    strMinimum, row[`Počet skokanů ${strMinimum}`]
+                ]))
+            }
         ]));
 
         if (!player) {
@@ -356,8 +367,12 @@ async function showPlayerDetail(playerId) {
                 `Pohlaví: ${gender}, Kategorie: ${category}, `, stisLink
         );
         renderPlayerHistory(player, rankCounts);
-        document.getElementById("player-ranking-scope").addEventListener("change", () => {
-            renderPlayerHistory(player, rankCounts);
+        document.getElementById("player-ranking-scope").addEventListener("change", async () => {
+            const { moverStrMinimum } = selectedHistoryRankScope();
+            const moverRanks = moverStrMinimum === MOVERS_STR_MIN_VALUES[0]
+                ? player
+                : (await loadPlayerMoverRanks(moverStrMinimum)).get(String(player.ID)) || {};
+            renderPlayerHistory(player, rankCounts, moverRanks);
         });
         renderPlayerStrChart(player);
         renderPlayerPositionChart(player, {
