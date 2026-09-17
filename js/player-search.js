@@ -90,20 +90,23 @@ function calculateRatingChange(player, year) {
 const HISTORY_RANK_SCOPES = {
     "national-adult": {
         rankSuffix: "pořadí", moverRankSuffix: "Pořadí skokani",
-        regional: false, youth: false
+        regional: false, youth: false, rankFiles: []
     },
     "regional-adult": {
         rankSuffix: "pořadí kraj", moverRankSuffix: "Pořadí skokani kraj",
-        regional: true, youth: false
+        regional: true, youth: false, rankFiles: ["region"]
     },
     "national-youth": {
         rankSuffix: "pořadí kategorie", moverRankSuffix: "Pořadí skokani kategorie",
-        regional: false, youth: true
+        fallbackRankSuffix: "pořadí", fallbackMoverRankSuffix: "Pořadí skokani",
+        regional: false, youth: true, rankFiles: ["category"]
     },
     "regional-youth": {
         rankSuffix: "pořadí kraj kategorie",
         moverRankSuffix: "Pořadí skokani kraj kategorie",
-        regional: true, youth: true
+        fallbackRankSuffix: "pořadí kraj",
+        fallbackMoverRankSuffix: "Pořadí skokani kraj",
+        regional: true, youth: true, rankFiles: ["region", "region_category"]
     }
 };
 
@@ -118,6 +121,15 @@ function selectedHistoryRankScope() {
         ...HISTORY_RANK_SCOPES[`${values.get("area")}-${values.get("age")}`],
         moverStrMinimum: Number(values.get("mover-str-min"))
     };
+}
+
+async function addPlayerScopeRanks(player, rankScope) {
+    const rankMaps = await Promise.all(rankScope.rankFiles.map(loadPlayerScopeRanks));
+    return Object.assign(
+        {},
+        player,
+        ...rankMaps.map(ranks => ranks.get(String(player.ID)) || {})
+    );
 }
 
 function renderPlayerHistory(player, rankCounts, moverRanks = player) {
@@ -148,11 +160,19 @@ function renderPlayerHistory(player, rankCounts, moverRanks = player) {
                 ? ageCategory
                 : "dospělí";
             const association = rankScope.regional ? player[`${year} Kraj`] : "";
-            const rank = player[`${year} ${rankScope.rankSuffix}`];
+            const scopedRank = player[`${year} ${rankScope.rankSuffix}`];
+            const rank = hasChartValue(scopedRank)
+                ? scopedRank
+                : player[`${year} ${rankScope.fallbackRankSuffix || rankScope.rankSuffix}`];
             const totals = rankCounts.get(playerRankCountKey(
                 year, player["Pohlaví"], association, rankCategory
             ));
-            const moverRank = moverRanks[`${year} ${rankScope.moverRankSuffix}`];
+            const scopedMoverRank = moverRanks[`${year} ${rankScope.moverRankSuffix}`];
+            const moverRank = hasChartValue(scopedMoverRank)
+                ? scopedMoverRank
+                : moverRanks[
+                    `${year} ${rankScope.fallbackMoverRankSuffix || rankScope.moverRankSuffix}`
+                ];
             const values = [
                 formatSeason(year),
                 ageCategory,
@@ -322,12 +342,10 @@ async function showPlayerDetail(playerId) {
     document.getElementById("player-name").textContent = "Načítám hráče…";
 
     try {
-        const [players, summaryRows, rankCountRows, playerRankRows] = await Promise.all([
-            loadPlayers(), loadSeasonSummary(), loadPlayerRankCounts(), loadPlayerRanks()
+        const [players, summaryRows, rankCountRows] = await Promise.all([
+            loadPlayers(), loadSeasonSummary(), loadPlayerRankCounts()
         ]);
-        const basePlayer = players.find(item => String(item.ID) === playerId);
-        const playerRanks = playerRankRows.find(item => String(item.ID) === playerId);
-        const player = basePlayer && { ...basePlayer, ...playerRanks };
+        const player = players.find(item => String(item.ID) === playerId);
         const seasonSummaries = new Map(summaryRows.map(row => [row["Sezóna"], row]));
         const rankCounts = new Map(rankCountRows.map(row => [
             playerRankCountKey(row["Sezóna"], row["Pohlaví"], row["Kraj"], row["Kategorie"]),
@@ -367,12 +385,18 @@ async function showPlayerDetail(playerId) {
                 `Pohlaví: ${gender}, Kategorie: ${category}, `, stisLink
         );
         renderPlayerHistory(player, rankCounts);
+        let historyRenderRequest = 0;
         document.getElementById("player-ranking-scope").addEventListener("change", async () => {
-            const { moverStrMinimum } = selectedHistoryRankScope();
+            const request = ++historyRenderRequest;
+            const rankScope = selectedHistoryRankScope();
+            const scopedPlayer = await addPlayerScopeRanks(player, rankScope);
+            const { moverStrMinimum } = rankScope;
             const moverRanks = moverStrMinimum === MOVERS_STR_MIN_VALUES[0]
-                ? player
+                ? scopedPlayer
                 : (await loadPlayerMoverRanks(moverStrMinimum)).get(String(player.ID)) || {};
-            renderPlayerHistory(player, rankCounts, moverRanks);
+            if (request === historyRenderRequest) {
+                renderPlayerHistory(scopedPlayer, rankCounts, moverRanks);
+            }
         });
         renderPlayerStrChart(player);
         renderPlayerPositionChart(player, {

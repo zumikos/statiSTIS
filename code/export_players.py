@@ -30,8 +30,8 @@ def add_group_ranks(master, value_column):
         .rank(method="min", ascending=False)
         .astype("Int64")
     )
-    ranked["Pořadí kategorie"] = ranked["Pořadí"]
-    ranked["Pořadí kraj kategorie"] = ranked["Pořadí kraj"]
+    ranked["Pořadí kategorie"] = pd.NA
+    ranked["Pořadí kraj kategorie"] = pd.NA
 
     count_frames = []
 
@@ -195,11 +195,20 @@ def export_players(master, output_dir):
         .join(rank_tables[0])
     )
 
-    player_ranks = associations_by_season
-    for rank in rank_tables[1:]:
-        player_ranks = player_ranks.join(rank)
+    scope_ranks = {
+        "category": rank_tables[2],
+        "region": associations_by_season.join(rank_tables[1]),
+        "region_category": rank_tables[3]
+    }
     for mover_rank in mover_rank_columns:
-        player_ranks = player_ranks.join(mover_rank)
+        column = mover_rank.columns[0]
+        if "kraj kategorie" in column:
+            scope = "region_category"
+        elif "kategorie" in column:
+            scope = "category"
+        else:
+            scope = "region"
+        scope_ranks[scope] = scope_ranks[scope].join(mover_rank)
 
     for mover_data in mover_columns:
         players = players.join(mover_data)
@@ -232,11 +241,12 @@ def export_players(master, output_dir):
         index=False,
         encoding="utf-8-sig"
     )
-    player_ranks.reset_index().to_csv(
-        output_dir / "player_ranks.csv",
-        index=False,
-        encoding="utf-8-sig"
-    )
+    for scope, ranks in scope_ranks.items():
+        ranks.dropna(how="all").reset_index().to_csv(
+            output_dir / f"player_ranks_{scope}.csv",
+            index=False,
+            encoding="utf-8-sig"
+        )
     
     print(f"✓ Uloženy statistiky hráčů ({len(players)} hráčů).")
     return mover_sex_counts

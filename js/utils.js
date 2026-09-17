@@ -117,7 +117,7 @@ function normalizeText(value, removeDiacritics = false) {
 let playersPromise;
 let seasonSummaryPromise;
 let playerRankCountsPromise;
-let playerRanksPromise;
+const playerScopeRanksPromises = new Map();
 const playerMoverRanksPromises = new Map();
 
 function loadSeasonSummary() {
@@ -134,11 +134,16 @@ function loadPlayerRankCounts() {
     return playerRankCountsPromise;
 }
 
-function loadPlayerRanks() {
-    if (!playerRanksPromise) {
-        playerRanksPromise = loadCsv("csv/player_ranks.csv");
+function loadPlayerScopeRanks(scope) {
+    if (!playerScopeRanksPromises.has(scope)) {
+        playerScopeRanksPromises.set(
+            scope,
+            loadCsv(`csv/player_ranks_${scope}.csv`).then(rows =>
+                new Map(rows.map(row => [String(row.ID), row]))
+            )
+        );
     }
-    return playerRanksPromise;
+    return playerScopeRanksPromises.get(scope);
 }
 
 function loadPlayerMoverRanks(strMinimum) {
