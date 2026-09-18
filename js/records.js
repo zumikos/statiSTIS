@@ -58,8 +58,44 @@ function renderRecordTable(tableId, records, columns) {
     table.replaceChildren(head, body);
 }
 
+function createCategoryRecordSection(category) {
+    const section = document.createElement("section");
+    const heading = document.createElement("h3");
+    heading.textContent = `Nejvyšší STR v kategorii ${category}`;
+    section.appendChild(heading);
+
+    const grid = document.createElement("div");
+    grid.className = "grid two-columns";
+    RECORD_SEXES.forEach(sex => {
+        const article = document.createElement("article");
+        article.className = "card";
+
+        const title = document.createElement("h4");
+        title.className = "home-table-title";
+        title.textContent = sex.value === "M" ? "Muži" : "Ženy";
+
+        const scroll = document.createElement("div");
+        scroll.className = "compact-table-scroll";
+        const table = document.createElement("table");
+        table.id = `highest-str-${category.toLowerCase()}-${sex.suffix}`;
+        table.className = "compact-table records-table";
+        scroll.appendChild(table);
+        article.append(title, scroll);
+        grid.appendChild(article);
+    });
+
+    section.appendChild(grid);
+    return section;
+}
+
 loadCsv("csv/records.csv")
     .then(records => {
+        const categoryRecords = document.getElementById("category-records");
+        YOUTH_AGES.forEach(age => {
+            const category = `U${age}`;
+            categoryRecords.appendChild(createCategoryRecordSection(category));
+        });
+
         RECORD_SEXES.forEach(sex => {
             renderRecordTable(
                 `highest-str-${sex.suffix}`,
@@ -68,6 +104,19 @@ loadCsv("csv/records.csv")
                 ),
                 STR_COLUMNS
             );
+
+            YOUTH_AGES.forEach(age => {
+                const category = `U${age}`;
+                renderRecordTable(
+                    `highest-str-${category.toLowerCase()}-${sex.suffix}`,
+                    records.filter(record =>
+                        record.Typ === "category_highest_str" &&
+                        record.Kategorie === category &&
+                        record["Pohlaví"] === sex.value
+                    ),
+                    STR_COLUMNS
+                );
+            });
 
             MOVERS_STR_MIN_VALUES.forEach(strMinimum => {
                 renderRecordTable(
