@@ -28,6 +28,10 @@
     --search-button:#165d9f;
 }
 
+html {
+    scrollbar-gutter:stable;
+}
+
 body{
     margin:0;
     font-family:Arial,sans-serif;
@@ -121,6 +125,16 @@ tr:nth-child(even){
 .dt-search input {
     padding: 4px 8px;
     transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dt-search input::-webkit-search-cancel-button {
+    cursor:pointer;
+    opacity:0.55;
+    transition:opacity 0.15s;
+}
+
+.dt-search input::-webkit-search-cancel-button:hover {
+    opacity:1;
 }
 
 #season,

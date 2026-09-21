@@ -108,7 +108,6 @@ async function renderTeamOverview() {
             pageLength: TABLE_PAGE_LENGTHS[0],
             order: [[0, "asc"]],
             scrollX: true,
-            autoWidth: false,
             layout: {
                 top2Start: () => teamSearch.control,
                 top2End: () => pageLength.control,

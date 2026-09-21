@@ -322,7 +322,6 @@ async function createStatisticsTable({
             pageLength: TABLE_PAGE_LENGTHS[0],
             order,
             scrollX: true,
-            autoWidth: false,
             layout,
             columnDefs,
             language: TABLE_LANGUAGE
