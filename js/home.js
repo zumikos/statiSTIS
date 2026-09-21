@@ -55,9 +55,9 @@ function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
 }
 
 const PLAYER_COUNT_AXES = {
-    all: { column: "Všichni", label: "všichni", minValue: 8000, maxValue: 20000, step: 2000 },
-    M: { column: "Muži", label: "muži", minValue: 6000, maxValue: 18000, step: 2000 },
-    Z: { column: "Ženy", label: "ženy", minValue: 600, maxValue: 1400, step: 200 }
+    all: { column: "Všichni", label: "všichni", minValue: 0, maxValue: 20000, step: 4000 },
+    M: { column: "Muži", label: "muži", minValue: 0, maxValue: 18000, step: 3000 },
+    Z: { column: "Ženy", label: "ženy", minValue: 0, maxValue: 1400, step: 200 }
 };
 
 const MEDIAN_AGE_AXES = {
@@ -71,6 +71,16 @@ function axisTicks(axis) {
         { length: (axis.maxValue - axis.minValue) / axis.step + 1 },
         (_, index) => axis.minValue + index * axis.step
     );
+}
+
+function histogramAxis(maximum) {
+    if (maximum <= 0) return { maximum: 1, step: 1 };
+    const roughStep = maximum / 5;
+    const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+    const step = [1, 2, 5, 10]
+        .map(factor => factor * magnitude)
+        .find(candidate => candidate >= roughStep);
+    return { maximum: Math.ceil(maximum / step) * step, step };
 }
 
 function renderPlayerCountChart(rows, selectedSex) {
@@ -90,7 +100,7 @@ function renderPlayerCountChart(rows, selectedSex) {
         maxValue: axis.maxValue,
         yTicks: axisTicks(axis),
         ariaLabel: `Vývoj počtu hráčů: ${axis.label}`,
-        xLabel: year => `${formatSeason(year)}${year === 2021 ? "*" : ""}`,
+        xLabel: year => `${formatSeason(year)}${year === 2021 ? "⁺" : year === DEFAULT_SEASON ? "*" : ""}`,
         xLabelOffset: 16,
         xTitle: "Sezóna",
         yTitle: "Počet hráčů",
@@ -138,7 +148,9 @@ function renderHistogram(data) {
     const margin = { top: 25, right: 20, bottom: 95, left: 75 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
-    const yMax = 2500;
+    const { maximum: yMax, step: yStep } = histogramAxis(
+        Math.max(...bins.map(item => item.count))
+    );
     const x = value => margin.left + (value / 2600) * plotWidth;
     const y = value => margin.top + ((yMax - value) / yMax) * plotHeight;
     const svg = createSvgElement("svg", {
@@ -147,7 +159,7 @@ function renderHistogram(data) {
         "aria-label": "Rozložení STR"
     });
 
-    for (let value = 0; value <= yMax; value += 500) {
+    for (let value = 0; value <= yMax; value += yStep) {
         const lineY = y(value);
         svg.appendChild(createSvgElement("line", {
             x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
@@ -319,8 +331,14 @@ function renderBirthYearPyramid(data) {
     const plotHeight = height - margin.top - margin.bottom;
     const center = margin.left + plotWidth / 2;
     const halfWidth = plotWidth / 2;
-    const menMaximum = 2200;
-    const womenMaximum = 400;
+    const menMaximum = niceAxisMaximum(
+        Math.max(...groups.map(group => group.men)),
+        500
+    );
+    const womenMaximum = niceAxisMaximum(
+        Math.max(...groups.map(group => group.women)),
+        50
+    );
     const xMen = value => value / menMaximum * halfWidth;
     const xWomen = value => value / womenMaximum * halfWidth;
     const rowHeight = plotHeight / groups.length;
@@ -449,9 +467,10 @@ function renderBirthYearPyramid(data) {
     container.appendChild(svg);
 }
 
-function niceAxisMaximum(maximum) {
+function niceAxisMaximum(maximum, minimumStep = 0) {
+    if (maximum <= 0) return minimumStep || 1;
     const magnitude = 10 ** Math.floor(Math.log10(maximum));
-    const step = magnitude / 5;
+    const step = Math.max(minimumStep, magnitude / 5);
     return Math.ceil(maximum / step) * step;
 }
 
@@ -607,6 +626,8 @@ homeSeasonSummaryPromise
 const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
 document.getElementById("last-updated").textContent =
     `Stránka naposledy aktualizována ${LAST_UPDATED_DATE}`;
+document.getElementById("next-ranking-update").textContent =
+    `Příští aktualizace žebříčků proběhne ${NEXT_RANKING_UPDATE_DATE}`;
 const homeSeasonElements = document.querySelectorAll(".home-season");
 homeSeasonElements.forEach(element => {
     element.textContent = homeSeasonLabel;

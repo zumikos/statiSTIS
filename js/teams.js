@@ -153,6 +153,19 @@ function showTeamDetail(teamName) {
     if (selectedAssociation.value !== "all") backParameters.set("svaz", selectedAssociation.value);
     document.getElementById("team-back-link").href = `oddily.html?${backParameters}`;
     document.title = `${SITE_NAME} – ${teamName}`;
+    const teamInfo = document.getElementById("team-info");
+    loadTeams()
+        .then(teams => {
+            const team = teams.find(item => item.name === teamName);
+            teamInfo.textContent = team
+                ? `Svaz: ${team.association || "—"}, ` +
+                    `Počet hráčů: ${formatThousands(team.playerCount)}, ` +
+                    `STR: ${formatThousands(team.ratingAverage)}`
+                : "Informace o oddílu nejsou pro vybrané datum dostupné.";
+        })
+        .catch(() => {
+            teamInfo.textContent = "Informace o oddílu se nepodařilo načíst.";
+        });
     const selectedSex = getSelectedSex();
     setupSexSelection(selectedSex, "oddily.html", selectedSeason, {
         oddil: teamName,
@@ -164,6 +177,7 @@ function showTeamDetail(teamName) {
         { data: "ID", title: "ID", width: "1%" },
         { data: "Hráč", title: "Hráč", width: "12rem" },
         { data: "Rok narození", title: "Rok narození", width: "1%" },
+        { data: "Kategorie", title: "Kategorie", width: "1%" },
         { data: "Pohlaví", title: "Pohlaví", width: "1%" },
         { data: "STR", title: "STR", width: "1%", render: renderThousands }
     ];
@@ -177,12 +191,13 @@ function showTeamDetail(teamName) {
             (selectedSex === "all" || row["Pohlaví"] === selectedSex),
         rankField: "STR",
         showPageLength: false,
+        categorySeason: selectedSeason,
         order: [[0, "asc"]],
         columnDefs: [
             { targets: "_all", className: "dt-head-center" },
-            { targets: [3, 4], className: "dt-body-center" },
+            { targets: [3, 4, 5], className: "dt-body-center" },
             { targets: 2, className: "wrap-column" },
-            { targets: [0, 1, 3, 4, 5], className: "nowrap-column" }
+            { targets: [0, 1, 3, 4, 5, 6], className: "nowrap-column" }
         ]
     });
 }

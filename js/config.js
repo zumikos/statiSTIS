@@ -1,8 +1,9 @@
-const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
+const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027];
 const DEFAULT_SEASON = Math.max(...SEASONS);
 const SITE_NAME = "statiSTIS";
-const LAST_UPDATED_DATE = "18. 09. 2026";
-const LATEST_RANKING_DATE = "01. 08. 2026";
+const LAST_UPDATED_DATE = "21. 09. 2026";
+const LATEST_RANKING_DATE = "21. 09. 2026";
+const NEXT_RANKING_UPDATE_DATE = "05. 10. 2026";
 const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
 const MOVERS_STR_MIN_VALUES = [800, 1200, 1600, 2000];
 const PLAYER_SEXES = [
@@ -50,7 +51,8 @@ const TABLE_LANGUAGE = {
 };
 
 const PLAYER_NAME_OVERRIDES = {
-    "LIAO Ting-Yao": "Liao Ting-Yao"
+    "LIAO Ting-Yao": "Liao Ting-Yao",
+    "Gómez Alejandro Gustavo": "Gómez Gustavo"
 };
 
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.

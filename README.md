@@ -43,7 +43,7 @@ Po přidání zdrojových souborů pojmenovaných ve formátu `ranking_<počáte
 Skript vytvoří také malý `csv/home_top_<počáteční_rok>_<koncový_rok>.csv` pro čtyři úvodní Top 10 tabulky. Úplný žebříček se na úvodní stránce načítá až při přiblížení k sezónním grafům.
 
 Výchozí sezóny webu a hodnoty nabízené ve výběru minimálního STR jsou uvedeny v konstantách `SEASONS` a `MOVERS_STR_MIN_VALUES` v `js/config.js`.
-Při měsíční výměně dat aktuální sezóny je potřeba upravit také `LATEST_RANKING_DATE`. Ve veřejném rozhraní STIS je dostupný aktuální stav probíhající sezóny a konečné žebříčky ukončených sezón; průběžné měsíční stavy je proto nutné samostatně archivovat, pokud mají zůstat zachovány.
+Při aktualizaci dat aktuální sezóny je potřeba upravit také `LATEST_RANKING_DATE` a `NEXT_RANKING_UPDATE_DATE`.
 
 ## Publikování
 

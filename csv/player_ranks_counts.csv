@@ -29,6 +29,8 @@
 2025,Z,,dospělí,1359,816,461,120,12
 2026,M,,dospělí,16767,13429,9303,2560,181
 2026,Z,,dospělí,1381,885,479,125,13
+2027,M,,dospělí,1590,1392,950,300,48
+2027,Z,,dospělí,132,93,59,31,11
 2012,M,KSST Jihomoravský,dospělí,1231,,,,
 2012,M,KSST Jihočeský,dospělí,1072,,,,
 2012,M,KSST Karlovarský,dospělí,211,,,,
@@ -449,6 +451,33 @@
 2026,Z,Moravskoslezský SST,dospělí,106,74,44,16,3
 2026,Z,Pražský SST,dospělí,143,122,73,21,
 2026,Z,Středočeský SST,dospělí,239,133,64,13,
+2027,M,KSST Jihomoravský,dospělí,42,41,30,9,1
+2027,M,KSST Jihočeský,dospělí,196,183,124,22,2
+2027,M,KSST Karlovarský,dospělí,12,12,12,12,4
+2027,M,KSST Kralovéhradecký,dospělí,99,87,59,16,6
+2027,M,KSST Liberecký,dospělí,99,77,37,16,2
+2027,M,KSST Olomoucký,dospělí,18,16,15,11,
+2027,M,KSST Pardubický,dospělí,109,101,77,33,
+2027,M,KSST Plzeňský,dospělí,95,85,65,24,3
+2027,M,KSST Vysočina,dospělí,6,3,3,3,3
+2027,M,KSST Zlínský,dospělí,229,213,146,32,1
+2027,M,KSST Ústecký,dospělí,202,193,147,32,
+2027,M,Moravskoslezský SST,dospělí,221,190,141,45,14
+2027,M,Pražský SST,dospělí,156,132,65,32,11
+2027,M,Středočeský SST,dospělí,105,59,29,13,1
+2027,Z,KSST Jihomoravský,dospělí,9,7,7,7,4
+2027,Z,KSST Jihočeský,dospělí,14,8,5,,
+2027,Z,KSST Kralovéhradecký,dospělí,14,9,6,4,
+2027,Z,KSST Liberecký,dospělí,4,2,2,,
+2027,Z,KSST Olomoucký,dospělí,5,5,4,3,
+2027,Z,KSST Pardubický,dospělí,4,3,2,1,
+2027,Z,KSST Plzeňský,dospělí,6,6,4,,
+2027,Z,KSST Vysočina,dospělí,3,3,3,3,3
+2027,Z,KSST Zlínský,dospělí,6,6,3,,
+2027,Z,KSST Ústecký,dospělí,8,7,3,,
+2027,Z,Moravskoslezský SST,dospělí,21,17,10,8,4
+2027,Z,Pražský SST,dospělí,26,17,9,5,
+2027,Z,Středočeský SST,dospělí,12,3,1,,
 2012,M,,U21,2062,,,,
 2012,Z,,U21,389,,,,
 2013,M,,U21,2236,1386,679,151,12
@@ -479,6 +508,8 @@
 2025,Z,,U21,633,278,121,30,1
 2026,M,,U21,3036,1465,687,249,37
 2026,Z,,U21,636,307,128,31,2
+2027,M,,U21,279,200,105,46,9
+2027,Z,,U21,54,29,15,8,1
 2012,M,KSST Jihomoravský,U21,292,,,,
 2012,M,KSST Jihočeský,U21,160,,,,
 2012,M,KSST Karlovarský,U21,33,,,,
@@ -899,6 +930,32 @@
 2026,Z,Moravskoslezský SST,U21,51,33,15,4,1
 2026,Z,Pražský SST,U21,43,29,13,7,
 2026,Z,Středočeský SST,U21,102,41,13,,
+2027,M,KSST Jihomoravský,U21,5,4,3,2,
+2027,M,KSST Jihočeský,U21,18,15,6,4,
+2027,M,KSST Karlovarský,U21,3,3,3,3,
+2027,M,KSST Kralovéhradecký,U21,25,14,10,3,1
+2027,M,KSST Liberecký,U21,21,14,7,2,
+2027,M,KSST Olomoucký,U21,8,7,6,4,
+2027,M,KSST Pardubický,U21,14,12,7,2,
+2027,M,KSST Plzeňský,U21,22,17,7,6,
+2027,M,KSST Vysočina,U21,1,1,1,1,1
+2027,M,KSST Zlínský,U21,37,33,18,4,
+2027,M,KSST Ústecký,U21,21,16,7,1,
+2027,M,Moravskoslezský SST,U21,50,33,19,7,5
+2027,M,Pražský SST,U21,34,24,7,4,2
+2027,M,Středočeský SST,U21,20,7,4,3,
+2027,Z,KSST Jihomoravský,U21,1,,,,
+2027,Z,KSST Jihočeský,U21,7,3,2,,
+2027,Z,KSST Kralovéhradecký,U21,7,4,3,2,
+2027,Z,KSST Olomoucký,U21,3,3,2,1,
+2027,Z,KSST Pardubický,U21,2,1,,,
+2027,Z,KSST Plzeňský,U21,2,2,1,,
+2027,Z,KSST Vysočina,U21,1,1,1,1,1
+2027,Z,KSST Zlínský,U21,2,2,1,,
+2027,Z,KSST Ústecký,U21,3,2,1,,
+2027,Z,Moravskoslezský SST,U21,4,2,,,
+2027,Z,Pražský SST,U21,15,9,4,4,
+2027,Z,Středočeský SST,U21,7,,,,
 2012,M,,U19,1684,,,,
 2012,Z,,U19,336,,,,
 2013,M,,U19,1858,1081,468,91,6
@@ -929,6 +986,8 @@
 2025,Z,,U19,580,235,95,22,
 2026,M,,U19,2628,1130,468,157,21
 2026,Z,,U19,587,264,100,21,1
+2027,M,,U19,237,166,77,29,4
+2027,Z,,U19,46,23,11,6,1
 2012,M,KSST Jihomoravský,U19,241,,,,
 2012,M,KSST Jihočeský,U19,125,,,,
 2012,M,KSST Karlovarský,U19,28,,,,
@@ -1349,6 +1408,30 @@
 2026,Z,Moravskoslezský SST,U19,48,31,13,3,1
 2026,Z,Pražský SST,U19,40,26,11,6,
 2026,Z,Středočeský SST,U19,92,32,11,,
+2027,M,KSST Jihomoravský,U19,5,4,3,2,
+2027,M,KSST Jihočeský,U19,17,14,6,4,
+2027,M,KSST Karlovarský,U19,2,2,2,2,
+2027,M,KSST Kralovéhradecký,U19,22,11,7,2,
+2027,M,KSST Liberecký,U19,21,14,7,2,
+2027,M,KSST Olomoucký,U19,6,5,4,3,
+2027,M,KSST Pardubický,U19,13,12,7,2,
+2027,M,KSST Plzeňský,U19,18,13,4,3,
+2027,M,KSST Zlínský,U19,28,25,11,2,
+2027,M,KSST Ústecký,U19,19,15,6,1,
+2027,M,Moravskoslezský SST,U19,40,25,13,3,3
+2027,M,Pražský SST,U19,30,21,5,2,1
+2027,M,Středočeský SST,U19,16,5,2,1,
+2027,Z,KSST Jihočeský,U19,6,2,1,,
+2027,Z,KSST Kralovéhradecký,U19,6,3,2,1,
+2027,Z,KSST Olomoucký,U19,2,2,1,,
+2027,Z,KSST Pardubický,U19,2,1,,,
+2027,Z,KSST Plzeňský,U19,1,1,,,
+2027,Z,KSST Vysočina,U19,1,1,1,1,1
+2027,Z,KSST Zlínský,U19,2,2,1,,
+2027,Z,KSST Ústecký,U19,3,2,1,,
+2027,Z,Moravskoslezský SST,U19,2,,,,
+2027,Z,Pražský SST,U19,15,9,4,4,
+2027,Z,Středočeský SST,U19,6,,,,
 2012,M,,U17,1285,,,,
 2012,Z,,U17,266,,,,
 2013,M,,U17,1453,775,282,39,3
@@ -1379,6 +1462,8 @@
 2025,Z,,U17,498,172,57,8,
 2026,M,,U17,2110,753,264,77,9
 2026,Z,,U17,483,191,60,9,1
+2027,M,,U17,176,111,48,15,
+2027,Z,,U17,38,16,7,2,
 2012,M,KSST Jihomoravský,U17,185,,,,
 2012,M,KSST Jihočeský,U17,99,,,,
 2012,M,KSST Karlovarský,U17,16,,,,
@@ -1799,6 +1884,28 @@
 2026,Z,Moravskoslezský SST,U17,33,19,6,1,1
 2026,Z,Pražský SST,U17,26,13,4,1,
 2026,Z,Středočeský SST,U17,80,26,10,,
+2027,M,KSST Jihomoravský,U17,4,3,2,1,
+2027,M,KSST Jihočeský,U17,15,12,5,4,
+2027,M,KSST Karlovarský,U17,1,1,1,1,
+2027,M,KSST Kralovéhradecký,U17,17,6,4,2,
+2027,M,KSST Liberecký,U17,19,13,6,1,
+2027,M,KSST Olomoucký,U17,3,3,2,1,
+2027,M,KSST Pardubický,U17,12,11,6,1,
+2027,M,KSST Plzeňský,U17,9,4,,,
+2027,M,KSST Zlínský,U17,18,15,6,1,
+2027,M,KSST Ústecký,U17,15,11,4,1,
+2027,M,Moravskoslezský SST,U17,29,16,9,,
+2027,M,Pražský SST,U17,21,13,2,1,
+2027,M,Středočeský SST,U17,13,3,1,1,
+2027,Z,KSST Jihočeský,U17,6,2,1,,
+2027,Z,KSST Kralovéhradecký,U17,6,3,2,1,
+2027,Z,KSST Olomoucký,U17,2,2,1,,
+2027,Z,KSST Pardubický,U17,2,1,,,
+2027,Z,KSST Zlínský,U17,1,1,1,,
+2027,Z,KSST Ústecký,U17,3,2,1,,
+2027,Z,Moravskoslezský SST,U17,1,,,,
+2027,Z,Pražský SST,U17,11,5,1,1,
+2027,Z,Středočeský SST,U17,6,,,,
 2012,M,,U15,873,,,,
 2012,Z,,U15,198,,,,
 2013,M,,U15,968,446,119,8,
@@ -1829,6 +1936,8 @@
 2025,Z,,U15,367,92,25,3,
 2026,M,,U15,1419,339,86,17,1
 2026,Z,,U15,336,92,15,3,
+2027,M,,U15,90,48,14,4,
+2027,Z,,U15,25,9,3,,
 2012,M,KSST Jihomoravský,U15,119,,,,
 2012,M,KSST Jihočeský,U15,72,,,,
 2012,M,KSST Karlovarský,U15,10,,,,
@@ -2247,6 +2356,28 @@
 2026,Z,Moravskoslezský SST,U15,20,10,2,,
 2026,Z,Pražský SST,U15,17,5,1,1,
 2026,Z,Středočeský SST,U15,49,11,2,,
+2027,M,KSST Jihomoravský,U15,2,1,1,,
+2027,M,KSST Jihočeský,U15,8,6,,,
+2027,M,KSST Karlovarský,U15,1,1,1,1,
+2027,M,KSST Kralovéhradecký,U15,9,1,1,,
+2027,M,KSST Liberecký,U15,9,5,3,,
+2027,M,KSST Olomoucký,U15,3,3,2,1,
+2027,M,KSST Pardubický,U15,8,7,2,1,
+2027,M,KSST Plzeňský,U15,5,2,,,
+2027,M,KSST Zlínský,U15,11,9,2,1,
+2027,M,KSST Ústecký,U15,7,3,,,
+2027,M,Moravskoslezský SST,U15,13,3,2,,
+2027,M,Pražský SST,U15,9,6,,,
+2027,M,Středočeský SST,U15,5,1,,,
+2027,Z,KSST Jihočeský,U15,5,2,1,,
+2027,Z,KSST Kralovéhradecký,U15,3,,,,
+2027,Z,KSST Olomoucký,U15,1,1,1,,
+2027,Z,KSST Pardubický,U15,1,,,,
+2027,Z,KSST Zlínský,U15,1,1,1,,
+2027,Z,KSST Ústecký,U15,2,1,,,
+2027,Z,Moravskoslezský SST,U15,1,,,,
+2027,Z,Pražský SST,U15,8,4,,,
+2027,Z,Středočeský SST,U15,3,,,,
 2012,M,,U13,410,,,,
 2012,Z,,U13,105,,,,
 2013,M,,U13,447,174,30,1,
@@ -2277,6 +2408,8 @@
 2025,Z,,U13,198,31,3,,
 2026,M,,U13,660,89,14,2,
 2026,Z,,U13,170,29,1,1,
+2027,M,,U13,26,11,1,,
+2027,Z,,U13,13,1,,,
 2012,M,KSST Jihomoravský,U13,67,,,,
 2012,M,KSST Jihočeský,U13,29,,,,
 2012,M,KSST Karlovarský,U13,2,,,,
@@ -2691,6 +2824,22 @@
 2026,Z,Moravskoslezský SST,U13,10,5,,,
 2026,Z,Pražský SST,U13,9,3,,,
 2026,Z,Středočeský SST,U13,18,2,,,
+2027,M,KSST Jihomoravský,U13,1,,,,
+2027,M,KSST Jihočeský,U13,5,3,,,
+2027,M,KSST Kralovéhradecký,U13,6,1,1,,
+2027,M,KSST Liberecký,U13,2,,,,
+2027,M,KSST Plzeňský,U13,1,,,,
+2027,M,KSST Zlínský,U13,3,3,,,
+2027,M,KSST Ústecký,U13,2,1,,,
+2027,M,Moravskoslezský SST,U13,1,,,,
+2027,M,Pražský SST,U13,2,2,,,
+2027,M,Středočeský SST,U13,3,1,,,
+2027,Z,KSST Jihočeský,U13,3,,,,
+2027,Z,KSST Kralovéhradecký,U13,2,,,,
+2027,Z,KSST Pardubický,U13,1,,,,
+2027,Z,KSST Ústecký,U13,2,1,,,
+2027,Z,Pražský SST,U13,3,,,,
+2027,Z,Středočeský SST,U13,2,,,,
 2012,M,,U11,113,,,,
 2012,Z,,U11,37,,,,
 2013,M,,U11,140,34,5,,
@@ -2721,6 +2870,8 @@
 2025,Z,,U11,68,8,,,
 2026,M,,U11,205,19,4,,
 2026,Z,,U11,55,4,,,
+2027,M,,U11,5,,,,
+2027,Z,,U11,3,1,,,
 2012,M,KSST Jihomoravský,U11,18,,,,
 2012,M,KSST Jihočeský,U11,6,,,,
 2012,M,KSST Kralovéhradecký,U11,25,,,,
@@ -3095,3 +3246,10 @@
 2026,Z,Moravskoslezský SST,U11,4,3,,,
 2026,Z,Pražský SST,U11,4,,,,
 2026,Z,Středočeský SST,U11,8,,,,
+2027,M,KSST Jihomoravský,U11,1,,,,
+2027,M,KSST Kralovéhradecký,U11,2,,,,
+2027,M,KSST Plzeňský,U11,1,,,,
+2027,M,KSST Ústecký,U11,1,,,,
+2027,Z,KSST Jihočeský,U11,1,,,,
+2027,Z,KSST Kralovéhradecký,U11,1,,,,
+2027,Z,KSST Ústecký,U11,1,1,,,

@@ -447,12 +447,12 @@ table.dataTable thead .dt-column-title {
 
 .compact-table.records-table th:nth-child(2),
 .compact-table.records-table td:nth-child(2) {
-    width:30%;
+    width:31%;
 }
 
 .compact-table.records-table th:nth-child(3),
 .compact-table.records-table td:nth-child(3) {
-    width:40%;
+    width:39%;
 }
 
 .compact-table.records-table th:nth-child(4),
@@ -721,12 +721,11 @@ table.dataTable thead .dt-column-title {
     background:rgba(255,255,255,0.24);
 }
 
-.player-chart-section,
-.player-statistics-section {
+.entity-detail-section {
     margin-top:2rem;
 }
 
-.player-detail-heading {
+.entity-detail-heading {
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -1109,6 +1108,11 @@ table.dataTable thead .dt-column-title {
     color:var(--text-muted);
     font-size:0.9rem;
     text-align:center;
+}
+
+.next-ranking-update {
+    display:inline-block;
+    margin-top:0.35rem;
 }
 
 @media (max-width: 600px) {

@@ -1,16 +1,20 @@
 const SEARCH_RESULTS_PER_PAGE = 50;
+const csvCache = new Map();
 
 function loadCsv(csvFile) {
-    return new Promise((resolve, reject) => {
-        Papa.parse(csvFile, {
-            download: true,
-            header: true,
-            dynamicTyping: true,
-            skipEmptyLines: true,
-            complete: results => resolve(results.data),
-            error: reject
-        });
-    });
+    if (!csvCache.has(csvFile)) {
+        csvCache.set(csvFile, new Promise((resolve, reject) => {
+            Papa.parse(csvFile, {
+                download: true,
+                header: true,
+                dynamicTyping: true,
+                skipEmptyLines: true,
+                complete: results => resolve(results.data),
+                error: reject
+            });
+        }));
+    }
+    return csvCache.get(csvFile);
 }
 
 function formatSeason(year) {

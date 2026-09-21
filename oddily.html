@@ -64,10 +64,15 @@
 
     <section id="team-detail-view" hidden>
         <a id="team-back-link" href="oddily.html" class="back-link">Zpět na vyhledávání</a>
-        <h2 id="team-name"></h2>
-        <p>Žebříček hráčů k <select id="team-detail-season" class="season-select" aria-label="Datum žebříčku"></select></p>
-        <nav id="sex-selection" class="sex-selection" aria-label="Pohlaví hráčů"></nav>
-        <table id="team-ranking" class="display" style="width:100%"></table>
+        <div class="entity-detail-heading">
+            <h2 id="team-name"></h2>
+        </div>
+        <p id="team-info"></p>
+        <section class="entity-detail-section">
+            <h3>Žebříček hráčů k <select id="team-detail-season" class="season-select" aria-label="Datum žebříčku"></select></h3>
+            <nav id="sex-selection" class="sex-selection" aria-label="Pohlaví hráčů"></nav>
+            <table id="team-ranking" class="display" style="width:100%"></table>
+        </section>
     </section>
 </main>
 
