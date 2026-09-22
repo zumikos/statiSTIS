@@ -520,13 +520,12 @@ table.dataTable thead .dt-column-title {
 
 .home-chart {
     width:100%;
-    height:420px;
 }
 
 .home-chart svg {
     display:block;
     width:100%;
-    height:100%;
+    height:auto;
 }
 
 @media (max-width: 800px) {
