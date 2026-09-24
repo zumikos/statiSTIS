@@ -118,7 +118,8 @@ function normalizeText(value, removeDiacritics = false) {
     return text;
 }
 
-let playersPromise;
+let playerIndexPromise;
+const playerProfilePromises = new Map();
 let seasonSummaryPromise;
 let playerRankCountsPromise;
 const playerScopeRanksPromises = new Map();
@@ -162,9 +163,9 @@ function loadPlayerMoverRanks(strMinimum) {
     return playerMoverRanksPromises.get(strMinimum);
 }
 
-function loadPlayers() {
-    if (!playersPromise) {
-        playersPromise = loadCsv("csv/players.csv")
+function loadPlayerIndex() {
+    if (!playerIndexPromise) {
+        playerIndexPromise = loadCsv("csv/player_index.csv")
             .then(data => data
                 .filter(player => player.ID !== undefined)
                 .map(player => ({
@@ -174,7 +175,27 @@ function loadPlayers() {
             );
     }
 
-    return playersPromise;
+    return playerIndexPromise;
+}
+
+async function loadPlayer(playerId) {
+    const id = String(playerId);
+    const playerIndex = await loadPlayerIndex();
+    const indexedPlayer = playerIndex.find(player => String(player.ID) === id);
+    if (!indexedPlayer) return null;
+
+    const profile = String(indexedPlayer.Profil).padStart(2, "0");
+    if (!playerProfilePromises.has(profile)) {
+        playerProfilePromises.set(
+            profile,
+            loadCsv(`csv/players/${profile}.csv`).then(data => data.map(player => ({
+                ...player,
+                "Hráč": formatPlayerName(player["Hráč"])
+            })))
+        );
+    }
+    const players = await playerProfilePromises.get(profile);
+    return players.find(player => String(player.ID) === id) || null;
 }
 
 function playerMatchPriority(player, queryText) {
@@ -211,7 +232,7 @@ function playerMatchPriority(player, queryText) {
 
 async function findPlayers(query) {
     const queryText = String(query).trim();
-    const players = await loadPlayers();
+    const players = await loadPlayerIndex();
     return players
         .map(player => ({ player, matchPriority: playerMatchPriority(player, queryText) }))
         .filter(result => result.matchPriority !== null)

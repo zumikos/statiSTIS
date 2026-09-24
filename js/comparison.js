@@ -56,12 +56,25 @@ function updateComparisonUrl() {
     history.replaceState(null, "", `porovnat-hrace.html${query ? `?${query}` : ""}`);
 }
 
-function selectPlayer(slot, player, updateUrl = true) {
+async function selectPlayer(slot, playerSummary, updateUrl = true) {
     const otherPlayer = selectedPlayers[slot === 0 ? 1 : 0];
     const picker = pickerElements[slot];
     const status = picker.querySelector(".comparison-status");
-    if (otherPlayer && String(otherPlayer.ID) === String(player.ID)) {
+    if (otherPlayer && String(otherPlayer.ID) === String(playerSummary.ID)) {
         status.textContent = "Vyberte dva různé hráče.";
+        return;
+    }
+
+    status.textContent = "Načítám hráče…";
+    let player;
+    try {
+        player = await loadPlayer(playerSummary.ID);
+    } catch (error) {
+        status.textContent = "Hráče se nepodařilo načíst. Zkuste to znovu.";
+        return;
+    }
+    if (!player) {
+        status.textContent = "Hráč nebyl nalezen. Vyhledejte ho znovu.";
         return;
     }
 
@@ -395,20 +408,20 @@ async function restoreComparisonFromUrl() {
         picker.querySelector(".comparison-status").textContent = "Načítám hráče…";
     });
     try {
-        const players = await loadPlayers();
-        ids.forEach((id, slot) => {
-            if (!id) return;
+        const players = await Promise.all(ids.map(id => id ? loadPlayer(id) : null));
+        for (const [slot, id] of ids.entries()) {
+            if (!id) continue;
             const picker = pickerElements[slot];
-            const player = players.find(item => String(item.ID) === id);
+            const player = players[slot];
             if (player && String(selectedPlayers[1 - slot]?.ID) !== id) {
-                selectPlayer(slot, player, false);
+                await selectPlayer(slot, player, false);
             } else {
                 picker.querySelector(".comparison-search").hidden = false;
                 picker.querySelector(".comparison-status").textContent = player
                     ? "Vyberte dva různé hráče."
                     : "Hráč nebyl nalezen. Vyhledejte ho znovu.";
             }
-        });
+        }
         updateComparisonUrl();
     } catch (error) {
         ids.forEach((id, slot) => {

@@ -342,10 +342,9 @@ async function showPlayerDetail(playerId) {
     document.getElementById("player-name").textContent = "Načítám hráče…";
 
     try {
-        const [players, summaryRows, rankCountRows] = await Promise.all([
-            loadPlayers(), loadSeasonSummary(), loadPlayerRankCounts()
+        const [player, summaryRows, rankCountRows] = await Promise.all([
+            loadPlayer(playerId), loadSeasonSummary(), loadPlayerRankCounts()
         ]);
-        const player = players.find(item => String(item.ID) === playerId);
         const seasonSummaries = new Map(summaryRows.map(row => [row["Sezóna"], row]));
         const rankCounts = new Map(rankCountRows.map(row => [
             playerRankCountKey(row["Sezóna"], row["Pohlaví"], row["Kraj"], row["Kategorie"]),
