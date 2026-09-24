@@ -627,7 +627,7 @@ const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
 document.getElementById("last-updated").textContent =
     `Stránka naposledy aktualizována ${LAST_UPDATED_DATE}`;
 document.getElementById("next-ranking-update").textContent =
-    `Příští aktualizace žebříčků proběhne ${NEXT_RANKING_UPDATE_DATE}`;
+    `Příští aktualizace žebříčků proběhne ${NEXT_RANKING_DATE}`;
 const homeSeasonElements = document.querySelectorAll(".home-season");
 homeSeasonElements.forEach(element => {
     element.textContent = homeSeasonLabel;

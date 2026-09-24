@@ -31,6 +31,7 @@ Web je nezávislý statistický projekt a není oficiální stránkou České as
 - Obrázky a logo webu jsou ve složce `images/`.
 - Zdrojové žebříčky ve formátu XLSX naleznete ve složce `source/`.
 - Python skripty ve složce `code/` zpracují zdrojová data a vytvoří soubory ve složce `csv/`.
+- Skript `code/update_html.py` udržuje společnou navigaci a metadata pro sdílení odkazů na sociálních sítích.
 
 ## Aktualizace dat
 
@@ -43,7 +44,13 @@ Po přidání zdrojových souborů pojmenovaných ve formátu `ranking_<počáte
 Skript vytvoří také malý `csv/home_top_<počáteční_rok>_<koncový_rok>.csv` pro čtyři úvodní Top 10 tabulky. Úplný žebříček se na úvodní stránce načítá až při přiblížení k sezónním grafům.
 
 Výchozí sezóny webu a hodnoty nabízené ve výběru minimálního STR jsou uvedeny v konstantách `SEASONS` a `MOVERS_STR_MIN_VALUES` v `js/config.js`.
-Při aktualizaci dat aktuální sezóny je potřeba upravit také `LATEST_RANKING_DATE` a `NEXT_RANKING_UPDATE_DATE`.
+Při aktualizaci dat aktuální sezóny je potřeba upravit také `LATEST_RANKING_DATE` a `NEXT_RANKING_DATE`.
+
+Po změně navigace, názvu, popisu nebo kanonické adresy stránky aktualizujte společné části HTML příkazem:
+
+```powershell
+.\.venv\Scripts\python.exe code\update_html.py
+```
 
 ## Publikování
 
