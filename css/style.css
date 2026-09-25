@@ -1059,15 +1059,14 @@ table.dataTable thead .dt-column-title {
     font-weight:bold;
 }
 
-.chart-note {
+.chart-note,
+.chart-stats {
     color:var(--text-muted);
     font-size:0.9rem;
 }
 
 .chart-stats {
     margin:0 0 0.5rem;
-    color:var(--text-muted);
-    font-size:0.9rem;
 }
 
 .chart-stats-placeholder {

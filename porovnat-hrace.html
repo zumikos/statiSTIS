@@ -7,7 +7,7 @@
 <title>statiSTIS – Porovnat hráče</title>
 <meta name="description" content="Porovnejte dva hráče podle vývoje STR a pořadí a zjistěte teoretické šance na výhru">
 <link rel="canonical" href="https://statistis.cz/porovnat-hrace.html">
-        <!-- shared-social-meta:start -->
+    <!-- shared-social-meta:start -->
     <meta property="og:type" content="website">
     <meta property="og:locale" content="cs_CZ">
     <meta property="og:site_name" content="statiSTIS">
@@ -23,19 +23,23 @@
     <meta name="twitter:description" content="Porovnejte dva hráče podle vývoje STR a pořadí a zjistěte teoretické šance na výhru">
     <meta name="twitter:image" content="https://statistis.cz/images/logo.png">
     <!-- shared-social-meta:end -->
-<link rel="icon" type="image/png" href="images/logo-96.png">
-<script>
-    try {
-        document.documentElement.dataset.theme = localStorage.getItem("statistis-theme") || "";
-    } catch {}
-    document.documentElement.dataset.theme ||= matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
-    const comparisonParameters = new URLSearchParams(location.search);
-    document.documentElement.classList.toggle("comparison-loading-first", Boolean(comparisonParameters.get("ID1")));
-    document.documentElement.classList.toggle("comparison-loading-second", Boolean(comparisonParameters.get("ID2")));
-</script>
-<link rel="stylesheet" href="css/style.css">
-<script src="js/theme.js" defer></script>
+    <!-- shared-assets:start -->
+    <link rel="icon" type="image/png" href="images/logo-96.png">
+    <script>
+        try {
+            document.documentElement.dataset.theme = localStorage.getItem("statistis-theme") || "";
+        } catch {}
+        document.documentElement.dataset.theme ||= matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js" defer></script>
+    <!-- shared-assets:end -->
+    <script>
+        const comparisonParameters = new URLSearchParams(location.search);
+        document.documentElement.classList.toggle("comparison-loading-first", Boolean(comparisonParameters.get("ID1")));
+        document.documentElement.classList.toggle("comparison-loading-second", Boolean(comparisonParameters.get("ID2")));
+    </script>
 </head>
 
 <body>

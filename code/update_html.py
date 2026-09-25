@@ -23,14 +23,16 @@ SOCIAL_IMAGE_URL = "https://statistis.cz/images/logo.png"
 
 HEADER_START = "<!-- shared-header:start -->"
 HEADER_END = "<!-- shared-header:end -->"
+ASSETS_START = "<!-- shared-assets:start -->"
+ASSETS_END = "<!-- shared-assets:end -->"
 SOCIAL_START = "<!-- shared-social-meta:start -->"
 SOCIAL_END = "<!-- shared-social-meta:end -->"
 
 
 def replace_marked_section(text, start, end, replacement):
     pattern = re.compile(
-        rf"{re.escape(start)}.*?{re.escape(end)}",
-        re.DOTALL,
+        rf"^[ \t]*{re.escape(start)}.*?^[ \t]*{re.escape(end)}",
+        re.DOTALL | re.MULTILINE,
     )
     return pattern.sub(replacement, text, count=1)
 
@@ -56,6 +58,23 @@ def build_header(current_page):
         "    </nav>",
         "</header>",
         HEADER_END,
+    ])
+
+
+def build_shared_assets():
+    return "\n".join([
+        f"    {ASSETS_START}",
+        '    <link rel="icon" type="image/png" href="images/logo-96.png">',
+        "    <script>",
+        "        try {",
+        '            document.documentElement.dataset.theme = localStorage.getItem("statistis-theme") || "";',
+        "        } catch {}",
+        '        document.documentElement.dataset.theme ||= matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";',
+        "        document.documentElement.style.colorScheme = document.documentElement.dataset.theme;",
+        "    </script>",
+        '    <link rel="stylesheet" href="css/style.css">',
+        '    <script src="js/theme.js" defer></script>',
+        f"    {ASSETS_END}",
     ])
 
 
@@ -90,11 +109,10 @@ def update_page(path):
     has_bom = raw.startswith(b"\xef\xbb\xbf")
     text = raw.decode("utf-8-sig")
     header = build_header(path.name if path.name != "404.html" else None)
+    assets = build_shared_assets()
 
-    if HEADER_START in text:
-        text = replace_marked_section(text, HEADER_START, HEADER_END, header)
-    else:
-        text = re.sub(r"<header>.*?</header>", header, text, count=1, flags=re.DOTALL)
+    text = replace_marked_section(text, HEADER_START, HEADER_END, header)
+    text = replace_marked_section(text, ASSETS_START, ASSETS_END, assets)
 
     title_match = re.search(r"<title>(.*?)</title>", text, re.DOTALL)
     description_match = re.search(
@@ -111,10 +129,7 @@ def update_page(path):
             description_match.group(1),
             canonical_match.group(1),
         )
-        if SOCIAL_START in text:
-            text = replace_marked_section(text, SOCIAL_START, SOCIAL_END, metadata)
-        else:
-            text = text.replace(canonical_match.group(0), f"{canonical_match.group(0)}\n{metadata}")
+        text = replace_marked_section(text, SOCIAL_START, SOCIAL_END, metadata)
 
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     encoded = text.replace("\n", "\r\n").encode("utf-8")

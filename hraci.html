@@ -9,7 +9,7 @@
 <title>statiSTIS – Hráči</title>
 <meta name="description" content="Procházejte žebříčky hráčů stolního tenisu podle data, pohlaví, kategorie a kraje. Data vycházejí ze systému STIS.">
 <link rel="canonical" href="https://statistis.cz/hraci.html">
-        <!-- shared-social-meta:start -->
+    <!-- shared-social-meta:start -->
     <meta property="og:type" content="website">
     <meta property="og:locale" content="cs_CZ">
     <meta property="og:site_name" content="statiSTIS">
@@ -25,17 +25,18 @@
     <meta name="twitter:description" content="Procházejte žebříčky hráčů stolního tenisu podle data, pohlaví, kategorie a kraje. Data vycházejí ze systému STIS.">
     <meta name="twitter:image" content="https://statistis.cz/images/logo.png">
     <!-- shared-social-meta:end -->
-<link rel="icon" type="image/png" href="images/logo-96.png">
-
-<script>
-    try {
-        document.documentElement.dataset.theme = localStorage.getItem("statistis-theme") || "";
-    } catch {}
-    document.documentElement.dataset.theme ||= matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
-</script>
-<link rel="stylesheet" href="css/style.css">
-<script src="js/theme.js" defer></script>
+    <!-- shared-assets:start -->
+    <link rel="icon" type="image/png" href="images/logo-96.png">
+    <script>
+        try {
+            document.documentElement.dataset.theme = localStorage.getItem("statistis-theme") || "";
+        } catch {}
+        document.documentElement.dataset.theme ||= matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js" defer></script>
+    <!-- shared-assets:end -->
 <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
 
 </head>

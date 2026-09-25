@@ -31,7 +31,7 @@ Web je nezávislý statistický projekt a není oficiální stránkou České as
 - Obrázky a logo webu jsou ve složce `images/`.
 - Zdrojové žebříčky ve formátu XLSX naleznete ve složce `source/`.
 - Python skripty ve složce `code/` zpracují zdrojová data a vytvoří soubory ve složce `csv/`.
-- Skript `code/update_html.py` udržuje společnou navigaci a metadata pro sdílení odkazů na sociálních sítích.
+- Skript `code/update_html.py` udržuje společnou navigaci, základní soubory v `<head>` a metadata pro sdílení odkazů na sociálních sítích.
 
 ## Aktualizace dat
 
