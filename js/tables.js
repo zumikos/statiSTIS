@@ -110,6 +110,17 @@ function createPageLengthControl(initialLength) {
     };
 }
 
+function createTableLayout(searchControl, pageLengthControl = null) {
+    return {
+        top2Start: () => searchControl,
+        ...(pageLengthControl ? { top2End: () => pageLengthControl } : {}),
+        topStart: "info",
+        topEnd: "paging",
+        bottomStart: "info",
+        bottomEnd: "paging"
+    };
+}
+
 function getSelectedMoversStrMin() {
     const requestedValue = Number(
         new URLSearchParams(window.location.search).get("strmin")
@@ -299,14 +310,6 @@ async function createStatisticsTable({
         const pageLength = showPageLength
             ? createPageLengthControl(TABLE_PAGE_LENGTHS[0])
             : null;
-        const layout = {
-            top2Start: () => playerSearch.control,
-            topStart: "info",
-            topEnd: "paging",
-            bottomStart: "info",
-            bottomEnd: "paging"
-        };
-        if (pageLength) layout.top2End = () => pageLength.control;
         const linkRenderers = {
             "Hráč": renderPlayerProfileLink,
             "Oddíl": renderTeamProfileLink
@@ -322,7 +325,7 @@ async function createStatisticsTable({
             pageLength: TABLE_PAGE_LENGTHS[0],
             order,
             scrollX: true,
-            layout,
+            layout: createTableLayout(playerSearch.control, pageLength?.control),
             columnDefs,
             language: TABLE_LANGUAGE
         });

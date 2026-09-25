@@ -5,7 +5,6 @@ const selectedSeason = getSelectedSeason();
 const selectedAssociation = getSelectedAssociation();
 
 let teamsPromise;
-let teamRankingTable;
 
 function loadTeams() {
     if (!teamsPromise) {
@@ -86,7 +85,7 @@ async function renderTeamOverview() {
             formatRankingDate
         );
         setupAssociationSelection(selectedAssociation, "oddily.html", selectedSeason);
-        teamRankingTable = new DataTable("#team-ranking-overview", {
+        const teamRankingTable = new DataTable("#team-ranking-overview", {
             data: teams,
             columns: [
                 { data: "rank", title: "#", width: "1%" },
@@ -108,14 +107,7 @@ async function renderTeamOverview() {
             pageLength: TABLE_PAGE_LENGTHS[0],
             order: [[0, "asc"]],
             scrollX: true,
-            layout: {
-                top2Start: () => teamSearch.control,
-                top2End: () => pageLength.control,
-                topStart: "info",
-                topEnd: "paging",
-                bottomStart: "info",
-                bottomEnd: "paging"
-            },
+            layout: createTableLayout(teamSearch.control, pageLength.control),
             columnDefs: [
                 { targets: "_all", className: "dt-head-center" },
                 { targets: [0, 2, 3, 4], className: "dt-body-center nowrap-column" },

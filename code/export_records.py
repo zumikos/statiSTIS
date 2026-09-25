@@ -1,6 +1,6 @@
 import pandas as pd
 
-from export_movers import MOVERS_STR_MINIMUMS, calculate_movers
+from constants import MOVERS_STR_MINIMUMS, YOUTH_AGES
 
 
 RECORD_LIMIT = 3
@@ -8,7 +8,6 @@ RECORD_COLUMNS = [
     "Typ", "Kategorie", "STR minimum", "Pořadí", "ID", "Hráč", "Pohlaví",
     "Oddíl", "Sezóna", "STR", "STR změna"
 ]
-YOUTH_AGES = (21, 19, 17, 15, 13, 11)
 
 
 def top_by_sex(data, value_column):
@@ -35,7 +34,7 @@ def career_highs(data):
     )
 
 
-def export_records(master, output_dir):
+def export_records(master, output_dir, mover_frames):
     highest_str = top_by_sex(career_highs(master), "STR")
     highest_str["Typ"] = "highest_str"
     highest_str["Kategorie"] = pd.NA
@@ -52,18 +51,9 @@ def export_records(master, output_dir):
         category_highs["STR změna"] = pd.NA
         category_records.append(category_highs)
 
-    years = sorted(master["Sezóna"].unique())
-    mover_frames = []
-    for current in years[1:]:
-        if current - 1 not in years:
-            continue
-        movers = calculate_movers(master, current, str_min=0)
-        movers["Sezóna"] = current
-        mover_frames.append(movers)
-
     records = [highest_str, *category_records]
     if mover_frames:
-        all_movers = pd.concat(mover_frames, ignore_index=True)
+        all_movers = pd.concat(mover_frames.values(), ignore_index=True)
         for str_minimum in MOVERS_STR_MINIMUMS:
             movers = all_movers[all_movers["STR loňské"] >= str_minimum].copy()
             movers = top_by_sex(movers, "STR změna")

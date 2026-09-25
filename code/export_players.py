@@ -1,6 +1,7 @@
 import pandas as pd
 
-from export_movers import MOVERS_STR_MINIMUMS, calculate_movers
+from constants import MOVERS_STR_MINIMUMS, YOUTH_AGES
+from export_movers import rank_movers
 
 
 PLAYER_PROFILE_SHARD_COUNT = 64
@@ -57,7 +58,7 @@ def add_group_ranks(master, value_column):
         count_frames.extend([national, regional])
 
     add_counts(ranked, "dospělí")
-    for category_age in (21, 19, 17, 15, 13, 11):
+    for category_age in YOUTH_AGES:
         category = f"U{category_age}"
         eligible = ranked["Rok narození"] >= ranked["Sezóna"] - category_age
         category_rows = ranked[eligible]
@@ -82,7 +83,7 @@ def add_group_ranks(master, value_column):
     return ranked, rank_counts
 
 
-def export_players(master, output_dir):
+def export_players(master, output_dir, mover_frames):
     players = (
         master
         .sort_values(["ID", "Sezóna"])
@@ -154,12 +155,9 @@ def export_players(master, output_dir):
     for str_minimum in MOVERS_STR_MINIMUMS:
         minimum_rank_columns = []
         for current in years[1:]:
-            previous = current - 1
-            if previous not in years:
+            if current not in mover_frames:
                 continue
-
-            movers = calculate_movers(master, current, str_minimum)
-            movers["Sezóna"] = current
+            movers = rank_movers(mover_frames[current], str_minimum)
             ranked_movers, current_mover_counts = add_group_ranks(movers, "STR změna")
             current_mover_counts["STR minimum"] = str_minimum
             mover_count_frames.append(current_mover_counts)

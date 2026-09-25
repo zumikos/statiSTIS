@@ -1,8 +1,9 @@
 from pathlib import Path
 import sys
 import pandas as pd
+from constants import MOVERS_STR_MINIMUMS
 from export_ranking import export_ranking
-from export_movers import MOVERS_STR_MINIMUMS, export_movers, calculate_movers
+from export_movers import build_mover_frames, export_movers, rank_movers
 from export_players import export_players
 from export_records import export_records
 
@@ -14,7 +15,7 @@ DATA_DIR = BASE_DIR / "source" # zdroje dat jsou ve složce /source
 CSV_DIR = BASE_DIR / "csv"     # csv soubory budou ve složce /csv
 CSV_DIR.mkdir(exist_ok=True)
 
-def export_home_top(master):
+def export_home_top(master, mover_frames):
     """Uloží jen řádky potřebné pro čtyři tabulky na úvodní stránce."""
     season = int(master["Sezóna"].max())
     ranking = (
@@ -24,7 +25,7 @@ def export_home_top(master):
         .assign(Typ="ranking")
     )
     movers = (
-        calculate_movers(master, season)
+        rank_movers(mover_frames[season])
         .groupby("Pohlaví", sort=False).head(10)
         .assign(Typ="movers")
     )
@@ -68,13 +69,14 @@ def load_all_seasons():
 
 master = load_all_seasons()
 print(f"Načteno {len(master)} záznamů.\n")
+mover_frames = build_mover_frames(master)
 
 export_ranking(master, CSV_DIR, None) # export žebříčků STR
 for str_min in MOVERS_STR_MINIMUMS:
-    export_movers(master, CSV_DIR, None, str_min) # export žebříčků skokanů
-export_home_top(master) # export tabulek Top 10 pro úvodní stránku
-mover_counts = export_players(master, CSV_DIR) # export jednotlivých hráčů, skokani jen pro STR 800+
-export_records(master, CSV_DIR) # export rekordů STR a skokanů
+    export_movers(mover_frames, CSV_DIR, None, str_min) # export žebříčků skokanů
+export_home_top(master, mover_frames) # export tabulek Top 10 pro úvodní stránku
+mover_counts = export_players(master, CSV_DIR, mover_frames) # export jednotlivých hráčů, skokani jen pro STR 800+
+export_records(master, CSV_DIR, mover_frames) # export rekordů STR a skokanů
 player_counts = (
     master.groupby(["Sezóna", "Pohlaví"])
     .size()
