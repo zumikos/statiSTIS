@@ -54,6 +54,14 @@ function renderThousands(value, type) {
     return type === "display" ? formatThousands(value) : value;
 }
 
+function formatRatingChange(value) {
+    return formatThousands(value, true);
+}
+
+function renderRatingChange(value, type) {
+    return type === "display" ? formatRatingChange(value) : value;
+}
+
 function createPlayerProfileLink(playerId, playerName) {
     const link = document.createElement("a");
     link.className = "player-profile-link";

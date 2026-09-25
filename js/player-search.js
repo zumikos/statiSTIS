@@ -87,6 +87,27 @@ function calculateRatingChange(player, year) {
     return Number.isFinite(current) && Number.isFinite(previous) ? current - previous : null;
 }
 
+function renderPlayerCareerSummary(player) {
+    const numericValues = suffix => SEASONS.flatMap(year => {
+        const value = player[`${year} ${suffix}`];
+        const number = Number(value);
+        return hasChartValue(value) && Number.isFinite(number) ? [number] : [];
+    });
+    const ratings = numericValues("STR");
+    const ranks = numericValues("pořadí");
+    const ratingChanges = SEASONS
+        .map(year => calculateRatingChange(player, year))
+        .filter(Number.isFinite);
+    const maximumRating = ratings.length ? Math.max(...ratings) : null;
+    const bestRank = ranks.length ? Math.min(...ranks) : null;
+    const bestRatingChange = ratingChanges.length ? Math.max(...ratingChanges) : null;
+
+    document.getElementById("player-career-summary").textContent =
+        `Maximální STR: ${formatThousands(maximumRating)}, ` +
+        `Nejlepší pořadí v ČR: ${formatRank(bestRank)}, ` +
+        `Nejlepší sezónní změna STR: ${formatRatingChange(bestRatingChange)}`;
+}
+
 const HISTORY_RANK_SCOPES = {
     "national-adult": {
         rankSuffix: "pořadí", moverRankSuffix: "Pořadí skokani",
@@ -180,7 +201,7 @@ function renderPlayerHistory(player, rankCounts, moverRanks = player) {
                 formatThousands(player[`${year} STR`]),
                 formatRank(rank),
                 formatPercentile(rank, totals?.players),
-                formatThousands(calculateRatingChange(player, year)),
+                formatRatingChange(calculateRatingChange(player, year)),
                 formatRank(moverRank),
                 formatPercentile(
                     moverRank,
@@ -377,12 +398,15 @@ async function showPlayerDetail(playerId) {
         const stisLink = document.createElement("a");
         stisLink.className = "player-profile-link";
         stisLink.href = `https://stis.ping-pong.cz/hrac-${encodeURIComponent(player.ID)}`;
+        stisLink.target = "_blank";
+        stisLink.rel = "noopener noreferrer";
         stisLink.textContent = "STIS profil";
         playerInfo.append(
             "Oddíl: ", teamName ? createTeamProfileLink(teamName) : "—",
             `, Rok narození: ${formatValue(player["Rok narození"])}, ` +
                 `Pohlaví: ${gender}, Kategorie: ${category}, `, stisLink
         );
+        renderPlayerCareerSummary(player);
         renderPlayerHistory(player, rankCounts);
         let historyRenderRequest = 0;
         document.getElementById("player-ranking-scope").addEventListener("change", async () => {

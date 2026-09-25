@@ -26,7 +26,7 @@ const MOVER_COLUMNS = [
     { heading: "#", value: record => record["Pořadí"] },
     { heading: "Hráč", value: playerCell },
     { heading: "Oddíl", value: teamCell },
-    { heading: "STR\nzměna", value: record => formatThousands(record["STR změna"]) },
+    { heading: "STR\nzměna", value: record => formatRatingChange(record["STR změna"]) },
     { heading: "Sezóna", value: record => formatSeason(record["Sezóna"]) }
 ];
 

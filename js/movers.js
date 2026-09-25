@@ -15,7 +15,7 @@ const MOVERS_COLUMNS = [
     { data: "Kraj", title: "Svaz", width: "1%" },
     { data: "STR loňské", title: "STR<br>minulá<br>sezóna", width: "1%", render: renderThousands },
     { data: "STR letošní", title: "STR<br>tato<br>sezóna", width: "1%", render: renderThousands },
-    { data: "STR změna", title: "STR<br>změna", width: "1%", render: renderThousands }
+    { data: "STR změna", title: "STR<br>změna", width: "1%", render: renderRatingChange }
 ];
 
 setupSeasonSelect(moverSeasons, selectedSeason, "skokani.html");
