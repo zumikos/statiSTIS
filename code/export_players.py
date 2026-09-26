@@ -4,7 +4,7 @@ from constants import MOVERS_STR_MINIMUMS, YOUTH_AGES
 from export_movers import rank_movers
 
 
-PLAYER_PROFILE_SHARD_COUNT = 64
+PLAYER_GROUP_COUNT = 64
 
 
 def player_age_category(row):
@@ -218,16 +218,16 @@ def export_players(master, output_dir, mover_frames):
     
     profile_dir = output_dir / "players"
     profile_dir.mkdir(exist_ok=True)
-    players["Profil"] = players["ID"].astype("Int64") % PLAYER_PROFILE_SHARD_COUNT
-    players[["ID", "Hráč", "Rok narození", "Profil"]].to_csv(
+    players["Skupina"] = players["ID"].astype("Int64") % PLAYER_GROUP_COUNT
+    players[["ID", "Hráč", "Rok narození", "Oddíl", "Skupina"]].to_csv(
         output_dir / "player_index.csv",
         index=False,
         encoding="utf-8-sig"
     )
     profile_files = set()
-    for profile, rows in players.groupby("Profil"):
-        profile_file = profile_dir / f"{profile:02d}.csv"
-        rows.drop(columns="Profil").to_csv(
+    for group, rows in players.groupby("Skupina"):
+        profile_file = profile_dir / f"{group:02d}.csv"
+        rows.drop(columns="Skupina").to_csv(
             profile_file,
             index=False,
             encoding="utf-8-sig"
@@ -236,7 +236,7 @@ def export_players(master, output_dir, mover_frames):
     for old_profile_file in profile_dir.glob("*.csv"):
         if old_profile_file not in profile_files:
             old_profile_file.unlink()
-    players = players.drop(columns="Profil")
+    players = players.drop(columns="Skupina")
     count_keys = ["Sezóna", "Pohlaví", "Kraj", "Kategorie"]
     mover_rank_counts = (
         pd.concat(mover_count_frames, ignore_index=True)

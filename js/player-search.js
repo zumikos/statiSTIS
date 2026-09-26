@@ -14,8 +14,7 @@ function playerLink(player) {
     name.textContent = player["Hráč"];
 
     const details = document.createElement("span");
-    const birthYear = player["Rok narození"] || "rok narození neuveden";
-    details.textContent = `Ročník: ${birthYear}, ID: ${player.ID}`;
+    details.textContent = formatPlayerSearchDetails(player);
 
     link.append(name, details);
     return link;

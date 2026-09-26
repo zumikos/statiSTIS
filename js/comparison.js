@@ -10,7 +10,7 @@ function comparisonResultButton(player, slot) {
     const name = document.createElement("strong");
     name.textContent = player["Hráč"];
     const details = document.createElement("span");
-    details.textContent = `Ročník: ${player["Rok narození"] || "neuveden"}, ID: ${player.ID}`;
+    details.textContent = formatPlayerSearchDetails(player);
     button.append(name, details);
     button.addEventListener("click", () => selectPlayer(slot, player));
     return button;
@@ -90,7 +90,7 @@ async function selectPlayer(slot, playerSummary, updateUrl = true) {
     const name = document.createElement("strong");
     name.appendChild(createPlayerProfileLink(player.ID, player["Hráč"]));
     const details = document.createElement("span");
-    details.textContent = `ID: ${player.ID}, ročník: ${player["Rok narození"] || "neuveden"}`;
+    details.textContent = formatPlayerSearchDetails(player);
     text.append(name, details);
     const changeButton = document.createElement("button");
     changeButton.type = "button";

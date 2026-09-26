@@ -89,6 +89,12 @@ function renderTeamProfileLink(teamName, type) {
     return type === "display" ? createTeamProfileLink(teamName) : teamName;
 }
 
+function formatPlayerSearchDetails(player) {
+    const teamName = formatTeamName(player["Oddíl"]) || "oddíl neuveden";
+    const birthYear = player["Rok narození"] || "neuveden";
+    return `Oddíl: ${teamName}, ročník: ${birthYear}`;
+}
+
 function getPlayerAgeCategory(birthYear, season) {
     const year = Number(birthYear);
     if (!Number.isFinite(year)) return "—";
@@ -192,23 +198,21 @@ async function loadPlayer(playerId) {
     const indexedPlayer = playerIndex.find(player => String(player.ID) === id);
     if (!indexedPlayer) return null;
 
-    const profile = String(indexedPlayer.Profil).padStart(2, "0");
-    if (!playerProfilePromises.has(profile)) {
+    const group = String(indexedPlayer.Skupina).padStart(2, "0");
+    if (!playerProfilePromises.has(group)) {
         playerProfilePromises.set(
-            profile,
-            loadCsv(`csv/players/${profile}.csv`).then(data => data.map(player => ({
+            group,
+            loadCsv(`csv/players/${group}.csv`).then(data => data.map(player => ({
                 ...player,
                 "Hráč": formatPlayerName(player["Hráč"])
             })))
         );
     }
-    const players = await playerProfilePromises.get(profile);
+    const players = await playerProfilePromises.get(group);
     return players.find(player => String(player.ID) === id) || null;
 }
 
 function playerMatchPriority(player, queryText) {
-    if (String(player.ID) === queryText) return -1;
-
     const name = String(player["Hráč"] ?? "").trim();
     const surname = name.split(/\s+/)[0] || "";
     const queryWords = queryText.split(/\s+/).filter(Boolean);

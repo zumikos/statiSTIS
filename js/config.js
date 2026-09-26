@@ -1,7 +1,7 @@
 const SEASONS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027];
 const DEFAULT_SEASON = Math.max(...SEASONS);
 const SITE_NAME = "statiSTIS";
-const LAST_UPDATED_DATE = "25. 09. 2026";
+const LAST_UPDATED_DATE = "26. 09. 2026";
 const LATEST_RANKING_DATE = "21. 09. 2026";
 const NEXT_RANKING_DATE = "05. 10. 2026";
 const TABLE_PAGE_LENGTHS = [50, 100, 500, 1000];
@@ -57,10 +57,19 @@ const PLAYER_NAME_OVERRIDES = {
 
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
 const TEAM_NAME_OVERRIDES = {
-    "Klub přátel školy při Střední průmyslové škole Zengrova 1, Ostrava-Vítkovice, z.s.": "Klub přátel školy při SPŠ Zengrova 1, Ostrava-Vítkovice",
+    "Klub přátel školy při Střední průmyslové škole Zengrova 1, Ostrava-Vítkovice, z.s.": "KST Zengrovka",
+    "KST NOVÝ JIČÍN, z.s.": "KST Nový Jičín",
     "MK Řeznovice, oddíl stolního tenisu Sportovního  klubu Řeznovice, z.s.": "MK Řeznovice",
+    "SK SVINOV z.s.": "SK Svinov",
     "Stavební fakulta SK Kotlářka El Niňo Praha": "SF SKK El Niňo Praha",
-    "Stolní tenis Sever Žatec z.s.": "ST Sever Žatec"
+    "Stolní tenis Sever Žatec z.s.": "ST Sever Žatec",
+    "Tělovýchovná jednota SOKOL KOBYLÍ z.s.": "TJ Sokol Kobylí",
+    "TJ Jiskra Kamenický Šenov, Sokolská 629, z.s.": "TJ Jiskra Kamenický Šenov",
+    "TJ EMĚ MĚLNÍK, z.s.": "TJ MĚLNÍK",
+    "TJ Sokol PP Hradec Králové 2": "TJ Sokol PP Hradec Králové",
+    "TJ TATRAN SEDLČANY, z.s.": "TJ Tatran Sedlčany",
+    "TTC ELIZZA PRAHA, z.s.": "TTC Elizza Praha",
+    "TTC FRÝDLANT, z.s.": "TTC Frýdlant"
 };
 
 const TEAM_NAME_REPLACEMENTS = [

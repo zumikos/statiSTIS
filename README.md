@@ -43,7 +43,7 @@ Po přidání zdrojových souborů pojmenovaných ve formátu `ranking_<počáte
 
 Skript vytvoří také malý `csv/home_top_<počáteční_rok>_<koncový_rok>.csv` pro čtyři úvodní Top 10 tabulky. Úplný žebříček se na úvodní stránce načítá až při přiblížení k sezónním grafům.
 
-Vyhledávání hráčů používá malý soubor `csv/player_index.csv`. Úplné historie hráčů jsou rozdělené do menších souborů ve složce `csv/players/` a načtou se až po otevření profilu nebo výběru hráče do porovnání.
+Vyhledávání hráčů používá malý soubor `csv/player_index.csv`. Úplné historie hráčů jsou podle zbytku po dělení ID číslem 64 rozdělené do 64 menších souborů ve složce `csv/players/` a načtou se až po otevření profilu nebo výběru hráče do porovnání. Sloupec `Skupina` v indexu určuje, ve kterém souboru je historie hráče uložena.
 
 Výchozí sezóny webu a hodnoty nabízené ve výběru minimálního STR jsou uvedeny v konstantách `SEASONS` a `MOVERS_STR_MIN_VALUES` v `js/config.js`.
 Při aktualizaci dat aktuální sezóny je potřeba upravit také `LATEST_RANKING_DATE` a `NEXT_RANKING_DATE`.
