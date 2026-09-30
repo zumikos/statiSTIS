@@ -56,15 +56,15 @@ function renderTopTable(rows, tableId, columnsToShow, maxRows = 10) {
 }
 
 const PLAYER_COUNT_AXES = {
-    all: { column: "Všichni", label: "všichni", minValue: 0, maxValue: 20000, step: 4000 },
-    M: { column: "Muži", label: "muži", minValue: 0, maxValue: 18000, step: 3000 },
-    Z: { column: "Ženy", label: "ženy", minValue: 0, maxValue: 1400, step: 200 }
+    all: { column: "Všichni", label: "všichni" },
+    M: { column: "Muži", label: "muži" },
+    Z: { column: "Ženy", label: "ženy" }
 };
 
 const MEDIAN_AGE_AXES = {
-    all: { column: "Medián věku všichni", label: "všichni", minValue: 38, maxValue: 48, step: 2 },
-    M: { column: "Medián věku muži", label: "muži", minValue: 40, maxValue: 48, step: 2 },
-    Z: { column: "Medián věku ženy", label: "ženy", minValue: 22, maxValue: 25, step: 1 }
+    all: { column: "Medián věku všichni", label: "všichni", step: 2 },
+    M: { column: "Medián věku muži", label: "muži", step: 2 },
+    Z: { column: "Medián věku ženy", label: "ženy", step: 1 }
 };
 
 function axisTicks(axis) {
@@ -74,14 +74,44 @@ function axisTicks(axis) {
     );
 }
 
-function histogramAxis(maximum) {
+function roundedTickAxis(maximum, factors = [1, 2, 5, 10]) {
     if (maximum <= 0) return { maximum: 1, step: 1 };
     const roughStep = maximum / 5;
     const magnitude = 10 ** Math.floor(Math.log10(roughStep));
-    const step = [1, 2, 5, 10]
+    const step = factors
         .map(factor => factor * magnitude)
         .find(candidate => candidate >= roughStep);
     return { maximum: Math.ceil(maximum / step) * step, step };
+}
+
+function createHomeChart(containerId, width, height, label) {
+    const container = document.getElementById(containerId);
+    container.replaceChildren();
+    const svg = createSvgElement("svg", {
+        viewBox: `0 0 ${width} ${height}`,
+        role: "group",
+        "aria-label": label
+    });
+    return { container, svg };
+}
+
+function addHomeAxisTitle(svg, title, x, y, vertical = false) {
+    const attributes = { x, y, "text-anchor": "middle", class: "chart-axis-label" };
+    if (vertical) attributes.transform = `rotate(-90 ${x} ${y})`;
+    const label = createSvgElement("text", attributes);
+    label.textContent = title;
+    svg.appendChild(label);
+}
+
+function createHomeTooltip(width, lines) {
+    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
+    const height = lines * 18 + 12;
+    const background = createSvgElement("rect", { width, height, rx: 6 });
+    const texts = Array.from({ length: lines }, (_, index) =>
+        createSvgElement("text", { x: 10, y: 19 + index * 20 })
+    );
+    tooltip.append(background, ...texts);
+    return { tooltip, texts, height };
 }
 
 function renderPlayerCountChart(rows, selectedSex) {
@@ -90,6 +120,10 @@ function renderPlayerCountChart(rows, selectedSex) {
         x: row["Sezóna"],
         value: row[axis.column]
     }));
+    const { maximum, step } = roundedTickAxis(
+        Math.max(...data.map(item => Number(item.value))), [1, 2, 4, 5, 8, 10]
+    );
+    const minValue = Math.floor(Math.min(...data.map(item => Number(item.value))) / step) * step;
     renderInteractiveLineChart({
         container: document.getElementById("home-player-count"),
         data,
@@ -97,9 +131,9 @@ function renderPlayerCountChart(rows, selectedSex) {
         width: 650,
         height: 420,
         margin: { top: 25, right: 20, bottom: 95, left: 75 },
-        minValue: axis.minValue,
-        maxValue: axis.maxValue,
-        yTicks: axisTicks(axis),
+        minValue,
+        maxValue: maximum,
+        yTicks: axisTicks({ minValue, maxValue: maximum, step }),
         ariaLabel: `Vývoj počtu hráčů: ${axis.label}`,
         xLabel: year => `${formatSeason(year)}${year === 2021 ? "⁺" : year === DEFAULT_SEASON ? "*" : ""}`,
         xLabelOffset: 16,
@@ -114,8 +148,9 @@ function renderPlayerCountChart(rows, selectedSex) {
 }
 
 function renderHistogram(data) {
-    const container = document.getElementById("home-histogram");
-    container.replaceChildren();
+    const width = 650;
+    const height = 420;
+    const { container, svg } = createHomeChart("home-histogram", width, height, "Rozložení STR");
 
     const ratings = data.map(row => Number(row.STR)).filter(Number.isFinite);
     const sortedRatings = [...ratings].sort((first, second) => first - second);
@@ -144,21 +179,14 @@ function renderHistogram(data) {
         }
     });
 
-    const width = 650;
-    const height = 420;
     const margin = { top: 25, right: 20, bottom: 95, left: 75 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
-    const { maximum: yMax, step: yStep } = histogramAxis(
+    const { maximum: yMax, step: yStep } = roundedTickAxis(
         Math.max(...bins.map(item => item.count))
     );
     const x = value => margin.left + (value / 2600) * plotWidth;
     const y = value => margin.top + ((yMax - value) / yMax) * plotHeight;
-    const svg = createSvgElement("svg", {
-        viewBox: `0 0 ${width} ${height}`,
-        role: "group",
-        "aria-label": "Rozložení STR"
-    });
 
     for (let value = 0; value <= yMax; value += yStep) {
         const lineY = y(value);
@@ -198,11 +226,7 @@ function renderHistogram(data) {
         bars.set(item.start, bar);
     });
 
-    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
-    const tooltipBackground = createSvgElement("rect", { width: 190, height: 48, rx: 6 });
-    const rangeText = createSvgElement("text", { x: 10, y: 19 });
-    const countText = createSvgElement("text", { x: 10, y: 39 });
-    tooltip.append(tooltipBackground, rangeText, countText);
+    const { tooltip, texts: [rangeText, countText] } = createHomeTooltip(190, 2);
 
     bins.forEach(item => {
         const left = x(item.start);
@@ -230,20 +254,8 @@ function renderHistogram(data) {
     });
     svg.appendChild(tooltip);
 
-    const xTitle = createSvgElement("text", {
-        x: margin.left + plotWidth / 2, y: height - 8,
-        "text-anchor": "middle", class: "chart-axis-label"
-    });
-    xTitle.textContent = "STR";
-    svg.appendChild(xTitle);
-
-    const yTitle = createSvgElement("text", {
-        x: 18, y: margin.top + plotHeight / 2, "text-anchor": "middle",
-        transform: `rotate(-90 18 ${margin.top + plotHeight / 2})`,
-        class: "chart-axis-label"
-    });
-    yTitle.textContent = "Počet hráčů";
-    svg.appendChild(yTitle);
+    addHomeAxisTitle(svg, "STR", margin.left + plotWidth / 2, height - 8);
+    addHomeAxisTitle(svg, "Počet hráčů", 18, margin.top + plotHeight / 2, true);
     container.appendChild(svg);
 }
 
@@ -280,6 +292,10 @@ function renderMedianAgeChart(rows, selectedSex) {
         return;
     }
 
+    const values = data.map(item => Number(item.value));
+    const minValue = Math.floor(Math.min(...values) / axis.step) * axis.step;
+    const maxValue = Math.ceil((Math.max(...values) + 0.5) / axis.step) * axis.step;
+
     renderInteractiveLineChart({
         container: document.getElementById("home-median-age"),
         data,
@@ -287,9 +303,9 @@ function renderMedianAgeChart(rows, selectedSex) {
         width: 650,
         height: 420,
         margin: { top: 25, right: 20, bottom: 95, left: 75 },
-        minValue: axis.minValue,
-        maxValue: axis.maxValue,
-        yTicks: axisTicks(axis),
+        minValue,
+        maxValue,
+        yTicks: axisTicks({ minValue, maxValue, step: axis.step }),
         ariaLabel: `Vývoj mediánu věku podle roku narození: ${axis.label}`,
         xLabel: year => formatSeason(year),
         xLabelOffset: 16,
@@ -303,8 +319,11 @@ function renderMedianAgeChart(rows, selectedSex) {
 }
 
 function renderBirthYearPyramid(data) {
-    const container = document.getElementById("home-birth-year-pyramid");
-    container.replaceChildren();
+    const width = 650;
+    const height = 420;
+    const { container, svg } = createHomeChart(
+        "home-birth-year-pyramid", width, height, "Rozložení hráčů podle roku narození a pohlaví"
+    );
     const rows = data.filter(row => Number.isFinite(Number(row["Rok narození"])));
     if (rows.length === 0) {
         container.textContent = "Graf neobsahuje žádná data.";
@@ -325,8 +344,6 @@ function renderBirthYearPyramid(data) {
         if (row["Pohlaví"] === "Z" || row["Pohlaví"] === "Ž") group.women += 1;
     });
 
-    const width = 650;
-    const height = 420;
     const margin = { top: 24, right: 40, bottom: 65, left: 125 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
@@ -343,11 +360,6 @@ function renderBirthYearPyramid(data) {
     const xMen = value => value / menMaximum * halfWidth;
     const xWomen = value => value / womenMaximum * halfWidth;
     const rowHeight = plotHeight / groups.length;
-    const svg = createSvgElement("svg", {
-        viewBox: `0 0 ${width} ${height}`,
-        role: "group",
-        "aria-label": "Rozložení hráčů podle roku narození a pohlaví"
-    });
 
     [[menMaximum, xMen, -1], [womenMaximum, xWomen, 1]].forEach(([maximum, scale, direction]) => {
         [0, maximum / 2, maximum].forEach(value => {
@@ -391,6 +403,11 @@ function renderBirthYearPyramid(data) {
         bars.set(group.start, { menBar, womenBar });
     });
     svg.appendChild(createSvgElement("line", {
+        x1: margin.left, y1: height - margin.bottom,
+        x2: width - margin.right, y2: height - margin.bottom,
+        class: "chart-grid-line"
+    }));
+    svg.appendChild(createSvgElement("line", {
         x1: center, y1: margin.top, x2: center, y2: height - margin.bottom,
         class: "home-pyramid-axis"
     }));
@@ -412,13 +429,8 @@ function renderBirthYearPyramid(data) {
             svg.appendChild(legend);
         });
 
-    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
-    const tooltipHeight = 66;
-    const tooltipBackground = createSvgElement("rect", { width: 175, height: tooltipHeight, rx: 6 });
-    const yearText = createSvgElement("text", { x: 10, y: 19 });
-    const menText = createSvgElement("text", { x: 10, y: 39 });
-    const womenText = createSvgElement("text", { x: 10, y: 59 });
-    tooltip.append(tooltipBackground, yearText, menText, womenText);
+    const { tooltip, texts: [yearText, menText, womenText], height: tooltipHeight } =
+        createHomeTooltip(175, 3);
     groups.forEach((group, index) => {
         const top = margin.top + index * rowHeight;
         const barsForGroup = bars.get(group.start);
@@ -453,18 +465,9 @@ function renderBirthYearPyramid(data) {
         [center - halfWidth / 2, "Muži"],
         [center + halfWidth / 2, "Ženy"]
     ].forEach(([labelX, text]) => {
-        const label = createSvgElement("text", {
-            x: labelX, y: height - 10, "text-anchor": "middle", class: "chart-axis-label"
-        });
-        label.textContent = text;
-        svg.appendChild(label);
+        addHomeAxisTitle(svg, text, labelX, height - 10);
     });
-    const yTitle = createSvgElement("text", {
-        x: 18, y: margin.top + plotHeight / 2, "text-anchor": "middle",
-        transform: `rotate(-90 18 ${margin.top + plotHeight / 2})`, class: "chart-axis-label"
-    });
-    yTitle.textContent = "Rok narození";
-    svg.appendChild(yTitle);
+    addHomeAxisTitle(svg, "Rok narození", 18, margin.top + plotHeight / 2, true);
     container.appendChild(svg);
 }
 
@@ -476,8 +479,9 @@ function niceAxisMaximum(maximum, minimumStep = 0) {
 }
 
 function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {}) {
-    const container = document.getElementById(containerId);
-    container.replaceChildren();
+    const width = 760;
+    const height = 520;
+    const { container, svg } = createHomeChart(containerId, width, height, yTitle);
 
     const sortedData = [...data].sort((first, second) =>
         second[valueKey] - first[valueKey] ||
@@ -488,8 +492,6 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
         return;
     }
 
-    const width = 760;
-    const height = 520;
     const margin = { top: 24, right: 18, bottom: 175, left: 76 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
@@ -498,14 +500,10 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
     const y = value => margin.top + plotHeight * (yMaximum - value) / (yMaximum - yMinimum);
     const columnWidth = plotWidth / sortedData.length;
     const barWidth = Math.max(8, columnWidth * 0.68);
-    const svg = createSvgElement("svg", {
-        viewBox: `0 0 ${width} ${height}`,
-        role: "group",
-        "aria-label": yTitle
-    });
 
-    for (let index = 0; index <= 4; index += 1) {
-        const value = yMinimum + (yMaximum - yMinimum) * index / 4;
+    const tickCount = axis.step ? Math.round((yMaximum - yMinimum) / axis.step) : 4;
+    for (let index = 0; index <= tickCount; index += 1) {
+        const value = yMinimum + (yMaximum - yMinimum) * index / tickCount;
         const lineY = y(value);
         svg.appendChild(createSvgElement("line", {
             x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
@@ -546,13 +544,7 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
     }));
 
     const tooltipWidth = 220;
-    const tooltip = createSvgElement("g", { class: "chart-value-tooltip" });
-    const tooltipBackground = createSvgElement("rect", {
-        width: tooltipWidth, height: 48, rx: 6
-    });
-    const associationText = createSvgElement("text", { x: 10, y: 19 });
-    const valueText = createSvgElement("text", { x: 10, y: 39 });
-    tooltip.append(tooltipBackground, associationText, valueText);
+    const { tooltip, texts: [associationText, valueText] } = createHomeTooltip(tooltipWidth, 2);
 
     sortedData.forEach((item, index) => {
         const left = margin.left + columnWidth * index;
@@ -582,20 +574,8 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
     });
     svg.appendChild(tooltip);
 
-    const xAxisTitle = createSvgElement("text", {
-        x: margin.left + plotWidth / 2, y: height - 8,
-        "text-anchor": "middle", class: "chart-axis-label"
-    });
-    xAxisTitle.textContent = "Svaz";
-    svg.appendChild(xAxisTitle);
-
-    const yAxisTitle = createSvgElement("text", {
-        x: 18, y: margin.top + plotHeight / 2, "text-anchor": "middle",
-        transform: `rotate(-90 18 ${margin.top + plotHeight / 2})`,
-        class: "chart-axis-label"
-    });
-    yAxisTitle.textContent = yTitle;
-    svg.appendChild(yAxisTitle);
+    addHomeAxisTitle(svg, "Svaz", margin.left + plotWidth / 2, height - 8);
+    addHomeAxisTitle(svg, yTitle, 18, margin.top + plotHeight / 2, true);
     container.appendChild(svg);
 }
 
@@ -667,7 +647,12 @@ function loadRankingSeason(season) {
 function renderHomeSeasonCharts(data) {
     renderHistogram(data);
     const associations = associationStatistics(data);
-    renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů");
+    const { maximum, step } = roundedTickAxis(
+        Math.max(...associations.map(item => item.count)), [1, 2, 4, 5, 8, 10]
+    );
+    renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů", {
+        maxValue: maximum, step
+    });
     renderAssociationBarChart("home-association-median", associations, "median", "Medián STR");
     renderBirthYearPyramid(data);
 }
