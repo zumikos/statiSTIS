@@ -62,26 +62,31 @@ const PLAYER_COUNT_AXES = {
 };
 
 const MEDIAN_AGE_AXES = {
-    all: { column: "Medián věku všichni", label: "všichni", step: 2 },
-    M: { column: "Medián věku muži", label: "muži", step: 2 },
-    Z: { column: "Medián věku ženy", label: "ženy", step: 1 }
+    all: { column: "Medián věku všichni", label: "všichni" },
+    M: { column: "Medián věku muži", label: "muži" },
+    Z: { column: "Medián věku ženy", label: "ženy" }
 };
 
-function axisTicks(axis) {
-    return Array.from(
-        { length: (axis.maxValue - axis.minValue) / axis.step + 1 },
-        (_, index) => axis.minValue + index * axis.step
-    );
-}
-
-function roundedTickAxis(maximum, factors = [1, 2, 5, 10]) {
-    if (maximum <= 0) return { maximum: 1, step: 1 };
-    const roughStep = maximum / 5;
-    const magnitude = 10 ** Math.floor(Math.log10(roughStep));
-    const step = factors
-        .map(factor => factor * magnitude)
-        .find(candidate => candidate >= roughStep);
-    return { maximum: Math.ceil(maximum / step) * step, step };
+function fourRowAxis(values, { fromZero = false, evenMaximum = false } = {}) {
+    const minimum = fromZero ? 0 : Math.min(...values);
+    const maximum = Math.max(...values);
+    const roughStep = ((maximum - minimum) || Math.max(Math.abs(maximum) / 10, 1)) / 4;
+    const magnitude = 10 ** Math.floor(Math.log10(Math.max(roughStep, 1)));
+    for (let factor = Math.ceil(roughStep / magnitude); ; factor += 1) {
+        const step = factor * magnitude;
+        let minValue = fromZero ? 0 : Math.floor(minimum / step) * step;
+        let maxValue = minValue + 4 * step;
+        if (evenMaximum && maxValue % 2 !== 0) {
+            minValue -= 1;
+            maxValue -= 1;
+        }
+        if (maxValue < maximum) continue;
+        return {
+            minValue,
+            maxValue,
+            ticks: Array.from({ length: 5 }, (_, index) => minValue + index * step)
+        };
+    }
 }
 
 function createHomeChart(containerId, width, height, label) {
@@ -120,10 +125,7 @@ function renderPlayerCountChart(rows, selectedSex) {
         x: row["Sezóna"],
         value: row[axis.column]
     }));
-    const { maximum, step } = roundedTickAxis(
-        Math.max(...data.map(item => Number(item.value))), [1, 2, 4, 5, 8, 10]
-    );
-    const minValue = Math.floor(Math.min(...data.map(item => Number(item.value))) / step) * step;
+    const { minValue, maxValue, ticks } = fourRowAxis(data.map(item => Number(item.value)));
     renderInteractiveLineChart({
         container: document.getElementById("home-player-count"),
         data,
@@ -132,8 +134,8 @@ function renderPlayerCountChart(rows, selectedSex) {
         height: 420,
         margin: { top: 25, right: 20, bottom: 95, left: 75 },
         minValue,
-        maxValue: maximum,
-        yTicks: axisTicks({ minValue, maxValue: maximum, step }),
+        maxValue,
+        yTicks: ticks,
         ariaLabel: `Vývoj počtu hráčů: ${axis.label}`,
         xLabel: year => `${formatSeason(year)}${year === 2021 ? "⁺" : year === DEFAULT_SEASON ? "*" : ""}`,
         xLabelOffset: 16,
@@ -182,13 +184,13 @@ function renderHistogram(data) {
     const margin = { top: 25, right: 20, bottom: 95, left: 75 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
-    const { maximum: yMax, step: yStep } = roundedTickAxis(
-        Math.max(...bins.map(item => item.count))
+    const { maxValue: yMax, ticks: yTicks } = fourRowAxis(
+        bins.map(item => item.count), { fromZero: true }
     );
     const x = value => margin.left + (value / 2600) * plotWidth;
     const y = value => margin.top + ((yMax - value) / yMax) * plotHeight;
 
-    for (let value = 0; value <= yMax; value += yStep) {
+    for (const value of yTicks) {
         const lineY = y(value);
         svg.appendChild(createSvgElement("line", {
             x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
@@ -292,9 +294,9 @@ function renderMedianAgeChart(rows, selectedSex) {
         return;
     }
 
-    const values = data.map(item => Number(item.value));
-    const minValue = Math.floor(Math.min(...values) / axis.step) * axis.step;
-    const maxValue = Math.ceil((Math.max(...values) + 0.5) / axis.step) * axis.step;
+    const { minValue, maxValue, ticks } = fourRowAxis(
+        data.map(item => Number(item.value)), { evenMaximum: true }
+    );
 
     renderInteractiveLineChart({
         container: document.getElementById("home-median-age"),
@@ -305,7 +307,7 @@ function renderMedianAgeChart(rows, selectedSex) {
         margin: { top: 25, right: 20, bottom: 95, left: 75 },
         minValue,
         maxValue,
-        yTicks: axisTicks({ minValue, maxValue, step: axis.step }),
+        yTicks: ticks,
         ariaLabel: `Vývoj mediánu věku podle roku narození: ${axis.label}`,
         xLabel: year => formatSeason(year),
         xLabelOffset: 16,
@@ -478,7 +480,7 @@ function niceAxisMaximum(maximum, minimumStep = 0) {
     return Math.ceil(maximum / step) * step;
 }
 
-function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {}) {
+function renderAssociationBarChart(containerId, data, valueKey, yTitle) {
     const width = 760;
     const height = 520;
     const { container, svg } = createHomeChart(containerId, width, height, yTitle);
@@ -495,15 +497,15 @@ function renderAssociationBarChart(containerId, data, valueKey, yTitle, axis = {
     const margin = { top: 24, right: 18, bottom: 175, left: 76 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
-    const yMinimum = axis.minValue ?? 0;
-    const yMaximum = axis.maxValue ?? niceAxisMaximum(Math.max(...sortedData.map(item => item[valueKey])));
+    const { maxValue: yMaximum, ticks: yTicks } = fourRowAxis(
+        sortedData.map(item => item[valueKey]), { fromZero: true }
+    );
+    const yMinimum = 0;
     const y = value => margin.top + plotHeight * (yMaximum - value) / (yMaximum - yMinimum);
     const columnWidth = plotWidth / sortedData.length;
     const barWidth = Math.max(8, columnWidth * 0.68);
 
-    const tickCount = axis.step ? Math.round((yMaximum - yMinimum) / axis.step) : 4;
-    for (let index = 0; index <= tickCount; index += 1) {
-        const value = yMinimum + (yMaximum - yMinimum) * index / tickCount;
+    for (const value of yTicks) {
         const lineY = y(value);
         svg.appendChild(createSvgElement("line", {
             x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
@@ -647,12 +649,7 @@ function loadRankingSeason(season) {
 function renderHomeSeasonCharts(data) {
     renderHistogram(data);
     const associations = associationStatistics(data);
-    const { maximum, step } = roundedTickAxis(
-        Math.max(...associations.map(item => item.count)), [1, 2, 4, 5, 8, 10]
-    );
-    renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů", {
-        maxValue: maximum, step
-    });
+    renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů");
     renderAssociationBarChart("home-association-median", associations, "median", "Medián STR");
     renderBirthYearPyramid(data);
 }
