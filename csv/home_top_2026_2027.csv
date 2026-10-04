@@ -1,41 +1,41 @@
 ﻿Typ,Pohlaví,ID,Hráč,Oddíl,STR,STR změna
-ranking,M,28895,Širuček Pavel,"HB Ostrov , z.s.",2516,
+ranking,M,28895,Širuček Pavel,"HB Ostrov , z.s.",2517,
 ranking,M,39045,Reitšpies David,Stavební fakulta SK Kotlářka El Niňo Praha,2501,
 ranking,M,42375,Polanský Tomáš,"HB Ostrov , z.s.",2485,
 ranking,M,51123,Martinko Jiří,Sportovní klub stolního tenisu Chodov z. s.,2464,
 ranking,M,35721,Gavlas Antonín ml.,Sportovní klub stolního tenisu Chodov z. s.,2457,
-ranking,M,11893,Konečný Tomáš,Stavební fakulta SK Kotlářka El Niňo Praha,2453,
+ranking,M,11893,Konečný Tomáš,Stavební fakulta SK Kotlářka El Niňo Praha,2445,
+ranking,M,50716,Onderka František,TJ Sokol PP Hradec Králové 2,2416,
+ranking,M,88691,Pryshchepa Ievgen,Stavební fakulta SK Kotlářka El Niňo Praha,2416,
 ranking,M,79651,Zelinka Jakub,Sportovní klub stolního tenisu Chodov z. s.,2415,
 ranking,M,72964,Gómez Alejandro Gustavo,Sportovní klub stolního tenisu Havířov z.s.,2411,
-ranking,M,50716,Onderka František,TJ Sokol PP Hradec Králové 2,2408,
-ranking,M,44508,Klos Patrik,Tělovýchovná jednota Ostrava,2388,
 ranking,Z,52519,Blašková Zdena,"HB Ostrov , z.s.",2122,
 ranking,Z,85945,Li Sian Chang Alice,"TT Moravský Krumlov, z.s.",2120,
-ranking,Z,33486,Grofová Karin,SKST Hodonín z.s.,2116,
-ranking,Z,372,Ševčíková Markéta,SKST Hodonín z.s.,2107,
+ranking,Z,372,Ševčíková Markéta,SKST Hodonín z.s.,2116,
+ranking,Z,33486,Grofová Karin,SKST Hodonín z.s.,2101,
 ranking,Z,85795,Michalak Aleksandra,"HB Ostrov , z.s.",2096,
-ranking,Z,38743,Tomanová Tamara,Tělovýchovná jednota Ostrava,2061,
-ranking,Z,55780,Kubátová Hana,Tělovýchovná jednota Ostrava,2042,
+ranking,Z,74016,Kodet Hanka,Sportovní klub stolního tenisu Havířov z.s.,2077,
+ranking,Z,38743,Tomanová Tamara,Tělovýchovná jednota Ostrava,2052,
+ranking,Z,55780,Kubátová Hana,Tělovýchovná jednota Ostrava,2026,
 ranking,Z,68815,Poláková Veronika ml.,"HB Ostrov , z.s.",2025,
-ranking,Z,72136,Chernyavskaya Ekaterina,"TT Moravský Krumlov, z.s.",2013,
-ranking,Z,54067,Petrovová Nikita,Tělovýchovná jednota Ostrava,2012,
+ranking,Z,57381,Hrabicová Klára,Sportovní klub stolního tenisu Havířov z.s.,2018,
 movers,M,91669,Řáha Václav,"KOC - Sušice, stolní tenis, z.s.",,228
 movers,M,49114,Šmolík Milan,"TJ Stadion Žižkov DDM Praha 3 - Ulita, z.s.",,195
+movers,M,89087,Bečvář Jaroslav,"SK Kotlářka, z.s.",,163
+movers,M,87815,Havránek Tomáš,"Table Tennis Club Litoměřice, z.s.",,154
 movers,M,92690,Matoušek Tomáš ml.,"Sportovní Klub Viktorie Ořech, z.s.",,151
+movers,M,86972,John Dominik,KST Jeseník,,141
+movers,M,87377,Varga Rostislav,TJ Nýřany z.s.,,131
 movers,M,86208,Švehelka David,"Akademie stolního tenisu Petra Korbela, z.s.",,126
-movers,M,87377,Varga Rostislav,TJ Nýřany z.s.,,121
 movers,M,93027,Prášek Rudolf,"KLUB STOLNÍHO TENISU ŠTĚPÁNOVICE, z.s.",,119
-movers,M,87815,Havránek Tomáš,"Table Tennis Club Litoměřice, z.s.",,99
-movers,M,89482,Hrníčko Matyáš,"PINK Liberec, z.s.",,98
-movers,M,87449,Chamrád David,"Akademie stolního tenisu Petra Korbela, z.s.",,94
-movers,M,91596,Forejt Daniel,"Tělovýchovná jednota Spartak Lubenec, z.s.",,90
+movers,M,93055,Anděl Jiří,"Sportovní klub Moravia Brno, z.s.",,99
 movers,Z,83820,Jankovská Monika,"TJ Spartak Čelákovice, z.s.",,77
+movers,Z,84743,Fuková Klára,"TJ VS Tábor, z.s.",,74
 movers,Z,81588,Martinů Karolína,"Sportovní klub Jihlava, z.s.",,65
 movers,Z,84605,Nevímová Veronika,"SKST  Nový Lískovec, z.s.",,63
+movers,Z,83944,Dostálová Julie,"TJ Tatran Hostinné, spolek",,58
+movers,Z,63705,Ratajská Linda,Klub stolního tenisu Olomouc z.s.,,55
 movers,Z,74162,Ferbasová Dorothea,TJ Sokol PP Hradec Králové 2,,54
+movers,Z,87467,Dušková Laura,Table Tennis Club Ústí nad Orlicí z. s.,,53
 movers,Z,60795,Borecká Světluška,"TJ KRALUPY, z.s.",,49
-movers,Z,85695,Sobociková Leona,"TTC Moravská Slavia Brno, z.s.",,48
-movers,Z,81319,Bielčiková Simona,"TJ Slavoj Praha, spolek",,46
-movers,Z,88351,Fialová Kateřina,TJ Sokol Březnice,,42
-movers,Z,82686,Suková Petra,Tělovýchovná jednota Neratovice z.s.,,40
-movers,Z,91480,Štursová Dana,TJ Slavoj Pacov,,38
+movers,Z,81608,Zvárová Tereza,SKC Zruč nad Sázavou z.s.,,49

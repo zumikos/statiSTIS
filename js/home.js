@@ -74,7 +74,7 @@ function fourRowAxis(values, { fromZero = false, evenMaximum = false } = {}) {
     const magnitude = 10 ** Math.floor(Math.log10(Math.max(roughStep, 1)));
     for (let factor = Math.ceil(roughStep / magnitude); ; factor += 1) {
         const step = factor * magnitude;
-        let minValue = fromZero ? 0 : Math.floor(minimum / step) * step;
+        let minValue = fromZero ? 0 : Math.floor(minimum / magnitude) * magnitude;
         let maxValue = minValue + 4 * step;
         if (evenMaximum && maxValue % 2 !== 0) {
             minValue -= 1;
@@ -147,6 +147,166 @@ function renderPlayerCountChart(rows, selectedSex) {
         formatPointAria: item =>
             `${formatSeason(item.x)}: ${formatThousands(item.value)} hráčů`
     });
+}
+
+function renderMedianAgeChart(rows, selectedSex) {
+    const axis = MEDIAN_AGE_AXES[selectedSex];
+    const data = rows.map(row => ({
+        x: row["Sezóna"],
+        value: row[axis.column]
+    })).filter(item => Number.isFinite(Number(item.value)));
+
+    if (data.length === 0) {
+        document.getElementById("home-median-age").textContent = "Graf se nepodařilo načíst.";
+        return;
+    }
+
+    const { minValue, maxValue, ticks } = fourRowAxis(
+        data.map(item => Number(item.value)), { evenMaximum: true }
+    );
+
+    renderInteractiveLineChart({
+        container: document.getElementById("home-median-age"),
+        data,
+        xValues: SEASONS,
+        width: 650,
+        height: 420,
+        margin: { top: 25, right: 20, bottom: 95, left: 75 },
+        minValue,
+        maxValue,
+        yTicks: ticks,
+        ariaLabel: `Vývoj mediánu věku podle roku narození: ${axis.label}`,
+        xLabel: year => formatSeason(year),
+        xLabelOffset: 16,
+        xTitle: "Sezóna",
+        yTitle: "Medián věku",
+        tooltipWidth: 180,
+        formatTooltip: item => `Medián: ${Math.round(item.value)} let`,
+        formatPointAria: item =>
+            `${formatSeason(item.x)}: medián věku ${Math.round(item.value)} let`
+    });
+}
+
+function associationStatistics(data) {
+    const ratingsByAssociation = new Map();
+
+    data.forEach(row => {
+        const association = formatAssociationName(row["Kraj"]);
+        const rating = Number(row["STR"]);
+        if (!association || !Number.isFinite(rating)) return;
+        if (!ratingsByAssociation.has(association)) ratingsByAssociation.set(association, []);
+        ratingsByAssociation.get(association).push(rating);
+    });
+
+    return [...ratingsByAssociation].map(([association, ratings]) => {
+        ratings.sort((first, second) => first - second);
+        const middle = Math.floor(ratings.length / 2);
+        const median = ratings.length % 2
+            ? ratings[middle]
+            : (ratings[middle - 1] + ratings[middle]) / 2;
+        return { association, count: ratings.length, median };
+    });
+}
+
+function renderAssociationBarChart(containerId, data, valueKey, yTitle) {
+    const width = 760;
+    const height = 520;
+    const { container, svg } = createHomeChart(containerId, width, height, yTitle);
+
+    const sortedData = [...data].sort((first, second) =>
+        second[valueKey] - first[valueKey] ||
+        first.association.localeCompare(second.association, "cs")
+    );
+    if (sortedData.length === 0) {
+        container.textContent = "Graf neobsahuje žádná data.";
+        return;
+    }
+
+    const margin = { top: 24, right: 18, bottom: 175, left: 76 };
+    const plotWidth = width - margin.left - margin.right;
+    const plotHeight = height - margin.top - margin.bottom;
+    const { maxValue: yMaximum, ticks: yTicks } = fourRowAxis(
+        sortedData.map(item => item[valueKey]), { fromZero: true }
+    );
+    const yMinimum = 0;
+    const y = value => margin.top + plotHeight * (yMaximum - value) / (yMaximum - yMinimum);
+    const columnWidth = plotWidth / sortedData.length;
+    const barWidth = Math.max(8, columnWidth * 0.68);
+
+    for (const value of yTicks) {
+        const lineY = y(value);
+        svg.appendChild(createSvgElement("line", {
+            x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
+            class: "chart-grid-line"
+        }));
+        const label = createSvgElement("text", {
+            x: margin.left - 10, y: lineY + 5, "text-anchor": "end",
+            class: "chart-axis-label"
+        });
+        label.textContent = Math.round(value).toLocaleString("cs-CZ");
+        svg.appendChild(label);
+    }
+
+    const bars = new Map();
+    sortedData.forEach((item, index) => {
+        const center = margin.left + columnWidth * (index + 0.5);
+        const lineX = margin.left + columnWidth * index;
+        svg.appendChild(createSvgElement("line", {
+            x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
+            class: "chart-grid-line"
+        }));
+        addRotatedXLabel(svg, center, height - margin.bottom + 26, item.association, 12);
+
+        const bar = createSvgElement("rect", {
+            x: center - barWidth / 2,
+            y: y(item[valueKey]),
+            width: barWidth,
+            height: height - margin.bottom - y(item[valueKey]),
+            class: "chart-histogram-bar"
+        });
+        svg.appendChild(bar);
+        bars.set(item.association, bar);
+    });
+    svg.appendChild(createSvgElement("line", {
+        x1: width - margin.right, y1: margin.top,
+        x2: width - margin.right, y2: height - margin.bottom,
+        class: "chart-grid-line"
+    }));
+
+    const tooltipWidth = 220;
+    const { tooltip, texts: [associationText, valueText] } = createHomeTooltip(tooltipWidth, 2);
+
+    sortedData.forEach((item, index) => {
+        const left = margin.left + columnWidth * index;
+        const center = left + columnWidth / 2;
+        const bar = bars.get(item.association);
+        const hoverColumn = createSvgElement("rect", {
+            x: left, y: margin.top, width: columnWidth, height: plotHeight,
+            class: "chart-histogram-hover", role: "img", tabindex: 0,
+            "aria-label": `${item.association}: ${Math.round(item[valueKey]).toLocaleString("cs-CZ")}`
+        });
+        const show = () => {
+            const tooltipX = Math.min(Math.max(center - tooltipWidth / 2, 0), width - tooltipWidth);
+            tooltip.setAttribute("transform", `translate(${tooltipX} ${margin.top + 8})`);
+            associationText.textContent = item.association;
+            valueText.textContent = valueKey === "count"
+                ? `Počet hráčů: ${item.count.toLocaleString("cs-CZ")}`
+                : `Medián STR: ${item.median.toLocaleString("cs-CZ")}`;
+            tooltip.classList.add("is-visible");
+            bar.classList.add("is-active");
+        };
+        const hide = () => {
+            tooltip.classList.remove("is-visible");
+            bar.classList.remove("is-active");
+        };
+        bindHoverEvents(hoverColumn, show, hide);
+        svg.appendChild(hoverColumn);
+    });
+    svg.appendChild(tooltip);
+
+    addHomeAxisTitle(svg, "Svaz", margin.left + plotWidth / 2, height - 8);
+    addHomeAxisTitle(svg, yTitle, 18, margin.top + plotHeight / 2, true);
+    container.appendChild(svg);
 }
 
 function renderHistogram(data) {
@@ -261,63 +421,11 @@ function renderHistogram(data) {
     container.appendChild(svg);
 }
 
-function associationStatistics(data) {
-    const ratingsByAssociation = new Map();
-
-    data.forEach(row => {
-        const association = formatAssociationName(row["Kraj"]);
-        const rating = Number(row["STR"]);
-        if (!association || !Number.isFinite(rating)) return;
-        if (!ratingsByAssociation.has(association)) ratingsByAssociation.set(association, []);
-        ratingsByAssociation.get(association).push(rating);
-    });
-
-    return [...ratingsByAssociation].map(([association, ratings]) => {
-        ratings.sort((first, second) => first - second);
-        const middle = Math.floor(ratings.length / 2);
-        const median = ratings.length % 2
-            ? ratings[middle]
-            : (ratings[middle - 1] + ratings[middle]) / 2;
-        return { association, count: ratings.length, median };
-    });
-}
-
-function renderMedianAgeChart(rows, selectedSex) {
-    const axis = MEDIAN_AGE_AXES[selectedSex];
-    const data = rows.map(row => ({
-        x: row["Sezóna"],
-        value: row[axis.column]
-    })).filter(item => Number.isFinite(Number(item.value)));
-
-    if (data.length === 0) {
-        document.getElementById("home-median-age").textContent = "Graf se nepodařilo načíst.";
-        return;
-    }
-
-    const { minValue, maxValue, ticks } = fourRowAxis(
-        data.map(item => Number(item.value)), { evenMaximum: true }
-    );
-
-    renderInteractiveLineChart({
-        container: document.getElementById("home-median-age"),
-        data,
-        xValues: SEASONS,
-        width: 650,
-        height: 420,
-        margin: { top: 25, right: 20, bottom: 95, left: 75 },
-        minValue,
-        maxValue,
-        yTicks: ticks,
-        ariaLabel: `Vývoj mediánu věku podle roku narození: ${axis.label}`,
-        xLabel: year => formatSeason(year),
-        xLabelOffset: 16,
-        xTitle: "Sezóna",
-        yTitle: "Medián věku",
-        tooltipWidth: 180,
-        formatTooltip: item => `Medián: ${Math.round(item.value)} let`,
-        formatPointAria: item =>
-            `${formatSeason(item.x)}: medián věku ${Math.round(item.value)} let`
-    });
+function niceAxisMaximum(maximum, minimumStep = 0) {
+    if (maximum <= 0) return minimumStep || 1;
+    const magnitude = 10 ** Math.floor(Math.log10(maximum));
+    const step = Math.max(minimumStep, magnitude / 5);
+    return Math.ceil(maximum / step) * step;
 }
 
 function renderBirthYearPyramid(data) {
@@ -473,114 +581,6 @@ function renderBirthYearPyramid(data) {
     container.appendChild(svg);
 }
 
-function niceAxisMaximum(maximum, minimumStep = 0) {
-    if (maximum <= 0) return minimumStep || 1;
-    const magnitude = 10 ** Math.floor(Math.log10(maximum));
-    const step = Math.max(minimumStep, magnitude / 5);
-    return Math.ceil(maximum / step) * step;
-}
-
-function renderAssociationBarChart(containerId, data, valueKey, yTitle) {
-    const width = 760;
-    const height = 520;
-    const { container, svg } = createHomeChart(containerId, width, height, yTitle);
-
-    const sortedData = [...data].sort((first, second) =>
-        second[valueKey] - first[valueKey] ||
-        first.association.localeCompare(second.association, "cs")
-    );
-    if (sortedData.length === 0) {
-        container.textContent = "Graf neobsahuje žádná data.";
-        return;
-    }
-
-    const margin = { top: 24, right: 18, bottom: 175, left: 76 };
-    const plotWidth = width - margin.left - margin.right;
-    const plotHeight = height - margin.top - margin.bottom;
-    const { maxValue: yMaximum, ticks: yTicks } = fourRowAxis(
-        sortedData.map(item => item[valueKey]), { fromZero: true }
-    );
-    const yMinimum = 0;
-    const y = value => margin.top + plotHeight * (yMaximum - value) / (yMaximum - yMinimum);
-    const columnWidth = plotWidth / sortedData.length;
-    const barWidth = Math.max(8, columnWidth * 0.68);
-
-    for (const value of yTicks) {
-        const lineY = y(value);
-        svg.appendChild(createSvgElement("line", {
-            x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY,
-            class: "chart-grid-line"
-        }));
-        const label = createSvgElement("text", {
-            x: margin.left - 10, y: lineY + 5, "text-anchor": "end",
-            class: "chart-axis-label"
-        });
-        label.textContent = Math.round(value).toLocaleString("cs-CZ");
-        svg.appendChild(label);
-    }
-
-    const bars = new Map();
-    sortedData.forEach((item, index) => {
-        const center = margin.left + columnWidth * (index + 0.5);
-        const lineX = margin.left + columnWidth * index;
-        svg.appendChild(createSvgElement("line", {
-            x1: lineX, y1: margin.top, x2: lineX, y2: height - margin.bottom,
-            class: "chart-grid-line"
-        }));
-        addRotatedXLabel(svg, center, height - margin.bottom + 26, item.association, 12);
-
-        const bar = createSvgElement("rect", {
-            x: center - barWidth / 2,
-            y: y(item[valueKey]),
-            width: barWidth,
-            height: height - margin.bottom - y(item[valueKey]),
-            class: "chart-histogram-bar"
-        });
-        svg.appendChild(bar);
-        bars.set(item.association, bar);
-    });
-    svg.appendChild(createSvgElement("line", {
-        x1: width - margin.right, y1: margin.top,
-        x2: width - margin.right, y2: height - margin.bottom,
-        class: "chart-grid-line"
-    }));
-
-    const tooltipWidth = 220;
-    const { tooltip, texts: [associationText, valueText] } = createHomeTooltip(tooltipWidth, 2);
-
-    sortedData.forEach((item, index) => {
-        const left = margin.left + columnWidth * index;
-        const center = left + columnWidth / 2;
-        const bar = bars.get(item.association);
-        const hoverColumn = createSvgElement("rect", {
-            x: left, y: margin.top, width: columnWidth, height: plotHeight,
-            class: "chart-histogram-hover", role: "img", tabindex: 0,
-            "aria-label": `${item.association}: ${Math.round(item[valueKey]).toLocaleString("cs-CZ")}`
-        });
-        const show = () => {
-            const tooltipX = Math.min(Math.max(center - tooltipWidth / 2, 0), width - tooltipWidth);
-            tooltip.setAttribute("transform", `translate(${tooltipX} ${margin.top + 8})`);
-            associationText.textContent = item.association;
-            valueText.textContent = valueKey === "count"
-                ? `Počet hráčů: ${item.count.toLocaleString("cs-CZ")}`
-                : `Medián STR: ${item.median.toLocaleString("cs-CZ")}`;
-            tooltip.classList.add("is-visible");
-            bar.classList.add("is-active");
-        };
-        const hide = () => {
-            tooltip.classList.remove("is-visible");
-            bar.classList.remove("is-active");
-        };
-        bindHoverEvents(hoverColumn, show, hide);
-        svg.appendChild(hoverColumn);
-    });
-    svg.appendChild(tooltip);
-
-    addHomeAxisTitle(svg, "Svaz", margin.left + plotWidth / 2, height - 8);
-    addHomeAxisTitle(svg, yTitle, 18, margin.top + plotHeight / 2, true);
-    container.appendChild(svg);
-}
-
 const homeSeasonSummaryPromise = loadSeasonSummary();
 const homeSexSelects = document.querySelectorAll(".home-sex-select");
 
@@ -609,8 +609,10 @@ homeSeasonSummaryPromise
 const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
 document.getElementById("last-updated").textContent =
     `Stránka naposledy aktualizována ${LAST_UPDATED_DATE}`;
-document.getElementById("next-ranking-update").textContent =
+document.getElementById("next-ranking-update-bottom").textContent =
     `Příští aktualizace žebříčků proběhne ${NEXT_RANKING_DATE}`;
+document.getElementById("next-ranking-update-top").textContent =
+    `Příští aktualizace: ${NEXT_RANKING_DATE}`;
 const homeSeasonElements = document.querySelectorAll(".home-season");
 homeSeasonElements.forEach(element => {
     element.textContent = homeSeasonLabel;
@@ -647,10 +649,10 @@ function loadRankingSeason(season) {
 }
 
 function renderHomeSeasonCharts(data) {
-    renderHistogram(data);
     const associations = associationStatistics(data);
     renderAssociationBarChart("home-association-count", associations, "count", "Počet hráčů");
     renderAssociationBarChart("home-association-median", associations, "median", "Medián STR");
+    renderHistogram(data);
     renderBirthYearPyramid(data);
 }
 

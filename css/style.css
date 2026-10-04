@@ -1128,7 +1128,7 @@ table.dataTable thead .dt-column-title {
     text-align:center;
 }
 
-.next-ranking-update {
+.next-ranking-update-bottom {
     display:inline-block;
     margin-top:0.35rem;
 }
