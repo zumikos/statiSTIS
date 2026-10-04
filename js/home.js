@@ -607,12 +607,12 @@ homeSeasonSummaryPromise
     });
 
 const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
-document.getElementById("last-updated").textContent =
-    `Stránka naposledy aktualizována ${LAST_UPDATED_DATE}`;
-document.getElementById("next-ranking-update-bottom").textContent =
-    `Příští aktualizace žebříčků proběhne ${NEXT_RANKING_DATE}`;
-document.getElementById("next-ranking-update-top").textContent =
-    `Příští aktualizace: ${NEXT_RANKING_DATE}`;
+document.querySelectorAll(".last-updated-date").forEach(element => {
+    element.textContent = `Stránka naposledy aktualizována ${LAST_UPDATED_DATE}`;
+});
+document.querySelectorAll(".next-ranking-update").forEach(element => {
+    element.textContent = `Příští aktualizace žebříčků proběhne ${NEXT_RANKING_DATE}`;
+});
 const homeSeasonElements = document.querySelectorAll(".home-season");
 homeSeasonElements.forEach(element => {
     element.textContent = homeSeasonLabel;
