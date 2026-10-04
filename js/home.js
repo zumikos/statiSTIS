@@ -610,6 +610,9 @@ const homeSeasonLabel = formatSeason(DEFAULT_SEASON);
 document.querySelectorAll(".last-updated-date").forEach(element => {
     element.textContent = `Stránka naposledy aktualizována ${LAST_UPDATED_DATE}`;
 });
+document.querySelectorAll(".latest-ranking-date").forEach(element => {
+    element.textContent = `Žebříčky k datu ${LATEST_RANKING_DATE}`;
+});
 document.querySelectorAll(".next-ranking-update").forEach(element => {
     element.textContent = `Příští aktualizace žebříčků proběhne ${NEXT_RANKING_DATE}`;
 });
