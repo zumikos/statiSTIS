@@ -1019,6 +1019,11 @@ table.dataTable thead .dt-column-title {
     min-width:48rem;
 }
 
+.match-fixtures th:first-child,
+.match-fixtures td:first-child {
+    text-align:center;
+}
+
 .match-fixtures td:nth-last-child(-n+2) {
     white-space:nowrap;
     text-align:right;

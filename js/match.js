@@ -273,6 +273,10 @@ function calculateMatch() {
         body.appendChild(row);
     });
     matchResults.hidden = false;
+    matchResults.scrollIntoView({
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        block: "start"
+    });
 }
 
 document.getElementById("match-calculate").addEventListener("click", calculateMatch);
@@ -286,7 +290,7 @@ function matchSlotData(slot) {
 
 function restoreMatchSlot(slot, data) {
     if (data?.player?.ID && data.player["Hráč"]) {
-        slot.showPlayer(data.player, null);
+        slot.showPlayer(data.player, data.rating ? { rating: data.rating } : null);
     } else {
         slot.clear(false);
     }
