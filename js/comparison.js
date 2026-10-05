@@ -343,20 +343,10 @@ function renderComparisonLineChart({ containerId, field, reverseY, valueLabel })
     container.appendChild(svg);
 }
 
-function latestPlayerRating(player) {
-    for (const season of [...SEASONS].reverse()) {
-        const value = player[`${season} STR`];
-        if (value === null || value === undefined || value === "") continue;
-        const rating = Number(value);
-        if (Number.isFinite(rating)) return { rating, season };
-    }
-    return null;
-}
-
 function renderWinProbability() {
     const ratings = selectedPlayers.map(latestPlayerRating);
     const firstProbability = ratings.every(Boolean)
-        ? 1 / (1 + 10 ** ((ratings[1].rating - ratings[0].rating) / 400))
+        ? strWinProbability(ratings[0].rating, ratings[1].rating)
         : null;
     const probabilities = [firstProbability, firstProbability === null ? null : 1 - firstProbability];
 

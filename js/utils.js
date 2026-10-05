@@ -58,6 +58,20 @@ function formatRatingChange(value) {
     return formatThousands(value, true);
 }
 
+function latestPlayerRating(player) {
+    for (const season of [...SEASONS].reverse()) {
+        const value = player[`${season} STR`];
+        if (value === null || value === undefined || value === "") continue;
+        const rating = Number(value);
+        if (Number.isFinite(rating)) return { rating, season };
+    }
+    return null;
+}
+
+function strWinProbability(firstRating, secondRating) {
+    return 1 / (1 + 10 ** ((secondRating - firstRating) / 400));
+}
+
 function renderRatingChange(value, type) {
     return type === "display" ? formatRatingChange(value) : value;
 }

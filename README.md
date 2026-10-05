@@ -12,6 +12,7 @@ Web spojuje veřejně dostupná data z žebříčků ze všech sezón systému S
 - žebříčky hráčů podle sezóny, pohlaví, kraje a kategorie (U21, U19, U17, U15, U13 a U11);
 - vyhledávání hráčů a jejich vývoj STR v jednotlivých sezónách;
 - porovnání vývoje STR a pořadí dvou hráčů;
+- odhad výsledku utkání dvou čtyřčlenných týmů včetně čtyřher a rozpisu jednotlivých dvouher;
 - historické rekordy nejvyššího STR a největších sezónních posunů;
 - vyhledávání oddílů a oddílové žebříčky.
 

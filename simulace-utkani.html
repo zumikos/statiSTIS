@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>statiSTIS – Simulace utkání</title>
+    <meta name="description" content="Porovnejte dvě čtyřčlenné sestavy podle STR a spočítejte šanci na výhru, remízu nebo prohru v utkání stolního tenisu.">
+    <link rel="canonical" href="https://statistis.cz/simulace-utkani.html">
+    <!-- shared-social-meta:start -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="cs_CZ">
+    <meta property="og:site_name" content="statiSTIS">
+    <meta property="og:title" content="statiSTIS – Simulace utkání">
+    <meta property="og:description" content="Porovnejte dvě čtyřčlenné sestavy podle STR a spočítejte šanci na výhru, remízu nebo prohru v utkání stolního tenisu.">
+    <meta property="og:url" content="https://statistis.cz/simulace-utkani.html">
+    <meta property="og:image" content="https://statistis.cz/images/logo.png">
+    <meta property="og:image:width" content="1254">
+    <meta property="og:image:height" content="1254">
+    <meta property="og:image:alt" content="Logo statiSTIS">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="statiSTIS – Simulace utkání">
+    <meta name="twitter:description" content="Porovnejte dvě čtyřčlenné sestavy podle STR a spočítejte šanci na výhru, remízu nebo prohru v utkání stolního tenisu.">
+    <meta name="twitter:image" content="https://statistis.cz/images/logo.png">
+    <!-- shared-social-meta:end -->
+    <!-- shared-assets:start -->
+    <link rel="icon" type="image/png" href="images/logo-96.png">
+    <script>
+        try {
+            document.documentElement.dataset.theme = localStorage.getItem("statistis-theme") || "";
+        } catch {}
+        document.documentElement.dataset.theme ||= matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.style.colorScheme = document.documentElement.dataset.theme;
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js" defer></script>
+    <!-- shared-assets:end -->
+</head>
+
+<body>
+<!-- shared-header:start -->
+<header>
+    <h1>
+        <a class="site-title" href="index.html">
+            <img class="site-logo" src="images/logo-96.png" alt="">
+            <span>statiSTIS</span>
+        </a>
+    </h1>
+
+    <nav aria-label="Hlavní navigace">
+        <a href="index.html">Domů</a>
+        <a href="hraci.html">Hráči</a>
+        <a href="skokani.html">Skokani</a>
+        <a href="oddily.html">Oddíly</a>
+        <a href="hledat-hrace.html">Hledat hráče</a>
+        <a href="porovnat-hrace.html">Porovnat hráče</a>
+        <a href="simulace-utkani.html" aria-current="page">Simulace utkání</a>
+        <a href="rekordy.html">Rekordy</a>
+        <a href="o-projektu.html">O projektu</a>
+    </nav>
+</header>
+<!-- shared-header:end -->
+
+<main>
+    <h2>Simulace utkání</h2>
+    <p>Pro dvouhry vyberte čtyři hráče za každý tým nebo zadejte pouze jejich STR. Čtyřhry mohou hrát i jiní hráči. Utkání končí desátým bodem nebo remízou 9:9.</p>
+
+    <section class="grid two-columns match-teams" aria-label="Sestavy týmů">
+        <article class="card">
+            <h3 class="match-team-title">Domácí</h3>
+            <div id="match-home-players"></div>
+        </article>
+        <article class="card">
+            <h3 class="match-team-title">Hosté</h3>
+            <div id="match-away-players"></div>
+        </article>
+    </section>
+
+    <h3>Čtyřhry</h3>
+    <p>Čtyřhry se předvyplní dvojicemi A+B proti X+Y a C+D proti Z+U. Hráče i STR můžete změnit. Pro výpočet se použije průměr STR dvojice.</p>
+    <section class="grid two-columns match-doubles" aria-label="Dvojice pro čtyřhry">
+        <article class="card">
+            <h4 class="match-team-title">Domácí</h4>
+            <p class="match-pair-heading">Č1</p>
+            <div id="match-home-double-1"></div>
+            <p class="match-pair-heading">Č2</p>
+            <div id="match-home-double-2"></div>
+        </article>
+        <article class="card">
+            <h4 class="match-team-title">Hosté</h4>
+            <p class="match-pair-heading">Č1'</p>
+            <div id="match-away-double-1"></div>
+            <p class="match-pair-heading">Č2'</p>
+            <div id="match-away-double-2"></div>
+        </article>
+    </section>
+
+    <p class="match-actions">
+        <button id="match-calculate" class="button" type="button">Spočítat šance</button>
+        <button id="match-save" class="button" type="button">Uložit sestavu</button>
+    </p>
+    <p id="match-storage-status" class="status-message" role="status" aria-live="polite"></p>
+    <p id="match-status" class="status-message" role="status" aria-live="polite"></p>
+
+    <section id="match-results" hidden>
+        <h3>Šance na výsledek utkání</h3>
+        <div class="match-summary" aria-label="Pravděpodobnosti výsledků">
+            <div class="card"><strong id="match-home-win"></strong><span>Výhra domácích</span></div>
+            <div class="card"><strong id="match-draw"></strong><span>Remíza</span></div>
+            <div class="card"><strong id="match-away-win"></strong><span>Výhra hostů</span></div>
+        </div>
+
+        <h3>Jednotlivé zápasy</h3>
+        <div class="table-scroll">
+            <table class="match-fixtures">
+                <thead><tr><th>Zápas</th><th>Domácí</th><th>Hosté</th><th>Šance domácí</th><th>Šance<br>hosté</th></tr></thead>
+                <tbody id="match-fixtures"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <p class="chart-note">U vybraných hráčů se použije STR z jejich poslední aktivní sezóny. Výpočet předpokládá nezávislé výsledky jednotlivých zápasů; aktuální forma, herní styl a souhra ve čtyřhře v STR nejsou zachyceny.</p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/match.js"></script>
+</body>
+</html>

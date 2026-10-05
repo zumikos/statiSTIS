@@ -538,6 +538,7 @@ table.dataTable thead .dt-column-title {
     .grid.two-columns {
         grid-template-columns: 1fr;
     }
+
 }
 
 .data-error {
@@ -886,6 +887,143 @@ table.dataTable thead .dt-column-title {
     color:var(--text-muted);
 }
 
+.match-player {
+    display:grid;
+    grid-template-columns:1.5rem minmax(0, 1fr) 6.5rem;
+    align-items:start;
+    gap:0.6rem;
+    padding:0.5rem 0;
+    border-top:1px solid var(--border);
+}
+
+.match-team-title {
+    text-align:center;
+}
+
+.match-actions {
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.75rem;
+}
+
+.match-player > strong {
+    padding-top:0.65rem;
+}
+
+.match-player-entry {
+    position:relative;
+    min-width:0;
+}
+
+.match-search {
+    margin:0;
+}
+
+.match-search[hidden],
+.match-selected[hidden] {
+    display:none;
+}
+
+.match-selected {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:0.5rem;
+    min-height:2.5rem;
+}
+
+.match-selected span {
+    min-width:0;
+}
+
+.match-selected div {
+    display:grid;
+    gap:0.2rem;
+}
+
+.match-selected div span {
+    color:var(--text-muted);
+}
+
+.match-slot-status {
+    margin:0.25rem 0 0;
+    color:var(--text-muted);
+    font-size:0.85rem;
+}
+
+.match-slot-status:empty {
+    display:none;
+}
+
+.match-search-results:not(:empty) {
+    position:absolute;
+    z-index:10;
+    top:100%;
+    left:0;
+    right:0;
+    max-height:18rem;
+    overflow-y:auto;
+    padding:0.4rem;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:var(--surface);
+    box-shadow:0 4px 14px rgba(0,0,0,0.18);
+}
+
+.match-rating-label {
+    display:flex;
+    align-items:center;
+    gap:0.3rem;
+    padding-top:0.3rem;
+}
+
+.match-rating-label input {
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    padding:0.35rem;
+    font:inherit;
+    border:1px solid var(--border-dark);
+    border-radius:6px;
+    background:var(--surface);
+    color:var(--text);
+}
+
+.match-doubles {
+    margin-bottom:1rem;
+}
+
+.match-pair-heading {
+    margin:1rem 0 0.3rem;
+    font-weight:bold;
+}
+
+.match-summary {
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:1rem;
+    margin-bottom:1.5rem;
+    text-align:center;
+}
+
+.match-summary strong,
+.match-summary span {
+    display:block;
+}
+
+.match-summary strong {
+    font-size:1.5rem;
+}
+
+.match-fixtures {
+    min-width:48rem;
+}
+
+.match-fixtures td:nth-last-child(-n+2) {
+    white-space:nowrap;
+    text-align:right;
+}
+
 .comparison-chart-line {
     fill:none;
     stroke-width:4;
@@ -1163,6 +1301,10 @@ table.dataTable thead .dt-column-title {
     }
 
     .comparison-pickers {
+        grid-template-columns:1fr;
+    }
+
+    .match-summary {
         grid-template-columns:1fr;
     }
 }

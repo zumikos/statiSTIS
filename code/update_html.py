@@ -16,6 +16,7 @@ NAVIGATION = [
     ("oddily.html", "Oddíly"),
     ("hledat-hrace.html", "Hledat hráče"),
     ("porovnat-hrace.html", "Porovnat hráče"),
+    ("simulace-utkani.html", "Simulace utkání"),
     ("rekordy.html", "Rekordy"),
     ("o-projektu.html", "O projektu"),
 ]
