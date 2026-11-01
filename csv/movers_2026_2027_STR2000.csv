@@ -1,184 +1,211 @@
 ﻿Pořadí,ID,Hráč,Rok narození,Pohlaví,Oddíl,Kraj,Region,STR letošní,STR loňské,STR změna
-1,83343,Rehotun Oleh,2006,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2250,2225,25
-2,31356,Tregler Tomáš,1990,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2378,2354,24
-3,14578,Šenkapoul Petr,1980,M,"TTC Moravská Slavia Brno, z.s.",KSST Jihomoravský,RSST Brno - město,2058,2038,20
-4,58007,Pařízek Martin,2000,M,Tělocvičná jednota Sokol Horažďovice,KSST Plzeňský,RSST Klatovy,2091,2073,18
-4,36944,Záškodný Marek,1990,M,Tělocvičná jednota Sokol Horažďovice,KSST Plzeňský,RSST Klatovy,2033,2015,18
-6,67298,Tymofieiev Oleksandr,1996,M,Sportovní klub stolního tenisu Liga Pro Liberec z.s.,KSST Liberecký,RSST Liberec,2307,2290,17
-6,56575,Štalzer Adam,2003,M,"TT Club Ostrava, z.s.",Moravskoslezský SST,MěSST Ostrava,2336,2319,17
-6,56327,Janovský Dan,2003,M,TJ Sokol PP Hradec Králové 2,KSST Kralovéhradecký,RSST Hradec Králové,2227,2210,17
-9,64686,Benák Jan,2005,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2103,2088,15
-9,38688,Voňka Jakub,1994,M,"TJ Tatran Hostinné, spolek",KSST Kralovéhradecký,RSST Trutnov,2023,2008,15
-9,47128,Žaloudík Jan,1998,M,"TTC KARLOVARSKO 2020, z.s.",KSST Karlovarský,RSST Cheb,2066,2051,15
-12,63290,Slapnička Jakub,2003,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2213,2199,14
-12,74971,Záleský Martin,2007,M,"SK Dobré, z.s.",KSST Kralovéhradecký,RSST Rychnov nad Kněžnou,2064,2050,14
-12,64716,Šíp Martin,2006,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2301,2287,14
-12,40128,Seibert Jakub,1995,M,Sportovní klub stolního tenisu Liga Pro Liberec z.s.,KSST Liberecký,RSST Liberec,2322,2308,14
-16,66167,Řeháček Jiří,2007,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2154,2141,13
-17,58228,Sadílek Tomáš,1975,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2231,2219,12
-17,73372,Kabelka Jakub,2009,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2236,2224,12
-17,25149,Matýsek Libor,1987,M,TJ Sokol Velký Osek,Středočeský SST,RSST Kolín,2015,2003,12
-17,87994,Debnár Radovan,1984,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2128,2116,12
-21,69896,Pařil Ondřej,2003,M,Tělocvičná jednota Sokol Horažďovice,KSST Plzeňský,RSST Klatovy,2062,2051,11
-21,15058,Pejša Karel,1971,M,"TJ TATRAN SEDLČANY, z.s.",Středočeský SST,RSST Příbram,2033,2022,11
-21,72964,Gómez Alejandro Gustavo,1994,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2411,2400,11
-24,372,Ševčíková Markéta,1998,Z,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,2116,2106,10
-24,51782,Szwarc Matěj,2001,M,"TJ Třineckých železáren, spolek",Moravskoslezský SST,OSST Frýdek-Místek,2047,2037,10
-24,58120,Himal Tomáš,1999,M,"Klub stolního tenisu LVA, z.s.",KSST Jihomoravský,RSST Břeclav,2025,2015,10
-24,2465,Medek Josef,1976,M,Sportovní klub stolního tenisu Liga Pro Liberec z.s.,KSST Liberecký,RSST Liberec,2105,2095,10
-24,63417,Morávek Jindřich,2007,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2284,2274,10
-24,50716,Onderka František,2002,M,TJ Sokol PP Hradec Králové 2,KSST Kralovéhradecký,RSST Hradec Králové,2416,2406,10
-24,64687,Benák Vít,2005,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2175,2165,10
-24,49139,Bako Radim,2001,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2230,2220,10
-32,35775,Koblížek Martin,1996,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2407,2398,9
-32,59845,Brhel Štěpán,2006,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2375,2366,9
-32,58156,Frydrych Václav,1983,M,TJ DDM Valašské Meziříčí,KSST Zlínský,RSST Vsetín,2113,2104,9
-32,38743,Tomanová Tamara,1994,Z,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2052,2043,9
-32,10918,Kalenský Jaroslav,1976,M,"TJ Tatran Hostinné, spolek",KSST Kralovéhradecký,RSST Trutnov,2059,2050,9
-32,55900,Vitásek Adam,2000,M,KST Sokol Znojmo-Orel Únanov,KSST Jihomoravský,RSST Znojmo,2104,2095,9
-38,74999,Kunc Jan,2010,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2131,2123,8
-38,72136,Chernyavskaya Ekaterina,1996,Z,"TT Moravský Krumlov, z.s.",KSST Jihomoravský,RSST Znojmo,2013,2005,8
-38,72175,Špánik Tibor,1999,M,TJ Sokol PP Hradec Králové 2,KSST Kralovéhradecký,RSST Hradec Králové,2317,2309,8
-41,88756,Biolek Martin,1968,M,"Oddíl stolního tenisu TTC MG ODRA GAS Vratimov,z.s.",Moravskoslezský SST,MěSST Ostrava,2046,2039,7
-41,68815,Poláková Veronika ml.,2008,Z,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2025,2018,7
-41,66134,Kaucký Filip,2008,M,"SK Kotlářka, z.s.",Pražský SST,Pražský SST,2105,2098,7
-41,72503,Račák Filip,2010,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2164,2157,7
-41,67398,Kadavý Ondřej,2003,M,Klub stolního tenisu Bohnice z.s.,Pražský SST,Pražský SST,2084,2077,7
-41,88492,Kokavec Pavol,2009,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2174,2167,7
-47,69006,Olejník Oliver,2011,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2104,2098,6
-47,83008,Bartal Mário,1997,M,"Tělovýchovná jednota Sokol Lanžhot, z.s.",KSST Jihomoravský,RSST Břeclav,2020,2014,6
-47,69012,Balvar Oliver,2009,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2131,2125,6
-47,74016,Kodet Hanka,2010,Z,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2077,2071,6
-47,58187,Kleprlík Jakub,1986,M,"TT Club Ostrava, z.s.",Moravskoslezský SST,MěSST Ostrava,2362,2356,6
-47,44164,Vašíček Jan,1999,M,"Tělovýchovná jednota Sokol Lanžhot, z.s.",KSST Jihomoravský,RSST Břeclav,2018,2012,6
-47,63618,Szotkowski Jan,2003,M,"TJ Třineckých železáren, spolek",Moravskoslezský SST,OSST Frýdek-Místek,2057,2051,6
-54,19656,Zlámal Jaromír,1987,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2248,2243,5
-54,83536,Opanasiuk Dmytro,2008,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2046,2041,5
-54,4170,Hlaváček Tomáš,1979,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2139,2134,5
-54,14119,Dudík Luboš,1978,M,"Klub stolního tenisu Kunštát, z.s.",KSST Jihomoravský,RSST Blansko,2018,2013,5
-54,55902,Rakov Valeriy,1984,M,TJ Sokol Borová,KSST Pardubický,RSST Svitavy,2112,2107,5
-59,39045,Reitšpies David,1996,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2501,2497,4
-59,71593,Lebeda Lukáš,2009,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2013,2009,4
-59,58253,Wasik Petr,1978,M,"TJ Orion Praha, z.s.",Pražský SST,Pražský SST,2112,2108,4
-59,19338,Janča Miroslav,1986,M,KST Město Albrechtice,KSST Olomoucký,RSST Bruntál,2098,2094,4
-63,79651,Zelinka Jakub,2000,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2415,2412,3
-63,49821,Strejc Filip,1998,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2249,2246,3
-63,38506,Veselý Lukáš,1988,M,Table Tennis Club Koral Tišnov z.s.,KSST Jihomoravský,RSST Brno - venkov,2013,2010,3
-63,45836,Ezr Václav,1996,M,"TJ Sokol Lhůta, z. s.",KSST Plzeňský,RSST Plzeň - město,2009,2006,3
-63,4966,Niezgoda Rostislav,1976,M,KST Město Albrechtice,KSST Olomoucký,RSST Bruntál,2039,2036,3
-63,14497,Cvrkal Rudolf,1969,M,Orel jednota Silůvky,KSST Jihomoravský,RSST Brno - venkov,2041,2038,3
-63,72749,Pařízek Richard,2008,M,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,2018,2015,3
-63,4615,Wawrosz Pavel,1970,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2021,2018,3
-63,60409,Knobloch Miroslav,2002,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2049,2046,3
-63,27914,Štepka Miroslav,1990,M,"TJ Šanov, z.s.",Středočeský SST,RSST Rakovník,2110,2107,3
-63,66068,Jedlička Karel,2008,M,KST Apollo Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2198,2195,3
-74,43775,Pluhař Jan,1997,M,"SK Slavia Praha - stolní tenis, z. s.",Pražský SST,Pražský SST,2049,2047,2
-74,43783,Bělohlávek Dominik,1998,M,TJ Sokol Borová,KSST Pardubický,RSST Svitavy,2147,2145,2
-74,32650,Král Filip,1992,M,"TJ Jiskra Otrokovice, z.s.",KSST Zlínský,OSST Zlín,2008,2006,2
-74,60937,Heinzl Lukáš,2003,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2057,2055,2
-74,276,Kolůch Jaroslav,1975,M,"Klub stolního tenisu LVA, z.s.",KSST Jihomoravský,RSST Břeclav,2040,2038,2
-74,83292,Bidochko Vladyslav,2010,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2050,2048,2
-74,63326,Nechyba Radim,2007,M,KST Apollo Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2080,2078,2
-74,60071,Pisár Jan,2004,M,Stolní tenis Sever Žatec z.s.,KSST Ústecký,RSST Louny,2134,2132,2
-74,31260,Smýkal Tomáš,1993,M,TJ Sokol PP Hradec Králové 2,KSST Kralovéhradecký,RSST Hradec Králové,2215,2213,2
-74,3565,Pilner Jaroslav,1971,M,ST EUROMASTER Kolín,Středočeský SST,RSST Kolín,2019,2017,2
-74,56502,Kalužný Samuel,1997,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2295,2293,2
-74,91168,Olave Quinteros Alfonso Andrés,1995,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2292,2290,2
-86,11456,Janoušek Přemek,1976,M,TJ Jiskra Strážnice z.s.,KSST Jihomoravský,RSST Hodonín,2055,2054,1
-86,45279,Šilhán Petr,1995,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2210,2209,1
-86,64596,Krameš Jan st.,1975,M,"Tělovýchovná jednota Lokomotiva Vršovice, z.s.",Pražský SST,Pražský SST,2002,2001,1
-86,25962,Červík Jaroslav,1989,M,TJ Sokol Šarovy z.s.,KSST Zlínský,OSST Zlín,2019,2018,1
-86,10568,Kocáb Jan,1984,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2012,2011,1
-86,31560,Knybel Kamil,1990,M,"TTC Bolatice, z.s.",Moravskoslezský SST,RSST Opava,2012,2011,1
-86,64531,Fencl Jakub,2004,M,Sportovní klub policie Sever Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2040,2039,1
-86,41764,Sikora Filip,1997,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2063,2062,1
-86,58802,Mynář Vojtěch,2001,M,"KST NOVÝ JIČÍN, z.s.",Moravskoslezský SST,RSST Nový Jičín,2128,2127,1
-86,41498,Hort Tomáš,1997,M,TJ Sokol PP Hradec Králové 2,KSST Kralovéhradecký,RSST Hradec Králové,2087,2086,1
-86,59794,Vaněk Petr,2001,M,"TJ Slavoj Praha, spolek",Pražský SST,Pražský SST,2063,2062,1
-86,71452,Laboutka Luděk,1966,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2106,2105,1
-98,63405,Zacharda Jáchym,2005,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2075,2075,0
-98,19657,Dzida Jan,1973,M,KST Město Albrechtice,KSST Olomoucký,RSST Bruntál,2083,2083,0
-98,21262,Havlík Tomáš,1986,M,"TJ ČZ Strakonice , spolek",KSST Jihočeský,RSST Strakonice,2160,2160,0
-98,73583,Dušek Rostislav,2007,M,"SK Dobré, z.s.",KSST Kralovéhradecký,RSST Rychnov nad Kněžnou,2023,2023,0
-98,64388,Belopotočan Roman,1976,M,"TJ AVIA Čakovice, z.s.",Pražský SST,Pražský SST,2149,2149,0
-98,66422,Slaný Vojtěch,2005,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2144,2144,0
-98,57931,Marek David,1979,M,TJ Sokol Borová,KSST Pardubický,RSST Svitavy,2230,2230,0
-98,45686,Korbel Filip ml.,1994,M,Tělocvičná jednota Sokol Studená I.,KSST Jihočeský,RSST Jindřichův Hradec,2237,2237,0
-98,71590,Škalda Jan,2009,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2276,2276,0
-98,44725,Gorecki Jan,1999,M,"KST NOVÝ JIČÍN, z.s.",Moravskoslezský SST,RSST Nový Jičín,2142,2142,0
-98,58220,Plaček František,1989,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2164,2164,0
-98,58186,Klásek Marek,1975,M,"KST NOVÝ JIČÍN, z.s.",Moravskoslezský SST,RSST Nový Jičín,2251,2251,0
-110,58214,Olejník Martin,1972,M,KST Apollo Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2377,2378,-1
-110,58328,Sklenský Miroslav,1980,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2187,2188,-1
-110,60346,Důra Matouš,2002,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2138,2139,-1
-110,57919,Valeš Jakub,2003,M,"TJ Tatran Hostinné, spolek",KSST Kralovéhradecký,RSST Trutnov,2008,2009,-1
-110,10556,Stibor Michal,1983,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2001,2002,-1
-110,57381,Hrabicová Klára,2003,Z,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2018,2019,-1
-110,61464,Fígeľ Jakub,1992,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2374,2375,-1
-117,56685,Dostál Jan,2002,M,TJ Sokol Borová,KSST Pardubický,RSST Svitavy,2038,2040,-2
-117,68504,Král Ondřej,2009,M,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,2052,2054,-2
-117,68817,Vaigl Martin,2007,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2153,2155,-2
-117,16014,Ondryáš Daniel,1971,M,Tělocvičná jednota Sokol Vsetín,KSST Zlínský,RSST Vsetín,2080,2082,-2
-121,59788,Sedláček Michael,2003,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2099,2102,-3
-121,63941,Košťál Daniel,2005,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2253,2256,-3
-121,11893,Konečný Tomáš,1985,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2445,2448,-3
-121,38107,Schwarzer Antonín,1989,M,TJ Agrotec Hustopeče z.s.,KSST Jihomoravský,RSST Břeclav,2131,2134,-3
-125,51123,Martinko Jiří,1999,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2464,2468,-4
-125,58063,Blinka Michal,2001,M,"TT Club Ostrava, z.s.",Moravskoslezský SST,MěSST Ostrava,2339,2343,-4
-125,47358,Koubek Vojtěch,2000,M,ST EUROMASTER Kolín,Středočeský SST,RSST Kolín,2088,2092,-4
-125,71914,Elicer Lukáš,2010,M,"SK Kotlářka, z.s.",Pražský SST,Pražský SST,2026,2030,-4
-125,58215,Panský Jindřich,1960,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2042,2046,-4
-125,45828,Bochňák David,1995,M,Klub stolního tenisu Bohnice z.s.,Pražský SST,Pražský SST,2055,2059,-4
-125,67101,Kolečkář Matyáš,2008,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2192,2196,-4
-125,28662,Štrof Vojtěch,1992,M,TJ Sokol PP Hradec Králové 2,KSST Kralovéhradecký,RSST Hradec Králové,2286,2290,-4
-133,57579,Hubáček Filip,1998,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2088,2093,-5
-133,58724,Levora Vojtěch,2003,M,"TTC KARLOVARSKO 2020, z.s.",KSST Karlovarský,RSST Cheb,2080,2085,-5
-133,68783,Slaný Martin,2008,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2104,2109,-5
-133,59164,Krejčí Ondřej,2001,M,"TJ ČZ Strakonice , spolek",KSST Jihočeský,RSST Strakonice,2000,2005,-5
-137,88691,Pryshchepa Ievgen,1985,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2416,2422,-6
-137,30905,Malý Petr,1989,M,"TJ Dobřany, z.s.",KSST Plzeňský,RSST Plzeň - jih,2097,2103,-6
-137,80634,Skřivánek Tomáš,2009,M,SK Přerov,KSST Olomoucký,RSST Přerov,2080,2086,-6
-140,60431,Přída Kryštof,2002,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2226,2233,-7
-140,60699,Truněček Martin,2004,M,TJ Sokol PP Hradec Králové 2,KSST Kralovéhradecký,RSST Hradec Králové,2074,2081,-7
-142,45685,Novotný Petr,1977,M,TJ Sokol Stěžery,KSST Kralovéhradecký,RSST Hradec Králové,2081,2089,-8
-142,31266,Pinka Jan,1991,M,"Table Tennis Club Litoměřice, z.s.",KSST Ústecký,RSST Litoměřice,2031,2039,-8
-142,64053,Rezetka Roman,1995,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2321,2329,-8
-145,44107,Buben Vlastimil,1999,M,TJ Sokol PP Hradec Králové 2,KSST Kralovéhradecký,RSST Hradec Králové,2288,2297,-9
-145,28895,Širuček Pavel,1992,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2517,2526,-9
-145,50731,Skála Radek,2002,M,TJ Agrotec Hustopeče z.s.,KSST Jihomoravský,RSST Břeclav,2273,2282,-9
-145,60118,Bača Jaroslav ml.,2005,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2054,2063,-9
-145,85795,Michalak Aleksandra,2001,Z,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2096,2105,-9
-145,83604,Zelinka Matúš,2001,M,Klub stolního tenisu Bohnice z.s.,Pražský SST,Pražský SST,2110,2119,-9
-151,64710,Kadlec Vít,2005,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2353,2363,-10
-151,33869,Štofka Filip,1991,M,TTC Fénix Brno z.s.,KSST Jihomoravský,RSST Brno - město,1996,2006,-10
-151,56398,Květon Ondřej,2004,M,"TT Club Ostrava, z.s.",Moravskoslezský SST,MěSST Ostrava,2374,2384,-10
-151,14825,Štěpánek David,1971,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2230,2240,-10
-151,49738,Brožek Michal,1992,M,Sokol Lány 2,Středočeský SST,RSST Rakovník,2008,2018,-10
-156,63097,Vondráček Filip,2004,M,Stolní tenis Sever Žatec z.s.,KSST Ústecký,RSST Louny,1991,2002,-11
-156,48370,Vybíral Lukáš,1996,M,KST Sokol Znojmo-Orel Únanov,KSST Jihomoravský,RSST Znojmo,2108,2119,-11
-156,55780,Kubátová Hana,1981,Z,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2026,2037,-11
-159,30156,Morávek Radim,2003,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2320,2332,-12
-160,63462,Grabovský Jaroslav ml.,2008,M,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,2007,2020,-13
-160,71252,Březina Radovan,2009,M,"KST Zlín, z.s.",KSST Zlínský,OSST Zlín,1991,2004,-13
-160,59901,Hušek Adam,2001,M,KST Sokol Znojmo-Orel Únanov,KSST Jihomoravský,RSST Znojmo,2042,2055,-13
-160,55027,Beneš Pavel,2002,M,TJ Spartak Kaplice,KSST Jihočeský,RSST Český Krumlov,2001,2014,-13
-160,28549,Čížek Jiří,1988,M,"PINK Liberec, z.s.",KSST Liberecký,RSST Liberec,2087,2100,-13
-160,34546,Bíma Miroslav,1991,M,Klub stolního tenisu Jirkov z.s.,KSST Ústecký,RSST Chomutov,2000,2013,-13
-166,29490,Širučková Aneta,1991,Z,"Městský sportovní klub Břeclav stolní tenis, pobočný spolek",KSST Jihomoravský,RSST Břeclav,2000,2014,-14
-166,35721,Gavlas Antonín ml.,1985,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2457,2471,-14
-166,38168,Macela Petr,1981,M,Tělocvičná jednota Sokol Horažďovice,KSST Plzeňský,RSST Klatovy,2088,2102,-14
-166,33486,Grofová Karin,1994,Z,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,2101,2115,-14
-166,52519,Blašková Zdena,2001,Z,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2122,2136,-14
-166,67556,Rak Jonáš,2005,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2078,2092,-14
-172,14678,Tschakert Tomáš,1981,M,"Table Tennis Club Litoměřice, z.s.",KSST Ústecký,RSST Litoměřice,2043,2058,-15
-173,50889,Merta Jakub,1989,M,TJ Tesla Pardubice,KSST Pardubický,RSST Pardubice,2124,2140,-16
-174,76729,Kopányi Tomáš,1997,M,TJ Agrotec Hustopeče z.s.,KSST Jihomoravský,RSST Břeclav,2192,2209,-17
-174,63716,Maršálek Vladimír,1970,M,"TTC FRÝDLANT, z.s.",Moravskoslezský SST,OSST Frýdek-Místek,2075,2092,-17
-176,44508,Klos Patrik,1998,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2382,2400,-18
-176,25899,Crha Jakub,1989,M,TJ Agrotec Hustopeče z.s.,KSST Jihomoravský,RSST Břeclav,2327,2345,-18
-178,71810,Jirout Vojtěch,2007,M,TJ Jiskra Heřmanův Městec z.s.,KSST Pardubický,RSST Chrudim,2063,2082,-19
-178,52120,Rusnák Aleš,2002,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2089,2108,-19
-178,27665,Herout František,1990,M,SKC Zruč nad Sázavou z.s.,Středočeský SST,RSST Kutná Hora,1988,2007,-19
-178,54067,Petrovová Nikita,1999,Z,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,1995,2014,-19
-182,3595,Šedivý Zdeněk,1978,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2054,2075,-21
-183,10589,Černý Vít,1977,M,"TJ Slovan Lochovice, z.s.",Středočeský SST,RSST Beroun,1975,2000,-25
+1,31356,Tregler Tomáš,1990,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2403,2354,49
+2,68817,Vaigl Martin,2007,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2197,2155,42
+3,56327,Janovský Dan,2003,M,TJ Sokol PP Hradec Králové 2,KSST Královéhradecký,RSST Hradec Králové,2246,2210,36
+3,74971,Záleský Martin,2007,M,"SK Dobré, z.s.",KSST Královéhradecký,RSST Rychnov nad Kněžnou,2086,2050,36
+5,83292,Bidochko Vladyslav,2010,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2082,2048,34
+5,36944,Záškodný Marek,1990,M,Tělocvičná jednota Sokol Horažďovice,KSST Plzeňský,RSST Klatovy,2049,2015,34
+7,64687,Benák Vít,2005,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2198,2165,33
+8,38688,Voňka Jakub,1994,M,"TJ Tatran Hostinné, spolek",KSST Královéhradecký,RSST Trutnov,2039,2008,31
+8,67101,Kolečkář Matyáš,2008,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2227,2196,31
+10,58007,Pařízek Martin,2000,M,Tělocvičná jednota Sokol Horažďovice,KSST Plzeňský,RSST Klatovy,2103,2073,30
+11,69006,Olejník Oliver,2011,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2127,2098,29
+11,83536,Opanasiuk Dmytro,2008,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2070,2041,29
+13,64716,Šíp Martin,2006,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2315,2287,28
+13,56575,Štalzer Adam,2003,M,"TT Club Ostrava, z.s.",Moravskoslezský SST,MěSST Ostrava,2347,2319,28
+15,47128,Žaloudík Jan,1998,M,"TTC KARLOVARSKO 2020, z.s.",KSST Karlovarský,RSST Cheb,2077,2051,26
+16,72136,Chernyavskaya Ekaterina,1996,Z,"TT Moravský Krumlov, z.s.",KSST Jihomoravský,RSST Znojmo,2030,2005,25
+16,4615,Wawrosz Pavel,1970,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2043,2018,25
+18,59788,Sedláček Michael,2003,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2126,2102,24
+18,10568,Kocáb Jan,1984,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2035,2011,24
+18,55902,Rakov Valeriy,1984,M,TJ Sokol Borová,KSST Pardubický,RSST Svitavy,2131,2107,24
+21,51782,Szwarc Matěj,2001,M,"TJ Třineckých železáren, spolek",Moravskoslezský SST,OSST Frýdek-Místek,2060,2037,23
+21,88756,Biolek Martin,1968,M,"Oddíl stolního tenisu TTC MG ODRA GAS Vratimov,z.s.",Moravskoslezský SST,MěSST Ostrava,2062,2039,23
+23,74999,Kunc Jan,2010,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2145,2123,22
+24,63618,Szotkowski Jan,2003,M,"TJ Třineckých železáren, spolek",Moravskoslezský SST,OSST Frýdek-Místek,2072,2051,21
+24,73372,Kabelka Jakub,2009,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2245,2224,21
+24,74151,Morávek Ondřej,2011,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2168,2147,21
+27,83343,Rehotun Oleh,2006,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2245,2225,20
+27,87994,Debnár Radovan,1984,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2136,2116,20
+27,14578,Šenkapoul Petr,1980,M,"TTC Moravská Slavia Brno, z.s.",KSST Jihomoravský,RSST Brno - město,2058,2038,20
+27,38743,Tomanová Tamara,1994,Z,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2063,2043,20
+27,83008,Bartal Mário,1997,M,"Tělovýchovná jednota Sokol Lanžhot, z.s.",KSST Jihomoravský,RSST Břeclav,2034,2014,20
+32,58253,Wasik Petr,1978,M,"TJ Orion Praha, z.s.",Pražský SST,Pražský SST,2127,2108,19
+33,10918,Kalenský Jaroslav,1976,M,"TJ Tatran Hostinné, spolek",KSST Královéhradecký,RSST Trutnov,2068,2050,18
+33,372,Ševčíková Markéta,1998,Z,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,2124,2106,18
+33,72503,Račák Filip,2010,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2175,2157,18
+36,74172,Dušek Jakub,2009,M,"SK Dobré, z.s.",KSST Královéhradecký,RSST Rychnov nad Kněžnou,2046,2029,17
+36,73583,Dušek Rostislav,2007,M,"SK Dobré, z.s.",KSST Královéhradecký,RSST Rychnov nad Kněžnou,2040,2023,17
+36,68815,Poláková Veronika ml.,2008,Z,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2035,2018,17
+36,25962,Červík Jaroslav,1989,M,TJ Sokol Šarovy z.s.,KSST Zlínský,OSST Zlín,2035,2018,17
+40,71914,Elicer Lukáš,2010,M,"SK Kotlářka, z.s.",Pražský SST,Pražský SST,2046,2030,16
+41,69250,Mareš Erik,2002,M,Sportovní klub stolního tenisu Liga Pro Liberec z.s.,KSST Liberecký,RSST Liberec,2136,2121,15
+41,63417,Morávek Jindřich,2007,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2289,2274,15
+41,72964,Gómez Alejandro Gustavo,1994,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2415,2400,15
+44,41764,Sikora Filip,1997,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2076,2062,14
+44,10556,Stibor Michal,1983,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2016,2002,14
+44,38506,Veselý Lukáš,1988,M,Table Tennis Club Koral Tišnov z.s.,KSST Jihomoravský,RSST Brno - venkov,2024,2010,14
+44,88492,Kokavec Pavol,2009,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2181,2167,14
+44,58328,Sklenský Miroslav,1980,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2202,2188,14
+49,43783,Bělohlávek Dominik,1998,M,TJ Sokol Borová,KSST Pardubický,RSST Svitavy,2158,2145,13
+49,40128,Seibert Jakub,1995,M,Sportovní klub stolního tenisu Liga Pro Liberec z.s.,KSST Liberecký,RSST Liberec,2321,2308,13
+49,63330,Vršovský Tadeáš,2009,M,KST Apollo Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2025,2012,13
+52,47695,Čermák Marek,2000,M,Tělocvičná jednota Sokol Studená I.,KSST Jihočeský,RSST Jindřichův Hradec,2121,2109,12
+52,58228,Sadílek Tomáš,1975,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2231,2219,12
+52,27665,Herout František,1990,M,SKC Zruč nad Sázavou z.s.,Středočeský SST,RSST Kutná Hora,2019,2007,12
+55,64686,Benák Jan,2005,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2099,2088,11
+56,44725,Gorecki Jan,1999,M,"KST NOVÝ JIČÍN, z.s.",Moravskoslezský SST,RSST Nový Jičín,2152,2142,10
+57,60071,Pisár Jan,2004,M,Stolní tenis Sever Žatec z.s.,KSST Ústecký,RSST Louny,2141,2132,9
+57,58188,Kleprlík Michal,1986,M,TJ Tesla Pardubice,KSST Pardubický,RSST Pardubice,2180,2171,9
+57,63290,Slapnička Jakub,2003,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2208,2199,9
+57,58250,Vožický Bohumil,1977,M,Sportovní klub stolního tenisu Liga Pro Liberec z.s.,KSST Liberecký,RSST Liberec,2332,2323,9
+57,58186,Klásek Marek,1975,M,"KST NOVÝ JIČÍN, z.s.",Moravskoslezský SST,RSST Nový Jičín,2260,2251,9
+57,49821,Strejc Filip,1998,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2255,2246,9
+57,50716,Onderka František,2002,M,TJ Sokol PP Hradec Králové 2,KSST Královéhradecký,RSST Hradec Králové,2415,2406,9
+57,64388,Belopotočan Roman,1976,M,"TJ AVIA Čakovice, z.s.",Pražský SST,Pražský SST,2158,2149,9
+57,66422,Slaný Vojtěch,2005,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2153,2144,9
+66,71590,Škalda Jan,2009,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2284,2276,8
+66,31260,Smýkal Tomáš,1993,M,TJ Sokol PP Hradec Králové 2,KSST Královéhradecký,RSST Hradec Králové,2221,2213,8
+66,4170,Hlaváček Tomáš,1979,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2142,2134,8
+66,60937,Heinzl Lukáš,2003,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2063,2055,8
+66,63326,Nechyba Radim,2007,M,KST Apollo Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2086,2078,8
+66,19338,Janča Miroslav,1986,M,KST Město Albrechtice,KSST Olomoucký,RSST Bruntál,2102,2094,8
+66,71593,Lebeda Lukáš,2009,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2017,2009,8
+66,35775,Koblížek Martin,1996,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2406,2398,8
+66,91168,Olave Quinteros Alfonso Andrés,1995,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2298,2290,8
+75,25149,Matýsek Libor,1987,M,TJ Sokol Velký Osek,Středočeský SST,RSST Kolín,2010,2003,7
+75,52610,Veigl Lukáš,2001,M,Klub stolního tenisu Bohnice z.s.,Pražský SST,Pražský SST,2016,2009,7
+75,58063,Blinka Michal,2001,M,"TT Club Ostrava, z.s.",Moravskoslezský SST,MěSST Ostrava,2350,2343,7
+75,42378,Kabelka Tomáš,1976,M,KST Apollo Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2320,2313,7
+75,45686,Korbel Filip ml.,1994,M,Tělocvičná jednota Sokol Studená I.,KSST Jihočeský,RSST Jindřichův Hradec,2244,2237,7
+80,58187,Kleprlík Jakub,1986,M,"TT Club Ostrava, z.s.",Moravskoslezský SST,MěSST Ostrava,2362,2356,6
+80,58220,Plaček František,1989,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2170,2164,6
+80,57579,Hubáček Filip,1998,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2099,2093,6
+80,44164,Vašíček Jan,1999,M,"Tělovýchovná jednota Sokol Lanžhot, z.s.",KSST Jihomoravský,RSST Břeclav,2018,2012,6
+84,28662,Štrof Vojtěch,1992,M,TJ Sokol PP Hradec Králové 2,KSST Královéhradecký,RSST Hradec Králové,2295,2290,5
+84,58802,Mynář Vojtěch,2001,M,"KST NOVÝ JIČÍN, z.s.",Moravskoslezský SST,RSST Nový Jičín,2132,2127,5
+84,30903,Roubíček Jan,1989,M,"TJ Dobřany, z.s.",KSST Plzeňský,RSST Plzeň - jih,2037,2032,5
+84,14119,Dudík Luboš,1978,M,"Klub stolního tenisu Kunštát, z.s.",KSST Jihomoravský,RSST Blansko,2018,2013,5
+84,58156,Frydrych Václav,1983,M,TJ DDM Valašské Meziříčí,KSST Zlínský,RSST Vsetín,2109,2104,5
+84,64596,Krameš Jan st.,1975,M,"Tělovýchovná jednota Lokomotiva Vršovice, z.s.",Pražský SST,Pražský SST,2006,2001,5
+90,58214,Olejník Martin,1972,M,KST Apollo Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2382,2378,4
+90,64531,Fencl Jakub,2004,M,Sportovní klub policie Sever Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2043,2039,4
+90,56677,Dufek Jan,2003,M,"KST Zlín, z.s.",KSST Zlínský,OSST Zlín,2076,2072,4
+90,85795,Michalak Aleksandra,2001,Z,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2109,2105,4
+90,63405,Zacharda Jáchym,2005,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2079,2075,4
+90,19657,Dzida Jan,1973,M,KST Město Albrechtice,KSST Olomoucký,RSST Bruntál,2087,2083,4
+90,65902,Nádvorník Václav,2006,M,"TJ Slavoj Praha, spolek",Pražský SST,Pražský SST,2009,2005,4
+90,75023,Wasilewski Damian,1987,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2154,2150,4
+98,58218,Pavlica Martin,1983,M,TJ Agrotec Hustopeče z.s.,KSST Jihomoravský,RSST Břeclav,2143,2140,3
+98,88791,Mukherjee Sagarika,1996,Z,"TT Moravský Krumlov, z.s.",KSST Jihomoravský,RSST Znojmo,2160,2157,3
+98,30905,Malý Petr,1989,M,"TJ Dobřany, z.s.",KSST Plzeňský,RSST Plzeň - jih,2106,2103,3
+98,11456,Janoušek Přemek,1976,M,TJ Jiskra Strážnice z.s.,KSST Jihomoravský,RSST Hodonín,2057,2054,3
+98,67298,Tymofieiev Oleksandr,1996,M,Sportovní klub stolního tenisu Liga Pro Liberec z.s.,KSST Liberecký,RSST Liberec,2293,2290,3
+103,66068,Jedlička Karel,2008,M,KST Apollo Ústí nad Labem z.s.,KSST Ústecký,RSST Ústí nad Labem,2197,2195,2
+103,21262,Havlík Tomáš,1986,M,"TJ ČZ Strakonice , spolek",KSST Jihočeský,RSST Strakonice,2162,2160,2
+103,66167,Řeháček Jiří,2007,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2143,2141,2
+103,14497,Cvrkal Rudolf,1969,M,Orel jednota Silůvky,KSST Jihomoravský,RSST Brno - venkov,2040,2038,2
+103,2198,Bojko Karel,1975,M,TJ Sokol Šarovy z.s.,KSST Zlínský,OSST Zlín,2067,2065,2
+103,32650,Král Filip,1992,M,"TJ Jiskra Otrokovice, z.s.",KSST Zlínský,OSST Zlín,2008,2006,2
+103,4966,Niezgoda Rostislav,1976,M,KST Město Albrechtice,KSST Olomoucký,RSST Bruntál,2038,2036,2
+103,34478,Topič Arnošt,1993,M,TJ Sokol Šarovy z.s.,KSST Zlínský,OSST Zlín,2086,2084,2
+111,64627,Dobiáš Ladislav,2004,M,"TJ Jiskra Třeboň, z.s.",KSST Jihočeský,RSST Jindřichův Hradec,2046,2045,1
+111,66134,Kaucký Filip,2008,M,"SK Kotlářka, z.s.",Pražský SST,Pražský SST,2099,2098,1
+111,60118,Bača Jaroslav ml.,2005,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2064,2063,1
+111,60346,Důra Matouš,2002,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2140,2139,1
+115,72749,Pařízek Richard,2008,M,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,2015,2015,0
+115,44731,Kowal René,1996,M,"TJ ČZ Strakonice , spolek",KSST Jihočeský,RSST Strakonice,2020,2020,0
+115,57931,Marek David,1979,M,TJ Sokol Borová,KSST Pardubický,RSST Svitavy,2230,2230,0
+115,60409,Knobloch Miroslav,2002,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2046,2046,0
+115,32604,Handl Petr,1993,M,"TTC Moravská Slavia Brno, z.s.",KSST Jihomoravský,RSST Brno - město,2298,2298,0
+115,52522,Palkovský David,1984,M,"TTC KARLOVARSKO 2020, z.s.",KSST Karlovarský,RSST Cheb,2148,2148,0
+121,80634,Skřivánek Tomáš,2009,M,SK Přerov,KSST Olomoucký,RSST Přerov,2085,2086,-1
+121,43775,Pluhař Jan,1997,M,"SK Slavia Praha - stolní tenis, z. s.",Pražský SST,Pražský SST,2046,2047,-1
+121,59845,Brhel Štěpán,2006,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2365,2366,-1
+121,79651,Zelinka Jakub,2000,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2411,2412,-1
+121,72175,Špánik Tibor,1999,M,TJ Sokol PP Hradec Králové 2,KSST Královéhradecký,RSST Hradec Králové,2308,2309,-1
+126,49139,Bako Radim,2001,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2218,2220,-2
+126,3565,Pilner Jaroslav,1971,M,ST EUROMASTER Kolín,Středočeský SST,RSST Kolín,2015,2017,-2
+126,67556,Rak Jonáš,2005,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2090,2092,-2
+126,61464,Fígeľ Jakub,1992,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2373,2375,-2
+130,71252,Březina Radovan,2009,M,"KST Zlín, z.s.",KSST Zlínský,OSST Zlín,2001,2004,-3
+130,2465,Medek Josef,1976,M,Sportovní klub stolního tenisu Liga Pro Liberec z.s.,KSST Liberecký,RSST Liberec,2092,2095,-3
+130,38107,Schwarzer Antonín,1989,M,TJ Agrotec Hustopeče z.s.,KSST Jihomoravský,RSST Břeclav,2131,2134,-3
+130,67398,Kadavý Ondřej,2003,M,Klub stolního tenisu Bohnice z.s.,Pražský SST,Pražský SST,2074,2077,-3
+130,57381,Hrabicová Klára,2003,Z,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2016,2019,-3
+130,56398,Květon Ondřej,2004,M,"TT Club Ostrava, z.s.",Moravskoslezský SST,MěSST Ostrava,2381,2384,-3
+130,56502,Kalužný Samuel,1997,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2290,2293,-3
+137,51123,Martinko Jiří,1999,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2464,2468,-4
+137,74016,Kodet Hanka,2010,Z,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2067,2071,-4
+137,27914,Štepka Miroslav,1990,M,"TJ Šanov, z.s.",Středočeský SST,RSST Rakovník,2103,2107,-4
+140,55027,Beneš Pavel,2002,M,TJ Spartak Kaplice,KSST Jihočeský,RSST Český Krumlov,2009,2014,-5
+141,31560,Knybel Kamil,1990,M,"TTC Bolatice, z.s.",Moravskoslezský SST,RSST Opava,2005,2011,-6
+141,47358,Koubek Vojtěch,2000,M,ST EUROMASTER Kolín,Středočeský SST,RSST Kolín,2086,2092,-6
+141,58724,Levora Vojtěch,2003,M,"TTC KARLOVARSKO 2020, z.s.",KSST Karlovarský,RSST Cheb,2079,2085,-6
+141,33486,Grofová Karin,1994,Z,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,2109,2115,-6
+141,56685,Dostál Jan,2002,M,TJ Sokol Borová,KSST Pardubický,RSST Svitavy,2034,2040,-6
+141,58215,Panský Jindřich,1960,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2040,2046,-6
+147,69012,Balvar Oliver,2009,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2118,2125,-7
+147,30156,Morávek Radim,2003,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2325,2332,-7
+147,11893,Konečný Tomáš,1985,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2441,2448,-7
+147,39045,Reitšpies David,1996,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2490,2497,-7
+151,64053,Rezetka Roman,1995,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2321,2329,-8
+151,60699,Truněček Martin,2004,M,TJ Sokol PP Hradec Králové 2,KSST Královéhradecký,RSST Hradec Králové,2073,2081,-8
+151,57918,Krameš Jan ml.,2002,M,"Tělovýchovná jednota Lokomotiva Vršovice, z.s.",Pražský SST,Pražský SST,1998,2006,-8
+151,31266,Pinka Jan,1991,M,"Table Tennis Club Litoměřice, z.s.",KSST Ústecký,RSST Litoměřice,2031,2039,-8
+151,14825,Štěpánek David,1971,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2232,2240,-8
+151,60431,Přída Kryštof,2002,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2225,2233,-8
+157,44107,Buben Vlastimil,1999,M,TJ Sokol PP Hradec Králové 2,KSST Královéhradecký,RSST Hradec Králové,2288,2297,-9
+158,55900,Vitásek Adam,2000,M,KST Sokol Znojmo-Orel Únanov,KSST Jihomoravský,RSST Znojmo,2085,2095,-10
+158,64710,Kadlec Vít,2005,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2353,2363,-10
+158,63097,Vondráček Filip,2004,M,Stolní tenis Sever Žatec z.s.,KSST Ústecký,RSST Louny,1992,2002,-10
+158,53005,Nedbálek Michal,2001,M,"KST Zlín, z.s.",KSST Zlínský,OSST Zlín,2026,2036,-10
+158,59164,Krejčí Ondřej,2001,M,"TJ ČZ Strakonice , spolek",KSST Jihočeský,RSST Strakonice,1995,2005,-10
+163,15058,Pejša Karel,1971,M,"TJ TATRAN SEDLČANY, z.s.",Středočeský SST,RSST Příbram,2011,2022,-11
+163,46971,Lapčík Ondřej,1999,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2176,2187,-11
+163,44508,Klos Patrik,1998,M,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2389,2400,-11
+166,51845,Mokrejš Jan,2002,M,TJ Sokol PP Hradec Králové 2,KSST Královéhradecký,RSST Hradec Králové,2135,2147,-12
+166,76729,Kopányi Tomáš,1997,M,TJ Agrotec Hustopeče z.s.,KSST Jihomoravský,RSST Břeclav,2197,2209,-12
+166,45836,Ezr Václav,1996,M,"TJ Sokol Lhůta, z. s.",KSST Plzeňský,RSST Plzeň - město,1994,2006,-12
+166,83604,Zelinka Matúš,2001,M,Klub stolního tenisu Bohnice z.s.,Pražský SST,Pražský SST,2107,2119,-12
+170,59794,Vaněk Petr,2001,M,"TJ Slavoj Praha, spolek",Pražský SST,Pražský SST,2049,2062,-13
+170,45828,Bochňák David,1995,M,Klub stolního tenisu Bohnice z.s.,Pražský SST,Pražský SST,2046,2059,-13
+170,68783,Slaný Martin,2008,M,Sportovní klub stolního tenisu Havířov z.s.,Moravskoslezský SST,RSST Karviná,2096,2109,-13
+173,55780,Kubátová Hana,1981,Z,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,2023,2037,-14
+174,69896,Pařil Ondřej,2003,M,Tělocvičná jednota Sokol Horažďovice,KSST Plzeňský,RSST Klatovy,2036,2051,-15
+174,48370,Vybíral Lukáš,1996,M,KST Sokol Znojmo-Orel Únanov,KSST Jihomoravský,RSST Znojmo,2104,2119,-15
+174,88691,Pryshchepa Ievgen,1985,M,Stavební fakulta SK Kotlářka El Niňo Praha,Pražský SST,Pražský SST,2407,2422,-15
+177,45279,Šilhán Petr,1995,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2193,2209,-16
+177,50889,Merta Jakub,1989,M,TJ Tesla Pardubice,KSST Pardubický,RSST Pardubice,2124,2140,-16
+177,52519,Blašková Zdena,2001,Z,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2120,2136,-16
+180,58120,Himal Tomáš,1999,M,"Klub stolního tenisu LVA, z.s.",KSST Jihomoravský,RSST Břeclav,1998,2015,-17
+180,57919,Valeš Jakub,2003,M,"TJ Tatran Hostinné, spolek",KSST Královéhradecký,RSST Trutnov,1992,2009,-17
+182,63716,Maršálek Vladimír,1970,M,"TTC FRÝDLANT, z.s.",Moravskoslezský SST,OSST Frýdek-Místek,2074,2092,-18
+182,35721,Gavlas Antonín ml.,1985,M,Sportovní klub stolního tenisu Chodov z. s.,KSST Karlovarský,RSST Sokolov,2453,2471,-18
+182,50731,Skála Radek,2002,M,TJ Agrotec Hustopeče z.s.,KSST Jihomoravský,RSST Břeclav,2264,2282,-18
+182,29490,Širučková Aneta,1991,Z,"Městský sportovní klub Břeclav stolní tenis, pobočný spolek",KSST Jihomoravský,RSST Břeclav,1996,2014,-18
+182,68504,Král Ondřej,2009,M,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,2036,2054,-18
+187,19656,Zlámal Jaromír,1987,M,"AC Sparta Praha - stolní tenis, z.s.",Pražský SST,Pražský SST,2224,2243,-19
+187,28895,Širuček Pavel,1992,M,"HB Ostrov , z.s.",KSST Vysočina,RSST Havlíčkův Brod,2507,2526,-19
+189,38168,Macela Petr,1981,M,Tělocvičná jednota Sokol Horažďovice,KSST Plzeňský,RSST Klatovy,2082,2102,-20
+189,49518,Faktor Radovan,1977,M,"TJ TATRAN SEDLČANY, z.s.",Středočeský SST,RSST Příbram,2002,2022,-20
+191,45685,Novotný Petr,1977,M,TJ Sokol Stěžery,KSST Královéhradecký,RSST Hradec Králové,2068,2089,-21
+191,63941,Košťál Daniel,2005,M,TJ Sokol Vodňany,KSST Jihočeský,RSST Strakonice,2235,2256,-21
+191,71452,Laboutka Luděk,1966,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2084,2105,-21
+194,65454,Petr Lukáš,2006,M,TJ Sokol Borová,KSST Pardubický,RSST Svitavy,2054,2076,-22
+194,41498,Hort Tomáš,1997,M,TJ Sokol PP Hradec Králové 2,KSST Královéhradecký,RSST Hradec Králové,2064,2086,-22
+196,34546,Bíma Miroslav,1991,M,Klub stolního tenisu Jirkov z.s.,KSST Ústecký,RSST Chomutov,1989,2013,-24
+196,63462,Grabovský Jaroslav ml.,2008,M,SKST Hodonín z.s.,KSST Jihomoravský,RSST Hodonín,1996,2020,-24
+196,71810,Jirout Vojtěch,2007,M,TJ Jiskra Heřmanův Městec z.s.,KSST Pardubický,RSST Chrudim,2058,2082,-24
+199,54067,Petrovová Nikita,1999,Z,Tělovýchovná jednota Ostrava,Moravskoslezský SST,MěSST Ostrava,1989,2014,-25
+200,28549,Čížek Jiří,1988,M,"PINK Liberec, z.s.",KSST Liberecký,RSST Liberec,2074,2100,-26
+201,276,Kolůch Jaroslav,1975,M,"Klub stolního tenisu LVA, z.s.",KSST Jihomoravský,RSST Břeclav,2011,2038,-27
+202,16014,Ondryáš Daniel,1971,M,Tělocvičná jednota Sokol Vsetín,KSST Zlínský,RSST Vsetín,2054,2082,-28
+203,33869,Štofka Filip,1991,M,TTC Fénix Brno z.s.,KSST Jihomoravský,RSST Brno - město,1974,2006,-32
+204,59901,Hušek Adam,2001,M,KST Sokol Znojmo-Orel Únanov,KSST Jihomoravský,RSST Znojmo,2022,2055,-33
+205,25899,Crha Jakub,1989,M,TJ Agrotec Hustopeče z.s.,KSST Jihomoravský,RSST Břeclav,2306,2345,-39
+206,52120,Rusnák Aleš,2002,M,TTC Siko Orlová z.s.,Moravskoslezský SST,RSST Karviná,2068,2108,-40
+206,14678,Tschakert Tomáš,1981,M,"Table Tennis Club Litoměřice, z.s.",KSST Ústecký,RSST Litoměřice,2018,2058,-40
+208,3595,Šedivý Zdeněk,1978,M,"TTC ELIZZA PRAHA, z.s.",Pražský SST,Pražský SST,2029,2075,-46
+209,49738,Brožek Michal,1992,M,Sokol Lány 2,Středočeský SST,RSST Rakovník,1969,2018,-49
+210,10589,Černý Vít,1977,M,"TJ Slovan Lochovice, z.s.",Středočeský SST,RSST Beroun,1945,2000,-55
