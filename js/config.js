@@ -58,10 +58,12 @@ const PLAYER_NAME_OVERRIDES = {
 // Pouze názvy, které nelze bezpečně vyřešit obecnými pravidly níže.
 const TEAM_NAME_OVERRIDES = {
     "Klub přátel školy při Střední průmyslové škole Zengrova 1, Ostrava-Vítkovice, z.s.": "KST Zengrovka",
+    "Klub stolního tenisu a plavání Karviná, z.s.": "KSTP Karviná",
     "KST NOVÝ JIČÍN, z.s.": "KST Nový Jičín",
     "MK Řeznovice, oddíl stolního tenisu Sportovního  klubu Řeznovice, z.s.": "MK Řeznovice",
     "SK SVINOV z.s.": "SK Svinov",
     "Stavební fakulta SK Kotlářka El Niňo Praha": "SF SKK El Niňo Praha",
+    "Stolní tenis Bystřice pod Lopeníkem z.s.": "ST Bystřice pod Lopeníkem",
     "Stolní tenis Sever Žatec z.s.": "ST Sever Žatec",
     "Tělovýchovná jednota SOKOL KOBYLÍ z.s.": "TJ Sokol Kobylí",
     "TJ Jiskra Kamenický Šenov, Sokolská 629, z.s.": "TJ Jiskra Kamenický Šenov",
