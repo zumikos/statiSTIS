@@ -59,6 +59,7 @@ const PLAYER_NAME_OVERRIDES = {
 const TEAM_NAME_OVERRIDES = {
     "Klub přátel školy při Střední průmyslové škole Zengrova 1, Ostrava-Vítkovice, z.s.": "KST Zengrovka",
     "Klub stolního tenisu a plavání Karviná, z.s.": "KSTP Karviná",
+    "KOC - Sušice, stolní tenis, z.s.": "KOC Sušice",
     "KST NOVÝ JIČÍN, z.s.": "KST Nový Jičín",
     "MK Řeznovice, oddíl stolního tenisu Sportovního  klubu Řeznovice, z.s.": "MK Řeznovice",
     "SK SVINOV z.s.": "SK Svinov",

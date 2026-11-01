@@ -2228,7 +2228,7 @@
 10459,Steklý Tibor,1964,TJ Sokol Chrudim,27
 10460,Klepetko Vlastimil,1962,TJ Sokol Proseč u Skutče,28
 10462,Fackenberg Josef,1963,SK Spartak Slatiňany,30
-10471,Líska Tomáš,1972,"Tělovýchovná jednota Lokomotiva Vršovice, z.s.",39
+10471,Líska Tomáš,1972,Sokol Dolní Beřkovice,39
 10474,Ullman Miloslav,1964,TJ Sokol Mnetěš,42
 10476,Koubík Martin,1970,"SK Telč, z.s.",44
 10478,Němeček Jaroslav,1961,"SK Telč, z.s.",46
@@ -8409,7 +8409,7 @@
 40311,Vácha Vladimír ml.,1994,Tělocvičná jednota Sokol Karlštejn,55
 40312,Vácha Vladimír st.,1965,Tělocvičná jednota Sokol Karlštejn,56
 40318,Mikeska Jakub,1991,Ostrava Zábřeh,62
-40319,Vacura Josef ml.,1993,"TJ SLAVOJ Obecnice, z.s.",63
+40319,Vacura Josef ml.,1993,"TJ Chaloupky,z.s.",63
 40321,Tkadlec Jaroslav,1951,Tělocvičná jednota Sokol Libčice nad Vltavou,1
 40324,Kosnar Vladimír,1944,Tělocvičná jednota Sokol Libčice nad Vltavou,4
 40325,Korman Jan,1949,TJ Sokol Rychnov nad Kněžnou,5
@@ -29132,7 +29132,7 @@
 74623,Vala Luděk,1970,"TJ Sokol Tvrdonice, z.s.",63
 74624,Dokoupil Radek,1969,SK stolní tenis Rychnov na Moravě - Mladějov,0
 74625,Dočkálek Petr,2004,TJ Sokol Vracov z.s.,1
-74627,Lahodná Johana,2010,"MK Řeznovice, oddíl stolního tenisu Sportovního  klubu Řeznovice, z.s.",3
+74627,Lahodná Johana,2010,"TT Moravský Krumlov, z.s.",3
 74628,Lahodný Kryštof,2007,TJ Sokol České Budějovice,4
 74630,Sojka Ondřej,2009,Dělnická tělovýchovná jednota Kondor Lomnice nad,6
 74632,Švec Tomáš,2008,Dělnická tělovýchovná jednota Kondor Lomnice nad,8
@@ -36921,6 +36921,7 @@
 87677,Fanfrlik Viktor,2008,SK Bystřice,61
 87678,Stein Michael,2009,SK Bystřice,62
 87680,Broënnec Aubin,1999,"AC Sparta Praha - stolní tenis, z.s.",0
+87681,Šulák Ondřej,2010,Table Tennis Club Koral Tišnov z.s.,1
 87685,Shalimov Oleh,1977,"Tělovýchovná jednota Dvůr Králové n.L.,z.s.",5
 87686,Červenický Pavol,1987,"SKST Úvaly, z.s.",6
 87687,Mikulka Kryštof,2010,z.s.TTC Klánovice - stolní tenis,7
@@ -38207,6 +38208,7 @@
 89749,Tinka Petr,1977,"TJ Nová Dědina, z.s.",21
 89750,Fryšonc Daniel,2011,"Sportovní klub Jihlava, z.s.",22
 89751,Fryšonc Michal,2013,"Sportovní klub Jihlava, z.s.",23
+89753,Charvát Lukáš,2017,"TJ Dobřany, z.s.",25
 89754,Jára Jakub,2015,"TJ Dobřany, z.s.",26
 89756,Trnka Michal,2013,"TJ Dobřany, z.s.",28
 89757,Sedláček Josef,1962,Orel ST Divišov,29
@@ -38307,6 +38309,7 @@
 90047,Nedvěd Šimon,2013,OÚ Výškov,63
 90048,Májek Kryštof,2009,"TJ Jiskra Litomyšl,z.s.",0
 90054,Pešek Martin,1970,Tělocvičná jednota Sokol Plzeň III - Bory,6
+90059,Veselý Vilém,2009,ST Kunovice z.s.,11
 90060,Sylka Andrii,2004,"Tělovýchovná jednota Lokomotiva Vršovice, z.s.",12
 90061,Braun Matyáš,2015,TJ Sokol Vejprnice,13
 90064,Vlček Dušan,1981,TJ Sokol Tovačov,16
@@ -39445,6 +39448,7 @@
 91850,Hibs Vladimír,1975,Stolní tenis Velké Meziříčí,10
 91851,Suchánek Václav,2008,Stolní tenis Velké Meziříčí,11
 91852,Březovský Viktor,2014,"Tělovýchovná jednota JISKRA Chlum u Třeboně, z.s.",12
+91854,Holemý Jan,2015,Sokol Ořechov,14
 91859,Němec Achilleas,2014,TJ CHS Chotěboř,19
 91860,Gelnar Daniel,2012,"MH stolní tenis Ostrava,z.s.",20
 91863,Shivalanka Ravi,1979,TJ Jitka Jindřichův Hradec,23
@@ -39571,6 +39575,7 @@
 92141,Rataj Eliáš,2014,Tělocvičná jednota Sokol Černošice,45
 92144,Petr Mikuláš,2015,"TSM Kladno, z.s.",48
 92146,Schlegel František,2014,"Klub mládeže stolního tenisu Liberec, z.s.",50
+92149,Lukesle Jiří,2015,"Klub stolního tenisu Karlovy Vary, z.s.",53
 92159,Pasrbek Vít,1975,"Tělovýchovná jednota Sokol Opava- Kateřinky,z.s",63
 92162,Hrubý Matěj,2014,Klub stolního tenisu Domoradovice z.s.,2
 92165,Škubník Richard,2011,Klub stolního tenisu Domoradovice z.s.,5
@@ -39582,7 +39587,7 @@
 92172,Nečas Jakub,2010,SK Zaječí z.s.,12
 92174,Sulanský Karel,2013,SK Přerov,14
 92176,Novotná Petra,1975,"TSM Kladno, z.s.",16
-92177,Holiš Jiří,1973,"Stolní tenis Bílovice, z.s.",17
+92177,Holiš Jiří,1973,"TJ Sokol Újezdec-Těšov,z.s.",17
 92179,Daňhel Matěj,2008,Středisko volného času RADOVÁNEK,19
 92180,Konop David,2011,Středisko volného času RADOVÁNEK,20
 92183,Červenková Rostislava,2016,STP Mikulov z.s.,23
@@ -39773,6 +39778,7 @@
 92764,Hejl Jakub,2010,"Sportovní klub Jiskra Domažlice, z. s.",28
 92777,Tancibudek Přemysl,1977,Tělocvičná jednota Sokol Žamberk,41
 92778,Šedivý Ondřej,1983,Tělovýchovná jednota TTC Sedlec z.s.,42
+92779,Veverka Filip,2011,"Sportovní Klub Stolního Tenisu Králův Dvůr, z.s.",43
 92780,Kamiš Luboš,2013,Tělocvičná jednota Sokol Nová Ves u Č. Budějovic,44
 92781,Kamiš Samuel,2015,Tělocvičná jednota Sokol Nová Ves u Č. Budějovic,45
 92782,Dušek Jiří,1960,TJ Peklo nad Zdobnicí,46
@@ -39926,6 +39932,7 @@
 93184,Vala Ondřej,1987,KST Pincárna,0
 93185,Siudová Alena,1996,KST Pincárna,1
 93186,Macek Daniel,2013,TJ Sokol Pečky,2
+93187,Šmídek Kryštof,2012,TJ Sokol Pečky,3
 93188,Marek Petr,1978,KST Rváčov,4
 93189,Souček Tomáš,1966,TJ Sport Mikulovice,5
 93190,Velíšek Miroslav,1974,"TJ Sokol Újezdec-Těšov,z.s.",6
@@ -40250,6 +40257,7 @@
 93808,Ligocki Tomáš,2010,"SK Smilovice, z.s.",48
 93809,Poncza Pavel,2013,"SK Smilovice, z.s.",49
 93810,Činovec Ladislav,1986,"Tělovýchovná jednota Holýšov, z.s.",50
+93811,Forberger Vojtěch,1968,"Tělovýchovná jednota Holýšov, z.s.",51
 93812,Polák Martin,1971,"Tělovýchovná jednota Holýšov, z.s.",52
 93813,Verner Miloš,1955,KST Jeseník,53
 93815,Ondrášik Milan,1970,"Tělovýchovná jednota Holýšov, z.s.",55
@@ -40354,6 +40362,7 @@
 93952,Mošovská Jennifer,2011,Salesiánské středisko volného času Don Bosco,0
 93953,Baláž Samuel,2014,Salesiánské středisko volného času Don Bosco,1
 93954,Kunc Lukáš,1993,TJ Sokol Postupice z.s,2
+93957,Ambrož František,2011,Sportovní klub Vídeň,5
 93958,Mazánek Václav,2014,Tělocvičná jednota Sokol Ostrov nad Oslavou,6
 93959,Klíma Lukáš,2015,Tělocvičná jednota Sokol Ostrov nad Oslavou,7
 93961,Požár Vítek,2012,Sportovní klub Vídeň,9
@@ -40393,6 +40402,7 @@
 94039,Krupička Jiří,1984,TJ Sokol Starý Plzenec,23
 94043,Byrtus Tobiáš,2012,SK Návsí,27
 94044,Byrtus Roman,1983,SK Návsí,28
+94047,Pokorný Jonáš,2013,Stolní tenis Benešov,31
 94048,Vildomec Karel,2012,Stolní tenis Benešov,32
 94051,Válka Matěj,2006,Orel Jednota Dolní a Horní Loučky,35
 94053,Kocián Jonáš,2005,Stolní tenis Kozlovice z.s.,37
@@ -40447,6 +40457,7 @@
 94150,Petráš Leoš,2014,"TJ Sokol Krupá, z.s.",6
 94152,Slepička Vladimír,1983,TJ Sokol Postupice z.s,8
 94153,Kopová Klára,1985,SH ČMS - Sbor dobrovolných hasičů Drslavice,9
+94154,Fojtík Roman,1975,TJ Nedašov z.s.,10
 94158,Krupička Jan David,2011,TJ CHS Chotěboř,14
 94159,Málek Štěpán,2011,TJ CHS Chotěboř,15
 94161,Luža Jakub,2010,Tělocvičná jednota Sokol Mnichovo Hradiště,17
@@ -40532,6 +40543,7 @@
 94338,Baik Jiwon,1997,"AC Sparta Praha - stolní tenis, z.s.",2
 94340,Boretskyi Vitalii,1996,Tělocvičná jednota Sokol Petrovice I.,4
 94341,Motychak Maksym,2011,"Sportovní Klub Viktorie Ořech, z.s.",5
+94342,Havlíček Matěj,2014,TJ Oslavany,6
 94343,Liška Roman,2009,TJ Oslavany,7
 94344,Treu Lukáš,1981,TJ Oslavany,8
 94345,Žalud Jan,2002,TJ Oslavany,9
@@ -40563,6 +40575,7 @@
 94418,Gawlowski Piotr,1974,TJ Sokol Chotěbuz z.s.,18
 94419,Matuszek Piotr,1977,TJ Sokol Chotěbuz z.s.,19
 94420,Perez Rubio Eduardo,2009,Sportovní klub stolního tenisu Havířov z.s.,20
+94422,Risteski Bojan,1993,TJ Sokol Kralice nad Oslavou,22
 94425,Charousek Jiří,1970,"Klub mládeže stolního tenisu Liberec, z.s.",25
 94426,Helebrant Josef,1979,"Klub mládeže stolního tenisu Liberec, z.s.",26
 94446,Kučera Pavel,1976,TJ Družstevník Bory z.s.,46
@@ -40598,6 +40611,7 @@
 94531,Tomíček Hynek,1980,"TTC Praha - klub stolního tenisu, z.s.",3
 94532,Reš Pavel,1964,"Klub stolního tenisu a plavání Karviná, z.s.",4
 94547,Duda Eduard,1961,"TJ Sokol Pocinovice, z.s.",19
+94548,Mátl Michal,1992,"Klub stolního tenisu Ořechov - Vážany, z.s.",20
 94549,Voborníková Diana,2012,Sokol Lány 2,21
 94553,Hamerník Radim,2011,"Akademický sportovní spolek Brno, z.s.",25
 94556,Bulová Adéla,2015,TJ Baník Meziboří,28
@@ -40616,3 +40630,6 @@
 94595,Mičulková Jana,2015,TJ Sokol Hostašovice zs,3
 94624,Šroler Miroslav,1977,"KST Podhomolí Choceň, z.s.",32
 94630,Valigurčin Pavel,1987,TJ Sokol Ruda,38
+94641,Sidei Volodymyr,1992,"TJ Sokol Kostelec-Zlín, z.s.",49
+94646,Kašpárek Matyáš,2015,Stolní tenis Benešov,54
+94675,Parcl Václav,1999,Tělocvičná jednota Sokol Ostrov nad Oslavou,19
